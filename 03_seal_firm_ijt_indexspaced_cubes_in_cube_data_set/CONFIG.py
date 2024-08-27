@@ -1,6 +1,47 @@
 #### DEFINITION OF GLOBAL CONSTANTS ####
 from pathlib import Path
 
+
+
+### PROCESSORS
+SPAWN_MAX_MAIN_PROCESSES_AMOUNT = 10
+
+
+
+### LOADERS
+OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED = 52
+OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_POST_SEAL_CONSIDERED = 26
+
+
+### SAMPLER
+RANDOM_SAMPLER_DETERMINISTIC_SEED = 42
+
+### SAMPLER PARAMS
+
+RANDOM_PRODUCTS_AMOUNTS = 50
+RANDOM_COUNTERFACTUAL_FIRMS_AMOUNT = 10  # + 1 from the firm looking
+
+###  PARAMS
+MAX_TIME_WINDOW_WEEKS_AROUND_SEAL_WEEKS_AMOUNT = 52
+
+# n ~ firms x 50 x (10+1) x 52
+
+### FIRST COLS SPEC ###
+
+# i
+# j
+# t
+# u(t) ... representation
+# t_real_seal
+# is_seal_firm_j ... if not => counterfactual firm
+# obs_id(i,j,t)
+# clicks_ijt
+# lct_ijt
+# ...
+# Var_ijt, Var_ij, Var_{ijt}, Var_{{space}}
+# IV_{{space}}
+#
+
 ### UNIX TIME CONSTANTS ###
 
 UNIX_HOUR = 60 * 60

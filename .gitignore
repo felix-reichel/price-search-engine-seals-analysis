@@ -174,3 +174,5 @@ cython_debug/
 *.doc
 *.db
 *.png
+*.iml
+*.xml
