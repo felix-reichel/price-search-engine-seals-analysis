@@ -2,20 +2,29 @@ import os
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import logging
-from multiprocessing import Manager, Pool, get_context, Value
+from multiprocessing import Manager, Pool, Value
 import dask.dataframe as dd
 from tqdm import tqdm
-from CONFIG import PARQUE_FILES_DIR, CLICKS_FOLDER, ANGEBOTE_FOLDER, ANGEBOTE_SCHEME, CLICKS_SCHEME
+from CONFIG import (
+    PARQUE_FILES_DIR, CLICKS_FOLDER, ANGEBOTE_FOLDER, ANGEBOTE_SCHEME,
+    CLICKS_SCHEME, OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED,
+    OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_POST_SEAL_CONSIDERED, SPAWN_MAX_MAIN_PROCESSES_AMOUNT
+)
 from static import (
-    get_rand_max_20_counterfactual_firms, calculate_running_var_t_from_u, 
-    get_top_n_products_by_clicks, filter_continuously_offered_products, 
+    get_rand_max_20_counterfactual_firms, calculate_running_var_t_from_u,
+    get_top_n_products_by_clicks, filter_continuously_offered_products,
     select_seal_change_firms, load_data, get_offered_weeks
 )
 from functools import lru_cache
 import gc
 
 # Setup logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', filename='process_log.log', filemode='w')
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    filename='process_log.log',
+    filemode='w'
+)
 logger = logging.getLogger(__name__)
 
 # Columns needed from angebot and clicks data
@@ -36,15 +45,27 @@ CLICKS_DTYPE = {
     'timestamp': 'int64'
 }
 
+
 @lru_cache(maxsize=None)
 def calculate_running_var_t_from_u_cached(unix_time):
     return calculate_running_var_t_from_u(unix_time)
 
+
 def generate_weeks_range(start_year, end_year):
-    return [ANGEBOTE_SCHEME.format(year=year, week=f"{week:02d}") for year in range(start_year, end_year + 1) for week in range(1, 54)]
+    return [
+        ANGEBOTE_SCHEME.format(year=year, week=f"{week:02d}")
+        for year in range(start_year, end_year + 1)
+        for week in range(1, 54)
+    ]
+
 
 def generate_months_range(start_year, end_year):
-    return [CLICKS_SCHEME.format(year=year, month=f"{month:02d}") for year in range(start_year, end_year + 1) for month in range(1, 13)]
+    return [
+        CLICKS_SCHEME.format(year=year, month=f"{month:02d}")
+        for year in range(start_year, end_year + 1)
+        for month in range(1, 13)
+    ]
+
 
 def file_exists_in_folders(file_name, folders):
     for folder in folders:
@@ -53,19 +74,22 @@ def file_exists_in_folders(file_name, folders):
             return file_path
     return None
 
+
 def get_week_year_from_seal_date(seal_date):
     date_obj = datetime.strptime(seal_date, "%d.%m.%Y")
     year, week, _ = date_obj.isocalendar()
     return year, week
 
+
 def get_year_month_from_seal_date(seal_date):
     date_obj = datetime.strptime(seal_date, "%d.%m.%Y")
     return date_obj.year, date_obj.month
 
+
 def generate_weeks_around_seal(seal_year, seal_week):
     weeks_range = []
-    start_week = seal_week - 26
-    end_week = seal_week + 26
+    start_week = seal_week - OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED
+    end_week = seal_week + OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_POST_SEAL_CONSIDERED
 
     # Handle weeks before the start of the year
     for i in range(start_week, seal_week):
@@ -89,6 +113,7 @@ def generate_weeks_around_seal(seal_year, seal_week):
 
     return weeks_range
 
+
 def generate_months_around_seal(seal_year, seal_month):
     months_range = []
     for i in range(-6, 7):  # from 6 months before to 6 months after
@@ -103,45 +128,47 @@ def load_relevant_angebot_data(seal_date):
     seal_year, seal_week = get_week_year_from_seal_date(seal_date)
     relevant_files = generate_weeks_around_seal(seal_year, seal_week)
     ddf_list = []
-    
+
     for file_name in relevant_files:
         file_path = file_exists_in_folders(file_name, ANGEBOTE_FOLDER)
         if file_path:
             df = dd.read_parquet(
-                file_path, 
-                columns=ANGEBOT_COLUMNS, 
+                file_path,
+                columns=ANGEBOT_COLUMNS,
                 engine='pyarrow',
                 dtype=ANGEBOT_DTYPE  # Set data types explicitly
             )
             ddf_list.append(df)
-    
+
     if not ddf_list:
         logger.warning(f"No relevant Angebot data found for seal date {seal_date}.")
         return None
-    
+
     return dd.concat(ddf_list)
+
 
 def load_relevant_click_data(seal_date):
     seal_year, seal_month = get_year_month_from_seal_date(seal_date)
     relevant_files = generate_months_around_seal(seal_year, seal_month)
     ddf_list = []
-    
+
     for file_name in relevant_files:
         file_path = os.path.join(PARQUE_FILES_DIR, CLICKS_FOLDER, file_name)
         if os.path.isfile(file_path):
             df = dd.read_parquet(
                 file_path,
-                columns=CLICKS_COLUMNS, 
+                columns=CLICKS_COLUMNS,
                 engine='pyarrow',
                 dtype=CLICKS_DTYPE  # Set data types explicitly
             )
             ddf_list.append(df)
-    
+
     if not ddf_list:
         logger.warning(f"No relevant Click data found for seal date {seal_date}.")
         return None
-    
+
     return dd.concat(ddf_list)
+
 
 def process_main_firm_single_product(product, geizhals_id, seal_date, angebot_data):
     main_product_results = [{
@@ -163,6 +190,7 @@ def process_main_firm_single_product(product, geizhals_id, seal_date, angebot_da
 
     return main_product_results
 
+
 def process_counterfactual_firm_single_product(product, counterfactual_firm, seal_date, angebot_data):
     counterfactual_results = [{
         'produkt_id': product,
@@ -183,11 +211,18 @@ def process_counterfactual_firm_single_product(product, counterfactual_firm, sea
 
     return counterfactual_results
 
+
 def gather_tasks_for_product(product, seal_date, angebot_data, seal_firms, geizhals_id, allowed_firms):
     tasks = [(product, geizhals_id, seal_date, angebot_data, True)]
-    counterfactual_firms = get_rand_max_20_counterfactual_firms(product, seal_date, angebot_data, seal_firms, allowed_firms)
-    tasks.extend((product, counterfactual_firm, seal_date, angebot_data, False) for counterfactual_firm in counterfactual_firms)
+    counterfactual_firms = get_rand_max_20_counterfactual_firms(
+        product, seal_date, angebot_data, seal_firms, allowed_firms
+    )
+    tasks.extend(
+        (product, counterfactual_firm, seal_date, angebot_data, False)
+        for counterfactual_firm in counterfactual_firms
+    )
     return tasks
+
 
 def process_task(args):
     product, firm, seal_date, angebot_data, is_main_firm = args
@@ -196,8 +231,12 @@ def process_task(args):
     else:
         return process_counterfactual_firm_single_product(product, firm, seal_date, angebot_data)
 
+
 def process_seal_firm(seal_firm_data, result_counter):
-    haendler_bez, geizhals_id, seal_date, seal_firms, products_df, retailers_df, allowed_firms, processed_firms, lock = seal_firm_data
+    (
+        haendler_bez, geizhals_id, seal_date, seal_firms,
+        products_df, retailers_df, allowed_firms, processed_firms, lock
+    ) = seal_firm_data
 
     with lock:
         result_counter.value += 1
@@ -217,27 +256,28 @@ def process_seal_firm(seal_firm_data, result_counter):
         return None
 
     top_products = get_top_n_products_by_clicks(geizhals_id, seal_date, clicks_data, 50)
-    filtered_products = filter_continuously_offered_products(haendler_bez, top_products, seal_date, angebot_data, 4)
-    
+    filtered_products = filter_continuously_offered_products(
+        haendler_bez, top_products, seal_date, angebot_data, 4
+    )
+
     # Gather tasks
     tasks = []
     for product in filtered_products:
-        tasks.extend(gather_tasks_for_product(product, seal_date, angebot_data, seal_firms, geizhals_id, allowed_firms))
+        tasks.extend(
+            gather_tasks_for_product(product, seal_date, angebot_data, seal_firms, geizhals_id, allowed_firms)
+        )
 
     with open('results.csv', 'a') as csvfile:
         for task in tasks:
             results = process_task(task)
             for row in results:
-                csvfile.write(f"{row['produkt_id']},{row['haendler_bez']},{row['week_running_var']},{row['firm_has_seal_j']}\n")
+                csvfile.write(
+                    f"{row['produkt_id']},{row['haendler_bez']},{row['week_running_var']},{row['firm_has_seal_j']}\n"
+                )
             csvfile.flush()
 
-    # Memory cleanup 
-    if angebot_data is not None and clicks_data is not None:
-        del angebot_data, clicks_data
-    del top_products, filtered_products
-    gc.collect()
-
     return True
+
 
 def main(parallel=False):
     logger.info("Starting main process.")
@@ -246,11 +286,11 @@ def main(parallel=False):
     seal_change_firms = select_seal_change_firms(seal_change_firms)
 
     logger.info("Seal change firms selected.")
-    
+
     allowed_firms = set(filtered_haendler_bez.iloc[:, 0].unique())
 
     logger.info(f"{len(allowed_firms)} number of allowed firms.")
-    
+
     seal_firms = seal_change_firms['RESULTING MATCH'].unique().tolist()
 
     with Manager() as manager:
@@ -279,14 +319,17 @@ def main(parallel=False):
             csvfile.write("produkt_id,haendler_bez,week_running_var,firm_has_seal_j\n")
 
         if parallel:
-            with Pool(processes=4) as pool:
-                for _ in tqdm(pool.imap_unordered(process_seal_firm, [(data, result_counter) for data in seal_firm_data]), total=len(seal_firm_data), desc="Processing seal firms"):
+            with Pool(processes=SPAWN_MAX_MAIN_PROCESSES_AMOUNT) as pool:
+                for _ in tqdm(
+                        pool.imap_unordered(process_seal_firm, [(data, result_counter) for data in seal_firm_data]),
+                        total=len(seal_firm_data), desc="Processing seal firms"):
                     pass
         else:
             for data in tqdm(seal_firm_data, total=len(seal_firm_data), desc="Processing seal firms"):
                 process_seal_firm(data, result_counter)
 
     logger.info("Processing complete and results saved to results.csv.")
+
 
 if __name__ == '__main__':
     main(parallel=False)  # Set parallel=True to enable parallel processing

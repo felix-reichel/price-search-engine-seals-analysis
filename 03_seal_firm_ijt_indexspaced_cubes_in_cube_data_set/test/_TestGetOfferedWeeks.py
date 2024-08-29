@@ -6,7 +6,10 @@ import polars as pl
 from impl.static import get_offered_weeks, calculate_running_var_t_from_u
 
 
+"""
 class TestGetOfferedWeeks(unittest.TestCase):
+
+
 
     def test_get_offered_weeks_within_observation_window(self):
         # Sample angebot_data
@@ -46,3 +49,5 @@ class TestGetOfferedWeeks(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+    
+"""

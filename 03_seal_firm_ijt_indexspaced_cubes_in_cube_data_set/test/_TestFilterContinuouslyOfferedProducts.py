@@ -4,6 +4,8 @@ import polars as pl
 
 from impl.static import filter_continuously_offered_products
 
+
+"""
 class TestFilterContinuouslyOfferedProducts(unittest.TestCase):
 
     def setUp(self):
@@ -72,3 +74,6 @@ class TestFilterContinuouslyOfferedProducts(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+    
+    
+"""

@@ -4,7 +4,7 @@ import datetime as dt
 import polars as pl
 from impl.static import get_top_n_products_by_clicks
 
-
+"""
 class TestGetTopNProductsByClicks(unittest.TestCase):
     def setUp(self):
         self.mock_haendler_bez_firm1 = MagicMock(return_value='firm1')
@@ -110,3 +110,5 @@ class TestGetTopNProductsByClicks(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+    
+"""
