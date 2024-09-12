@@ -4,13 +4,12 @@ import polars as pl
 from impl.static import is_product_continuously_offered
 
 
-"""
 class TestIsProductContinuouslyOffered(unittest.TestCase):
 
     def test_product_continuously_offered(self):
         mock_produkt_id = 'product1'
         mock_haendler_bez = 'firm1'
-        mock_seal_date_unix = int(dt.datetime(2022, 1, 17).timestamp())
+        mock_seal_date_unix = "17.1.2022"
 
         angebot_data = pl.DataFrame({
             'produkt_id': ['product1'] * 10,
@@ -54,7 +53,7 @@ class TestIsProductContinuouslyOffered(unittest.TestCase):
     def test_product_limit_continuously_offered(self):
         mock_produkt_id = 'product1'
         mock_haendler_bez = 'firm1'
-        mock_seal_date_unix = int(dt.datetime(2022, 1, 17).timestamp())
+        mock_seal_date_unix = "17.1.2022"
 
         angebot_data = pl.DataFrame({
             'produkt_id': ['product1'] * 9,
@@ -96,7 +95,7 @@ class TestIsProductContinuouslyOffered(unittest.TestCase):
     def test_product_not_continuously_offered(self):
         mock_produkt_id = 'product1'
         mock_haendler_bez = 'firm1'
-        mock_seal_date_unix = int(dt.datetime(2022, 1, 17).timestamp())
+        mock_seal_date_unix = "17.1.2022"
 
         angebot_data = pl.DataFrame({
             'produkt_id': ['product1'] * 8,
@@ -136,7 +135,7 @@ class TestIsProductContinuouslyOffered(unittest.TestCase):
     def test_product_continuously_offered_min_weeks(self):
         mock_produkt_id = 'product1'
         mock_haendler_bez = 'firm1'
-        mock_seal_date_unix = int(dt.datetime(2022, 1, 17).timestamp())
+        mock_seal_date_unix = "17.1.2022"
 
         angebot_data = pl.DataFrame({
             'produkt_id': ['product1'] * 4,
@@ -168,5 +167,3 @@ class TestIsProductContinuouslyOffered(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-    
-"""

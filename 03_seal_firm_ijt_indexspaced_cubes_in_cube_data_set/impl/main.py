@@ -1,22 +1,23 @@
+import logging
 import os
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
-import logging
+from functools import lru_cache
 from multiprocessing import Manager, Pool, Value
-import dask.dataframe as dd
+
+import polars as pl
+from dateutil.relativedelta import relativedelta
 from tqdm import tqdm
+
 from CONFIG import (
     PARQUE_FILES_DIR, CLICKS_FOLDER, ANGEBOTE_FOLDER, ANGEBOTE_SCHEME,
     CLICKS_SCHEME, OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED,
     OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_POST_SEAL_CONSIDERED, SPAWN_MAX_MAIN_PROCESSES_AMOUNT
 )
 from static import (
-    get_rand_max_20_counterfactual_firms, calculate_running_var_t_from_u,
+    get_rand_max_N_counterfactual_firms, calculate_running_var_t_from_u,
     get_top_n_products_by_clicks, filter_continuously_offered_products,
     select_seal_change_firms, load_data, get_offered_weeks
 )
-from functools import lru_cache
-import gc
 
 # Setup logging
 logging.basicConfig(
@@ -33,16 +34,16 @@ CLICKS_COLUMNS = ['produkt_id', 'haendler_bez', 'timestamp']
 
 # Set dtypes to minimize memory usage
 ANGEBOT_DTYPE = {
-    'produkt_id': 'int64',
-    'haendler_bez': 'category',
-    'dtimebegin': 'int64',
-    'dtimeend': 'int64'
+    'produkt_id': pl.Int64,
+    'haendler_bez': pl.Categorical,
+    'dtimebegin': pl.Int64,
+    'dtimeend': pl.Int64
 }
 
 CLICKS_DTYPE = {
-    'produkt_id': 'int64',
-    'haendler_bez': 'category',
-    'timestamp': 'int64'
+    'produkt_id': pl.Int64,
+    'haendler_bez': pl.Categorical,
+    'timestamp': pl.Int64
 }
 
 
@@ -127,47 +128,45 @@ def generate_months_around_seal(seal_year, seal_month):
 def load_relevant_angebot_data(seal_date):
     seal_year, seal_week = get_week_year_from_seal_date(seal_date)
     relevant_files = generate_weeks_around_seal(seal_year, seal_week)
-    ddf_list = []
+    df_list = []
 
     for file_name in relevant_files:
         file_path = file_exists_in_folders(file_name, ANGEBOTE_FOLDER)
         if file_path:
-            df = dd.read_parquet(
+            df = pl.read_parquet(
                 file_path,
                 columns=ANGEBOT_COLUMNS,
-                engine='pyarrow',
-                dtype=ANGEBOT_DTYPE  # Set data types explicitly
+                use_pyarrow=True
             )
-            ddf_list.append(df)
+            df_list.append(df)
 
-    if not ddf_list:
+    if not df_list:
         logger.warning(f"No relevant Angebot data found for seal date {seal_date}.")
         return None
 
-    return dd.concat(ddf_list)
+    return pl.concat(df_list)
 
 
 def load_relevant_click_data(seal_date):
     seal_year, seal_month = get_year_month_from_seal_date(seal_date)
     relevant_files = generate_months_around_seal(seal_year, seal_month)
-    ddf_list = []
+    df_list = []
 
     for file_name in relevant_files:
         file_path = os.path.join(PARQUE_FILES_DIR, CLICKS_FOLDER, file_name)
         if os.path.isfile(file_path):
-            df = dd.read_parquet(
+            df = pl.read_parquet(
                 file_path,
                 columns=CLICKS_COLUMNS,
-                engine='pyarrow',
-                dtype=CLICKS_DTYPE  # Set data types explicitly
+                use_pyarrow=True
             )
-            ddf_list.append(df)
+            df_list.append(df)
 
-    if not ddf_list:
+    if not df_list:
         logger.warning(f"No relevant Click data found for seal date {seal_date}.")
         return None
 
-    return dd.concat(ddf_list)
+    return pl.concat(df_list)
 
 
 def process_main_firm_single_product(product, geizhals_id, seal_date, angebot_data):
@@ -214,7 +213,7 @@ def process_counterfactual_firm_single_product(product, counterfactual_firm, sea
 
 def gather_tasks_for_product(product, seal_date, angebot_data, seal_firms, geizhals_id, allowed_firms):
     tasks = [(product, geizhals_id, seal_date, angebot_data, True)]
-    counterfactual_firms = get_rand_max_20_counterfactual_firms(
+    counterfactual_firms = get_rand_max_N_counterfactual_firms(
         product, seal_date, angebot_data, seal_firms, allowed_firms
     )
     tasks.extend(
@@ -255,6 +254,7 @@ def process_seal_firm(seal_firm_data, result_counter):
     if angebot_data is None or clicks_data is None:
         return None
 
+    # Get top products and filter
     top_products = get_top_n_products_by_clicks(geizhals_id, seal_date, clicks_data, 50)
     filtered_products = filter_continuously_offered_products(
         haendler_bez, top_products, seal_date, angebot_data, 4
@@ -281,17 +281,18 @@ def process_seal_firm(seal_firm_data, result_counter):
 
 def main(parallel=False):
     logger.info("Starting main process.")
+
     seal_change_firms, filtered_haendler_bez, products_df, retailers_df = load_data()
 
     seal_change_firms = select_seal_change_firms(seal_change_firms)
 
     logger.info("Seal change firms selected.")
 
-    allowed_firms = set(filtered_haendler_bez.iloc[:, 0].unique())
+    allowed_firms = set(filtered_haendler_bez[:, 0].unique())
 
     logger.info(f"{len(allowed_firms)} number of allowed firms.")
 
-    seal_firms = seal_change_firms['RESULTING MATCH'].unique().tolist()
+    seal_firms = seal_change_firms['RESULTING MATCH'].unique().to_list()
 
     with Manager() as manager:
         processed_firms = manager.dict()
@@ -301,8 +302,8 @@ def main(parallel=False):
         seal_firm_data = [
             (
                 haendler_bez,
-                seal_change_firms.iloc[i, 2],  # Geizhals identifier
-                seal_change_firms.iloc[i, 3],  # Seal change date
+                seal_change_firms[i, 2],  # Geizhals identifier
+                seal_change_firms[i, 3],  # Seal change date
                 seal_firms,
                 products_df,
                 retailers_df,

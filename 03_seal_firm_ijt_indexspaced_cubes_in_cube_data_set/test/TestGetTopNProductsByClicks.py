@@ -4,7 +4,7 @@ import datetime as dt
 import polars as pl
 from impl.static import get_top_n_products_by_clicks
 
-"""
+
 class TestGetTopNProductsByClicks(unittest.TestCase):
     def setUp(self):
         self.mock_haendler_bez_firm1 = MagicMock(return_value='firm1')
@@ -62,53 +62,58 @@ class TestGetTopNProductsByClicks(unittest.TestCase):
             self.mock_haendler_bez_firm1.return_value,
             self.mock_seal_date_str_firm1.return_value,
             self.mock_clicks_data,
-            2
+            2,
+            16
         )
         expected_top_products = ['product1', 'product2']
-        self.assertEqual(actual_top_products, expected_top_products)
+        self.assertListEqual(expected_top_products, actual_top_products)
 
     def test_get_top_products_by_clicks_firm1_Top1(self):
         actual_top_products = get_top_n_products_by_clicks(
             self.mock_haendler_bez_firm1.return_value,
             self.mock_seal_date_str_firm1.return_value,
             self.mock_clicks_data,
-            1
+            1,
+            16
         )
         expected_top_products = ['product1']
-        self.assertEqual(actual_top_products, expected_top_products)
+        self.assertListEqual(actual_top_products, expected_top_products)
 
     def test_get_top_products_by_clicks_firm1_Top1_NewSeal(self):
         actual_top_products = get_top_n_products_by_clicks(
             self.mock_haendler_bez_firm1.return_value,
             "15.06.2024",
             self.mock_clicks_data,
-            1
+            1,
+            16
         )
         expected_top_products = []
-        self.assertEqual(actual_top_products, expected_top_products)
+        self.assertListEqual(expected_top_products, actual_top_products)
 
     def test_get_top_products_by_clicks_firm2(self):
         actual_top_products = get_top_n_products_by_clicks(
             self.mock_haendler_bez_firm2.return_value,
             self.mock_seal_date_str_firm2.return_value,
             self.mock_clicks_data,
-            2
+            2,
+            16
         )
         expected_top_products = ['product3']
-        self.assertEqual(actual_top_products, expected_top_products)
+        self.assertListEqual(expected_top_products, actual_top_products)
 
     def test_get_top_products_by_clicks_firm3(self):
         actual_top_products = get_top_n_products_by_clicks(
             self.mock_haendler_bez_firm3.return_value,
             self.mock_seal_date_str_firm3.return_value,
             self.mock_clicks_data,
-            2
+            2,
+            16
         )
         expected_top_products = ['product4']
-        self.assertEqual(actual_top_products, expected_top_products)
+        self.assertListEqual(expected_top_products, actual_top_products)
 
 
 if __name__ == '__main__':
     unittest.main()
     
-"""
+

@@ -3,8 +3,7 @@ import polars as pl
 
 from impl.static import select_seal_change_firms, load_data
 
-
-"""
+""""
 class TestLoadSealChangeFirmDates(unittest.TestCase):
     def setUp(self):
         self.seal_change_firms, _, _, _ = load_data()
@@ -21,5 +20,4 @@ class TestLoadSealChangeFirmDates(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-    
 """

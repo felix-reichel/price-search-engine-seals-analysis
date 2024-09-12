@@ -5,14 +5,12 @@ import polars as pl
 from impl.static import filter_continuously_offered_products
 
 
-"""
 class TestFilterContinuouslyOfferedProducts(unittest.TestCase):
 
     def setUp(self):
-
         # Common setup for all tests
         self.haendler_bez = 'firm1'
-        self.seal_date_unix = int(dt.datetime(2022, 1, 17).timestamp())
+        self.seal_date_unix = "17.1.2022"
         self.top_products = ['product1', 'product2', 'product3']
 
         # Create a mock angebot_data dataframe
@@ -69,11 +67,8 @@ class TestFilterContinuouslyOfferedProducts(unittest.TestCase):
             HAS_WEEKS_BEFORE_AND_AFTER_PRODUCT_ANGEBOTEN_AMOUNT
         )
 
-        self.assertEqual(result, ['product1', 'product2'])
+        self.assertEqual(['product1', 'product2'], result)
 
 
 if __name__ == '__main__':
     unittest.main()
-    
-    
-"""

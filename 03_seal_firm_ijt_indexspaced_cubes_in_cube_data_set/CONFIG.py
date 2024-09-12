@@ -47,8 +47,8 @@ UNIX_WEDNESDAY_MIDDAY_INTERCEPT = UNIX_DAY * 2.5  # From Monday 0:00 GMT+0000
 
 # Forbidden Retailer Keywords
 FORBIDDEN_RETAILER_KEYWORDS = [
-    'am-uk', 'am-de', 'am-at', 'eb-uk', 'eb-de', 'sh-at', 'mp-de',
-    'rk-de', 'nk-pl', 'sz-uk', 'vk-de', 'gx-de'
+    '-am-uk', '-am-de', '-am-at', '-eb-uk', '-eb-de', '-sh-at', '-mp-de',
+    '-rk-de', '-nk-pl', '-sz-uk', '-vk-de', '-gx-de'
 ]
 
 # UNIX TIME ORIGIN u0 from which the running variable t populates
