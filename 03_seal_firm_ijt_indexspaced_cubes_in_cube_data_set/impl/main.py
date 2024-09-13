@@ -8,6 +8,7 @@ import polars as pl
 from dateutil.relativedelta import relativedelta
 from tqdm import tqdm
 
+import CONFIG
 from CONFIG import (
     PARQUE_FILES_DIR, CLICKS_FOLDER, ANGEBOTE_FOLDER, ANGEBOTE_SCHEME,
     CLICKS_SCHEME, OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED,
@@ -16,7 +17,7 @@ from CONFIG import (
 from static import (
     get_rand_max_N_counterfactual_firms, calculate_running_var_t_from_u,
     get_top_n_products_by_clicks, filter_continuously_offered_products,
-    select_seal_change_firms, load_data, get_offered_weeks
+    select_seal_change_firms, load_data, get_offered_weeks, get_random_n_products_deterministic
 )
 
 # Setup logging
@@ -125,7 +126,7 @@ def generate_months_around_seal(seal_year, seal_month):
     return months_range
 
 
-def load_relevant_angebot_data(seal_date):
+def load_relevant_angebot_data(seal_date, allowed_firms):
     seal_year, seal_week = get_week_year_from_seal_date(seal_date)
     relevant_files = generate_weeks_around_seal(seal_year, seal_week)
     df_list = []
@@ -144,7 +145,9 @@ def load_relevant_angebot_data(seal_date):
         logger.warning(f"No relevant Angebot data found for seal date {seal_date}.")
         return None
 
-    return pl.concat(df_list)
+    angebot_data = pl.concat(df_list)
+    angebot_data_filtered = angebot_data.filter(pl.col("haendler_bez").is_in(allowed_firms))
+    return angebot_data_filtered
 
 
 def load_relevant_click_data(seal_date):
@@ -249,13 +252,22 @@ def process_seal_firm(seal_firm_data, result_counter):
     with lock:
         processed_firms[haendler_bez] = True  # Mark this firm as processed
 
-    angebot_data = load_relevant_angebot_data(seal_date)
+    angebot_data = load_relevant_angebot_data(seal_date, allowed_firms)
     clicks_data = load_relevant_click_data(seal_date)
     if angebot_data is None or clicks_data is None:
         return None
 
     # Get top products and filter
-    top_products = get_top_n_products_by_clicks(geizhals_id, seal_date, clicks_data, 50)
+    # Old way using clicks data to get top N products
+    # top_products = get_top_n_products_by_clicks(geizhals_id, seal_date, clicks_data, 50)
+
+    # New way using random product selection
+    top_products = get_random_n_products_deterministic(geizhals_id,
+                                                       angebot_data,
+                                                       seal_date,
+                                                       CONFIG.RANDOM_PRODUCTS_AMOUNTS,
+                                                       CONFIG.RANDOM_SAMPLER_DETERMINISTIC_SEED)
+
     filtered_products = filter_continuously_offered_products(
         haendler_bez, top_products, seal_date, angebot_data, 4
     )

@@ -103,6 +103,35 @@ def get_top_n_products_by_clicks(haendler_bez, seal_date_str, clicks_data,
         return []
 
 
+# Function to draw N random products deterministically
+def get_random_n_products_deterministic(haendler_bez, angebot_data, seal_date_str,
+                                        n=TOP_PRODUCTS_OF_SEAL_CHANGE_FIRM_BY_CLICKS_AMOUNT,
+                                        seed=RANDOM_SAMPLER_DETERMINISTIC_SEED):
+    logger.info(f"Drawing {n} random products for firm {haendler_bez} deterministically.")
+
+    # Filter offer data for the given firm
+    angebot_data_filtered = angebot_data.filter(
+        pl.col('haendler_bez') == haendler_bez
+    )
+
+    # Extract unique product IDs for the firm
+    product_ids = angebot_data_filtered['produkt_id'].unique().to_list()
+
+    if len(product_ids) == 0:
+        logger.warning(f"No products found for firm {haendler_bez}. Returning empty list.")
+        return []
+
+    # Seed the random generator for deterministic behavior
+    random.seed(seed)
+
+    # Randomly sample N products or less if there aren't enough products
+    random_products = random.sample(product_ids, min(n, len(product_ids)))
+
+    logger.info(f"Random products drawn: {random_products}")
+
+    return random_products
+
+
 # Function to check if a product is continuously offered around the seal change date
 def is_product_continuously_offered(produkt_id, haendler_bez, seal_date_str, angebot_data, weeks):
     logger.info(
@@ -248,12 +277,16 @@ def get_offered_weeks(angebot_data, prod_id, firm_id, seal_date_str):
             current_date += dt.timedelta(weeks=1)
             offered_weeks.add(week_number)
 
-    offered_weeks = {
+    lower_bound: int = calculate_running_var_t_from_u(seal_date - 26 * UNIX_WEEK)
+    upper_bound: int = calculate_running_var_t_from_u(seal_date + 26 * UNIX_WEEK)
+
+    bounded_offered_weeks = {
         week for week in offered_weeks
-        if
-        int(calculate_running_var_t_from_u(seal_date - 26 * UNIX_WEEK))
-        <= week <= int(calculate_running_var_t_from_u(seal_date + 26 * UNIX_WEEK))
+        if lower_bound <= week <= upper_bound
     }
 
-    logger.info(f"Filtered offered weeks: {offered_weeks}")
-    return offered_weeks
+    logger.info(f"Filtered offered weeks: {bounded_offered_weeks}")
+
+    return bounded_offered_weeks
+
+

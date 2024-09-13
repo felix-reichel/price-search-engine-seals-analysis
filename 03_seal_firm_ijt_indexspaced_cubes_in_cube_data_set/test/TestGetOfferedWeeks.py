@@ -45,8 +45,6 @@ class TestGetOfferedWeeks(unittest.TestCase):
         #    815  # seems legit
         # }
 
-
-
         result_weeks = get_offered_weeks(angebot_data, prod_id, firm_id, seal_date)
         self.assertEqual(expected_weeks, result_weeks)
 

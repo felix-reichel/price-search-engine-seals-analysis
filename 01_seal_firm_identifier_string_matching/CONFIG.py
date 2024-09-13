@@ -12,8 +12,8 @@ OUTPUT_FOLDER = "output/"
 GEIZHALS_RETAILERS_PARQUE_FILE_PATH = INPUT_FOLDER + "haendler.parquet"
 FILTERED_RETAILERS_CSV_FILE_PATH = OUTPUT_FOLDER + "filtered_haendler_bez.csv"
 
-FORBIDDEN_RETAILER_KEYWORDS = ['am-uk', 'am-de', 'am-at', 'eb-uk', 'eb-de', 'sh-at', 'mp-de', 'rk-de', 'nk-pl', 'sz-uk',
-                               'vk-de', 'gx-de']  # Amazon UK, DE, AT retailers
+FORBIDDEN_RETAILER_KEYWORDS = ['-am-uk', '-am-de', '-am-at', '-eb-uk', '-eb-de', '-sh-at', '-mp-de', '-rk-de', '-nk-pl', '-sz-uk',
+                               '-vk-de', '-gx-de']  # Amazon UK, DE, AT retailers
 
 
 # Step 1 - Retailer matching (Matching of Geizhals_bez and guetesiegel retailer name)

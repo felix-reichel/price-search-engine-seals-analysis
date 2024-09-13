@@ -79,6 +79,9 @@ HAS_WEEKS_BEFORE_AND_AFTER_PRODUCT_ANGEBOTEN_AMOUNT = 8  # 8 weeks before and 8 
 MAX_WEEKS_BEFORE_AFTER_PRODUCT_ANGEBOTEN_MISSING_ALLOWED_AMOUNT = 1  # 1 week missing is allowed
 MAX_DAYS_ANGEBOT_MISSING_WITHIN_WEEK = 0  # 0 = "Durchgehend angeboten", product must have an offer each day in a week
 
+# FILES
+CSV_DELIM_STYLE = ","
+
 # GLOBAL FILE PATHS
 # PARQUE_FILES_DIR = Path("/nfn_vwl/geizhals/zieg_pq_db")
 PARQUE_FILES_DIR = Path("../data")

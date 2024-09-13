@@ -4,3 +4,4 @@ tqdm==4.65.0
 pandas
 pytest
 pyarrow
+duckdb
