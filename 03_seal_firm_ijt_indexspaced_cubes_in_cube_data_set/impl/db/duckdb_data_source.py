@@ -9,8 +9,18 @@ logger = logging.getLogger(__name__)
 
 class DuckDBDataSource:
     def __init__(self,
-                 db_path=':memory:'):
-        self.conn = duckdb.connect(db_path)
+                 db_path=':memory:',
+                 threads=32):
+        self.conn = duckdb.connect(db_path, config={'threads': 32})
+        self.set_threads(threads)
+
+    def set_threads(self,
+                    threads):
+
+        threads = max(threads, 32)
+        logger.info(f"Setting DuckDB to use {threads} threads.")
+        # set via PRAGMA threads
+        self.conn.execute(f"PRAGMA threads={threads}")
 
     def load_csv_to_table(self,
                           csv_path,
@@ -38,6 +48,22 @@ class DuckDBDataSource:
 
         self.conn.execute(f"""
             CREATE OR REPLACE TABLE {table_name} AS
+            SELECT {column_str} FROM read_parquet('{parquet_path}')
+        """)
+
+    def append_parquet_to_table(
+            self,
+            parquet_path,
+            table_name,
+            columns=None):
+        logger.info(f"Appending Parquet from {parquet_path} into table {table_name}")
+        if columns:
+            column_str = ", ".join(columns)
+        else:
+            column_str = "*"
+
+        self.conn.execute(f"""
+            INSERT INTO {table_name} 
             SELECT {column_str} FROM read_parquet('{parquet_path}')
         """)
 

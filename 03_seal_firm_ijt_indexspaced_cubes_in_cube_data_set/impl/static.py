@@ -1,39 +1,13 @@
 import datetime as dt
 import logging
 import random
-from functools import lru_cache
 
 import polars as pl
 
 from CONFIG import *
+from impl.helpers import date_to_unix_time, calculate_running_var_t_from_u, get_start_of_week
 
 logger = logging.getLogger(__name__)
-
-
-# Cached function to calculate running week variable from Unix time
-@lru_cache(maxsize=None)
-def calculate_running_var_t_from_u(unix_time):
-    if isinstance(unix_time, str):
-        unix_time = date_to_unix_time(unix_time)
-    return int((unix_time - UNIX_TIME_ORIGIN) / UNIX_WEEK)
-
-
-# Cached function to convert date string to Unix time
-@lru_cache(maxsize=None)
-def date_to_unix_time(date_str):
-    try:
-        date_obj = dt.datetime.strptime(date_str, '%d.%m.%Y')
-        return int(date_obj.timestamp())
-    except ValueError as e:
-        logger.error(f"Error parsing date: {e}")
-        return None
-
-
-@lru_cache(maxsize=None)
-def get_start_of_week(date: dt):
-    start_of_week = date - dt.timedelta(days=date.weekday())
-    start_of_week = start_of_week.replace(hour=0, minute=0, second=0, microsecond=0)
-    return start_of_week
 
 
 # Function to load data using Polars
