@@ -39,6 +39,7 @@ def select_seal_change_firms(seal_change_firms):
 
 
 # Function to get the top N products by clicks using Polars
+@DeprecationWarning
 def get_top_n_products_by_clicks(haendler_bez, seal_date_str, clicks_data,
                                  top_n=TOP_PRODUCTS_OF_SEAL_CHANGE_FIRM_BY_CLICKS_AMOUNT,
                                  time_window_around_seal=HAS_WEEKS_BEFORE_AND_AFTER_PRODUCT_ANGEBOTEN_AMOUNT):
@@ -78,6 +79,7 @@ def get_top_n_products_by_clicks(haendler_bez, seal_date_str, clicks_data,
 
 
 # Function to draw N random products deterministically
+@DeprecationWarning
 def get_random_n_products_deterministic(haendler_bez, angebot_data, seal_date_str,
                                         n=TOP_PRODUCTS_OF_SEAL_CHANGE_FIRM_BY_CLICKS_AMOUNT,
                                         seed=RANDOM_SAMPLER_DETERMINISTIC_SEED):
@@ -107,6 +109,7 @@ def get_random_n_products_deterministic(haendler_bez, angebot_data, seal_date_st
 
 
 # Function to check if a product is continuously offered around the seal change date
+@DeprecationWarning
 def is_product_continuously_offered(produkt_id, haendler_bez, seal_date_str, angebot_data, weeks):
     logger.info(
         f"Checking if product {produkt_id} is continuously offered by firm {haendler_bez} around seal date {seal_date_str}.")
@@ -167,6 +170,7 @@ def is_product_continuously_offered(produkt_id, haendler_bez, seal_date_str, ang
 
 
 # Function to filter continuously offered products
+@DeprecationWarning
 def filter_continuously_offered_products(haendler_bez, top_products, seal_date_str, angebot_data, week_amount):
     logger.info(f"Filtering continuously offered products for firm {haendler_bez} and seal date {seal_date_str}.")
     continuously_offered_products = []
@@ -217,6 +221,7 @@ def get_rand_max_N_counterfactual_firms(product_id, seal_date_str, angebot_data,
 
 
 # Function to retrieve offered weeks using Polars
+@DeprecationWarning
 def get_offered_weeks(angebot_data, prod_id, firm_id, seal_date_str):
     logger.info(f"Getting offered weeks for product {prod_id}, firm {firm_id}, and seal date {seal_date_str}.")
 

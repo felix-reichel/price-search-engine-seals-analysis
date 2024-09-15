@@ -6,6 +6,7 @@ from unittest.mock import patch
 from impl.static import get_rand_max_N_counterfactual_firms
 
 
+@DeprecationWarning
 class TestGetRandMaxNCounterfactualFirms(unittest.TestCase):
 
     def setUp(self):

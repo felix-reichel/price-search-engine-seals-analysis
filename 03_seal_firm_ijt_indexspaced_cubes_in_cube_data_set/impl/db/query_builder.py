@@ -5,6 +5,7 @@ class QueryBuilder:
         self.table_name = table_name
         self.select_columns = "*"
         self.conditions = []
+        self.group_by_clause = ""
         self.order_by_clause = ""
         self.limit_clause = ""
 
@@ -21,6 +22,13 @@ class QueryBuilder:
               condition):
 
         self.conditions.append(condition)
+        return self
+
+    def group_by(self, columns):
+        if isinstance(columns, list):
+            self.group_by_clause = f"GROUP BY {', '.join(columns)}"
+        else:
+            self.group_by_clause = f"GROUP BY {columns}"
         return self
 
     def order_by(self,
@@ -57,5 +65,12 @@ class QueryBuilder:
 
     def build(self):
         where_clause = " AND ".join(self.conditions) if self.conditions else "1=1"
-        query = f"SELECT {self.select_columns} FROM {self.table_name} WHERE {where_clause} {self.order_by_clause} {self.limit_clause}"
+        query = f"SELECT {self.select_columns} FROM {self.table_name} WHERE {where_clause} {self.group_by_clause} {self.order_by_clause} {self.limit_clause}"
         return query
+
+    def insert_into(self, target_table):
+        select_query = self.build()
+
+        insert_query = f"INSERT INTO {target_table} {select_query}"
+
+        return insert_query

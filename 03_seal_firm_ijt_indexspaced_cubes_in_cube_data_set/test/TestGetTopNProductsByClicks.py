@@ -5,6 +5,7 @@ import polars as pl
 from impl.static import get_top_n_products_by_clicks
 
 
+@DeprecationWarning
 class TestGetTopNProductsByClicks(unittest.TestCase):
     def setUp(self):
         self.mock_haendler_bez_firm1 = MagicMock(return_value='firm1')

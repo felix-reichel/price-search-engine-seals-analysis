@@ -5,6 +5,7 @@ from unittest.mock import patch
 from impl.static import get_random_n_products_deterministic
 
 
+@DeprecationWarning
 class TestGetRandomNProductsDeterministic(unittest.TestCase):
 
     def setUp(self):

@@ -6,6 +6,7 @@ import polars as pl
 from impl.static import get_offered_weeks, calculate_running_var_t_from_u
 
 
+@DeprecationWarning
 class TestGetOfferedWeeks(unittest.TestCase):
 
     def test_get_offered_weeks_within_observation_window(self):

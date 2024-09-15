@@ -4,6 +4,7 @@ import polars as pl
 from impl.static import is_product_continuously_offered
 
 
+@DeprecationWarning
 class TestIsProductContinuouslyOffered(unittest.TestCase):
 
     def test_product_continuously_offered(self):

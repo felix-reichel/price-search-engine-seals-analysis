@@ -5,6 +5,7 @@ import polars as pl
 from impl.static import filter_continuously_offered_products
 
 
+@DeprecationWarning
 class TestFilterContinuouslyOfferedProducts(unittest.TestCase):
 
     def setUp(self):
