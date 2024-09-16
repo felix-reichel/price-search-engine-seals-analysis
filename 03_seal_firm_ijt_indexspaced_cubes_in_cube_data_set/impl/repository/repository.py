@@ -31,6 +31,7 @@ class ProductRepository:
         """
         query = QueryBuilder(ANGEBOTE_TABLE_NAME) \
             .select('haendler_bez') \
+            .distinct() \
             .where(f"produkt_id = '{product_id}'") \
             .where(f"dtimebegin <= {seal_date_unix} AND dtimeend >= {seal_date_unix}") \
             .build()
@@ -72,8 +73,11 @@ class ProductRepository:
         """
         Fetch products available in a given time window for a firm.
         """
+        # TODO: Assert valid observation_start_unix, observation_end_unix
+
         query = QueryBuilder(ANGEBOTE_TABLE_NAME) \
             .select('produkt_id') \
+            .distinct() \
             .where(f"haendler_bez = '{haendler_bez}'") \
             .where(f"dtimebegin <= {observation_end_unix} AND dtimeend >= {observation_start_unix}") \
             .build()

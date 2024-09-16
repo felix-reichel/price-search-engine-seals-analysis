@@ -1,6 +1,6 @@
 from tqdm import tqdm
 import os
-from CONFIG import ANGEBOTE_SCHEME, PARQUE_FILES_DIR, ANGEBOTE_FOLDER
+from CONFIG import ANGEBOTE_SCHEME, PARQUET_FILES_DIR, ANGEBOTE_FOLDER
 from impl.main import get_week_year_from_seal_date, generate_weeks_around_seal
 from impl.db.query_builder import QueryBuilder
 from impl.db.duckdb_data_source import DuckDBDataSource
@@ -26,7 +26,7 @@ def load_relevant_angebot_data(db: DuckDBDataSource,
     with tqdm(total=total_files, desc="Loading Angebot Data", unit="file", ncols=100) as pbar:
         for week in relevant_weeks:
             file_name = ANGEBOTE_SCHEME.format(year=seal_year, week=f"{week:02d}")
-            file_path = PARQUE_FILES_DIR / file_name
+            file_path = PARQUET_FILES_DIR / file_name
 
             if os.path.isfile(file_path):
                 if not table_created:
@@ -66,7 +66,7 @@ def load_relevant_angebot_data_v2(db, seal_date, allowed_firms):
 
     for week in relevant_weeks:
         file_name = ANGEBOTE_SCHEME.format(year=seal_year, week=f"{week:02d}")
-        file_path = PARQUE_FILES_DIR / ANGEBOTE_FOLDER / file_name
+        file_path = PARQUET_FILES_DIR / ANGEBOTE_FOLDER / file_name
 
         if os.path.isfile(file_path):
             logger.info(f"Loading Angebot data from {file_path}")

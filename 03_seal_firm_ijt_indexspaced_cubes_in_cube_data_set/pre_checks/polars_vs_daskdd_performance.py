@@ -2,11 +2,11 @@ import os
 import time
 import dask.dataframe as dd
 import polars as pl
-from CONFIG import PARQUE_FILES_DIR, ANGEBOTE_FOLDER
+from CONFIG import PARQUET_FILES_DIR, ANGEBOTE_FOLDER
 
 
 def get_file_paths(folder):
-    folder_path = PARQUE_FILES_DIR / folder
+    folder_path = PARQUET_FILES_DIR / folder
     return [str(folder_path / f) for f in os.listdir(folder_path) if f.endswith(".parquet")]
 
 

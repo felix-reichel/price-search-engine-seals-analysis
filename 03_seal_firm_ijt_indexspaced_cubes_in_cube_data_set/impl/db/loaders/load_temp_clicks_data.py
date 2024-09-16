@@ -1,5 +1,5 @@
 from tqdm import tqdm
-from CONFIG import CLICKS_SCHEME, PARQUE_FILES_DIR, CLICKS_FOLDER
+from CONFIG import CLICKS_SCHEME, PARQUET_FILES_DIR, CLICKS_FOLDER
 from impl.main import get_year_month_from_seal_date, generate_months_around_seal
 from impl.db.query_builder import QueryBuilder
 from impl.db.duckdb_data_source import DuckDBDataSource
@@ -25,7 +25,7 @@ def load_relevant_click_data(
     with tqdm(total=total_files, desc="Loading Click Data", unit="file", ncols=100) as pbar:
         for month in relevant_months:
             file_name = CLICKS_SCHEME.format(year=seal_year, month=f"{month:02d}")
-            file_path = PARQUE_FILES_DIR / file_name
+            file_path = PARQUET_FILES_DIR / file_name
 
             if os.path.isfile(file_path):
                 if not table_created:
@@ -60,7 +60,7 @@ def load_relevant_click_data_v2(db, seal_date):
 
     for month in relevant_months:
         file_name = CLICKS_SCHEME.format(year=seal_year, month=f"{month:02d}")
-        file_path = PARQUE_FILES_DIR / CLICKS_FOLDER / file_name
+        file_path = PARQUET_FILES_DIR / CLICKS_FOLDER / file_name
 
         if os.path.isfile(file_path):
             logger.info(f"Loading Clicks data from {file_path}")

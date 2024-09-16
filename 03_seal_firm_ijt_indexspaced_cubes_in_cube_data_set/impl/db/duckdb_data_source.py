@@ -9,11 +9,12 @@ logger = logging.getLogger(__name__)
 
 class DuckDBDataSource:
     def __init__(self,
-                 db_path=':memory:',
-                 threads=32):
-        self.conn = duckdb.connect(db_path, config={'threads': 32})
-        self.set_threads(threads)
+                 db_path='localduck.db',  # ':memory:'
+                 threads=CONFIG.THREADS):
+        self.conn = duckdb.connect(db_path, config={'threads': threads})
+        # self.set_threads(threads)
 
+    """
     def set_threads(self,
                     threads):
 
@@ -21,6 +22,7 @@ class DuckDBDataSource:
         logger.info(f"Setting DuckDB to use {threads} threads.")
         # set via PRAGMA threads
         self.conn.execute(f"PRAGMA threads={threads}")
+    """
 
     def load_csv_to_table(self,
                           csv_path,

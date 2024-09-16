@@ -19,8 +19,8 @@ def load_data():
     filtered_haendler_bez = pl.read_csv(FILTERED_HAENDLER_BEZ)
 
     # Load Parquet files with necessary columns using Polars
-    products_df = pl.read_parquet(PARQUE_FILES_DIR / 'produkt.parquet', columns=['produkt_id'])
-    retailers_df = pl.read_parquet(PARQUE_FILES_DIR / 'haendler.parquet', columns=['haendler_bez'])
+    products_df = pl.read_parquet(PARQUET_FILES_DIR / 'produkt.parquet', columns=['produkt_id'])
+    retailers_df = pl.read_parquet(PARQUET_FILES_DIR / 'haendler.parquet', columns=['haendler_bez'])
 
     logger.info("Data loaded successfully.")
     return seal_change_firms, filtered_haendler_bez, products_df, retailers_df

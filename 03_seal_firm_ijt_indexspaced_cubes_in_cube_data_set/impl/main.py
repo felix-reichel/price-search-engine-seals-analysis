@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 import CONFIG
 from CONFIG import (
-    PARQUE_FILES_DIR, CLICKS_FOLDER, ANGEBOTE_FOLDER, SPAWN_MAX_MAIN_PROCESSES_AMOUNT
+    PARQUET_FILES_DIR, CLICKS_FOLDER, ANGEBOTE_FOLDER, SPAWN_MAX_MAIN_PROCESSES_AMOUNT
 )
 from impl.helpers import get_week_year_from_seal_date, generate_weeks_around_seal, file_exists_in_folders, \
     get_year_month_from_seal_date, generate_months_around_seal
@@ -81,7 +81,7 @@ def load_relevant_click_data(seal_date):
     df_list = []
 
     for file_name in relevant_files:
-        file_path = os.path.join(PARQUE_FILES_DIR, CLICKS_FOLDER, file_name)
+        file_path = os.path.join(PARQUET_FILES_DIR, CLICKS_FOLDER, file_name)
         if os.path.isfile(file_path):
             df = pl.read_parquet(
                 file_path,

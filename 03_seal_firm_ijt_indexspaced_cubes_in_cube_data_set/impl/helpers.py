@@ -6,7 +6,7 @@ from functools import lru_cache
 from dateutil.relativedelta import relativedelta
 
 from CONFIG import UNIX_TIME_ORIGIN, UNIX_WEEK, ANGEBOTE_SCHEME, CLICKS_SCHEME, \
-    OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED, PARQUE_FILES_DIR, \
+    OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED, PARQUET_FILES_DIR, \
     OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_POST_SEAL_CONSIDERED
 
 logger = logging.getLogger(__name__)
@@ -54,7 +54,7 @@ def generate_months_range(start_year, end_year):
 
 def file_exists_in_folders(file_name, folders):
     for folder in folders:
-        file_path = os.path.join(PARQUE_FILES_DIR, folder, file_name)
+        file_path = os.path.join(PARQUET_FILES_DIR, folder, file_name)
         if os.path.isfile(file_path):
             return file_path
     return None

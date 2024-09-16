@@ -1,4 +1,8 @@
+# CONFIG.py
 from pathlib import Path
+
+# THREADS = 200
+THREADS = 8
 
 # DEFINITION OF GLOBAL CONSTANTS #
 
@@ -83,8 +87,8 @@ MAX_DAYS_ANGEBOT_MISSING_WITHIN_WEEK = 0  # 0 = "Durchgehend angeboten", product
 CSV_DELIM_STYLE = ","
 
 # GLOBAL FILE PATHS
-# PARQUE_FILES_DIR = Path("/nfn_vwl/geizhals/zieg_pq_db")
-PARQUE_FILES_DIR = Path("../data")
+# PARQUET_FILES_DIR = Path("/nfn_vwl/geizhals/zieg_pq_db")
+PARQUET_FILES_DIR = Path("../data")
 
 # SINGLE FILE PATHS
 
@@ -163,3 +167,48 @@ PRODUCTS = 'produkt.parquet'
 
 # SCRAPER IPs (Contains 68 IP MD5 hashes)
 SCRAPPER_IPS = 'scrapper_ips.parquet'
+
+# Versand (Shipping) Folders
+VERSAND_11_15_FOLDER = "/versand_11_15"
+VERSAND_06_10_FOLDER = "/versand_06_10"
+VERSAND_FOLDER = "/versand"
+
+# Verfügbarkeit (Availability) Folders
+VERFUEGBARKEIT_11_15_FOLDER = "/verfuegbarkeit_11_15"
+VERFUEGBARKEIT_FOLDER = "/verfuegbarkeit"
+
+# Product Specs Folders
+PROD_SPECS_SSC_FOLDER = "/prod_specs_ssc"
+PROD_SPECS_SC_FOLDER = "/prod_specs_sc"
+PROD_SPECS_CAT_FOLDER = "/prod_specs_cat"
+
+# Lookups Folder
+LOOKUPS_FOLDER = "/lookups"
+
+# LCT Cluster Folder
+LCT_CLUSTER_FOLDER = "/lct_cluster"
+
+# Category Folder
+KATEGORIE_FOLDER = "/kategorie"
+
+# Angebot Folders
+ANGEBOT_11_15_FOLDER = "/angebot_11_15"
+ANGEBOT_06_10_FOLDER = "/angebot_06_10"
+ANGEBOT_FOLDER = "/angebot"
+
+# Abfrage (Queries) Folders
+ABFRAGE_PRODUKT_BEW_FOLDER = "/abfrage_produkt_bew"
+ABFRAGE_HAENDLER_BEW_FOLDER = "/abfrage_haendler_bew"
+ABFRAGE_FILTER_FOLDER = "/abfrage_filter"
+
+# Additional Files
+SSC_SC_CATS_FILE = "/ssc_sc_cats.parquet"
+SCRAPPER_IPS_FILE = "/scrapper_ips.parquet"
+PRODUKTBEWERTUNG_FILE = "/produktbewertung.parquet"
+PRODUKT_FILE = "/produkt.parquet"
+PRODUKT_SPECS_COUNT_FILE = "/produkt_specs_count.parquet"
+PRODUKT_MARKEN_FILE = "/produkt_marken.parquet"
+MARKEN_FILE = "/marken.parquet"
+HAENDLERBEWERTUNG_FILE = "/haendlerbewertung.parquet"
+DAILY_HBEW_FILE = "/daily_hbew.parquet"
+CONTINUING_OFFERS_FILE = "/continuing_offers.parquet"
