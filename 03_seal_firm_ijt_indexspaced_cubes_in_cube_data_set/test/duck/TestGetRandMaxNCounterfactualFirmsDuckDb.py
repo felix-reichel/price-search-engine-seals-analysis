@@ -1,9 +1,9 @@
 import unittest
 import datetime as dt
 from unittest.mock import patch
-from impl.db.duckdb_data_source import DuckDBDataSource
-from impl.repository.repository import ProductRepository
-from impl.service.service import ProductService
+from impl.db.datasource import DuckDBDataSource
+from impl.repository.OffersRepository import OffersRepository
+from impl.service.OffersService import OffersService
 
 
 class TestGetRandMaxNCounterfactualFirmsDuckDb(unittest.TestCase):
@@ -65,8 +65,8 @@ class TestGetRandMaxNCounterfactualFirmsDuckDb(unittest.TestCase):
         ]
 
         # Instantiate repository and service
-        self.repository = ProductRepository(self.db)
-        self.service = ProductService(self.repository)
+        self.repository = OffersRepository(self.db)
+        self.service = OffersService(self.repository)
 
         # Expected firms
         self.expected_firms = set(self.allowed_firms)

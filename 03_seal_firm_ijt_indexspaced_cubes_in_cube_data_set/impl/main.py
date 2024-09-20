@@ -53,7 +53,9 @@ def calculate_running_var_t_from_u_cached(unix_time):
 
 def load_relevant_angebot_data(seal_date, allowed_firms):
     seal_year, seal_week = get_week_year_from_seal_date(seal_date)
-    relevant_files = generate_weeks_around_seal(seal_year, seal_week)
+    relevant_files = generate_weeks_around_seal(seal_year, seal_week,
+                                                CONFIG.OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED,
+                                                CONFIG.OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_POST_SEAL_CONSIDERED)
     df_list = []
 
     for file_name in relevant_files:

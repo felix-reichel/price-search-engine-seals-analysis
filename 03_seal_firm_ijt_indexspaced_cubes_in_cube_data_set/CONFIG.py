@@ -1,10 +1,13 @@
 # CONFIG.py
+from multiprocessing import cpu_count
 from pathlib import Path
 
-# THREADS = 200
-THREADS = 8
-
 # DEFINITION OF GLOBAL CONSTANTS #
+
+# THREADS = 200
+DUCKDB_PATH = 'sealchangefirms_duck.db'
+DUCKDB_THREADS = 8
+
 
 # Processors
 SPAWN_MAX_MAIN_PROCESSES_AMOUNT = 10
@@ -84,19 +87,22 @@ MAX_WEEKS_BEFORE_AFTER_PRODUCT_ANGEBOTEN_MISSING_ALLOWED_AMOUNT = 1  # 1 week mi
 MAX_DAYS_ANGEBOT_MISSING_WITHIN_WEEK = 0  # 0 = "Durchgehend angeboten", product must have an offer each day in a week
 
 # FILES
-CSV_DELIM_STYLE = ","
+CSV_IMPORT_DELIM_STYLE = ";"
+CSV_OUTPUT_DELIM_STYLE = ","
+
+SEAL_CHANGE_DATE_PATTERN = '%d.%m.%Y'
 
 # GLOBAL FILE PATHS
 # PARQUET_FILES_DIR = Path("/nfn_vwl/geizhals/zieg_pq_db")
-PARQUET_FILES_DIR = Path("../data")
+PARQUET_FILES_DIR = Path("./data")
 
 # SINGLE FILE PATHS
 
 # FILTERED HAENDLER BEZ (see project FR-01, refer to filtered_haendler_bez.csv)
-FILTERED_HAENDLER_BEZ = '../data/filtered_haendler_bez.csv'  # Contains j ∈ { J_G, J_C }
+FILTERED_HAENDLER_BEZ = './data/filtered_haendler_bez.csv'  # Contains j ∈ { J_G, J_C }
 
 # SEAL CHANGE FIRMS J_G, seal change data t_sealchange, and seal provider names
-SEAL_CHANGE_FIRMS = '../data/final_matrix.csv'  # Contains j ∈ { J_G } in the column RESULTING MATCH
+SEAL_CHANGE_FIRMS = './data/final_matrix.csv'  # Contains j ∈ { J_G } in the column RESULTING MATCH
 # and t_seal_change in the column Guetesiegel First Date in the format of 12.07.2007 until row 255
 # the seal provider is in the first column
 

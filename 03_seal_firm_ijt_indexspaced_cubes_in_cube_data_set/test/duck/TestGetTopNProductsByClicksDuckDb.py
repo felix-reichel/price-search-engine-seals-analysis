@@ -1,9 +1,9 @@
 import datetime as dt
 import unittest
 
-from impl.db.duckdb_data_source import DuckDBDataSource
-from impl.repository.repository import ProductRepository
-from impl.service.service import ProductService
+from impl.db.datasource import DuckDBDataSource
+from impl.repository.ClicksRepository import ClicksRepository
+from impl.service.ClicksService import ClicksService
 
 
 class TestGetTopNProductsByClicksDuckDb(unittest.TestCase):
@@ -48,8 +48,8 @@ class TestGetTopNProductsByClicksDuckDb(unittest.TestCase):
         self.db.conn.executemany("INSERT INTO clicks VALUES (?, ?, ?)", clicks_data)
 
         # Instantiate repository and service
-        self.repository = ProductRepository(self.db)
-        self.service = ProductService(self.repository)
+        self.repository = ClicksRepository(self.db)
+        self.service = ClicksService(self.repository)
 
     def tearDown(self):
         # Close the DuckDB connection after each test

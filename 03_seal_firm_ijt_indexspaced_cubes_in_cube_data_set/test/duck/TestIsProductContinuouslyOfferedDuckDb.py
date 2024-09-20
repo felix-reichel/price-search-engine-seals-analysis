@@ -1,8 +1,8 @@
 import unittest
 import datetime as dt
-from impl.db.duckdb_data_source import DuckDBDataSource
-from impl.repository.repository import ProductRepository
-from impl.service.service import ProductService
+from impl.db.datasource import DuckDBDataSource
+from impl.repository.OffersRepository import OffersRepository
+from impl.service.OffersService import OffersService
 
 
 class TestIsProductContinuouslyOfferedDuckDb(unittest.TestCase):
@@ -20,8 +20,8 @@ class TestIsProductContinuouslyOfferedDuckDb(unittest.TestCase):
         """)
 
         # Instantiate repository and service
-        self.repository = ProductRepository(self.db)
-        self.service = ProductService(self.repository)
+        self.repository = OffersRepository(self.db)
+        self.service = OffersService(self.repository)
 
     def tearDown(self):
         # Close the DuckDB connection after each test

@@ -1,8 +1,8 @@
 import unittest
 import datetime as dt
-from impl.db.duckdb_data_source import DuckDBDataSource
-from impl.repository.repository import ProductRepository
-from impl.service.service import ProductService
+from impl.db.datasource import DuckDBDataSource
+from impl.repository.OffersRepository import OffersRepository
+from impl.service.OffersService import OffersService
 from impl.static import calculate_running_var_t_from_u
 
 
@@ -31,8 +31,8 @@ class TestGetOfferedWeeksDuckDb(unittest.TestCase):
         self.db.conn.executemany("INSERT INTO angebot VALUES (?, ?, ?, ?)", angebot_data)
 
         # Instantiate repository and service
-        self.repository = ProductRepository(self.db)
-        self.service = ProductService(self.repository)
+        self.repository = OffersRepository(self.db)
+        self.service = OffersService(self.repository)
 
     def tearDown(self):
         # Close the DuckDB connection after each test

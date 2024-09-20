@@ -1,8 +1,9 @@
 import unittest
 import datetime as dt
-from impl.db.duckdb_data_source import DuckDBDataSource
-from impl.service.service import ProductService
-from impl.repository.repository import ProductRepository
+import polars as pl
+from impl.db.datasource import DuckDBDataSource
+from impl.service.OffersService import OffersService
+from impl.repository.OffersRepository import OffersRepository
 
 
 class TestFilterContinuouslyOfferedProductsDuckDb(unittest.TestCase):
@@ -58,8 +59,8 @@ class TestFilterContinuouslyOfferedProductsDuckDb(unittest.TestCase):
         self.db.conn.executemany("INSERT INTO angebot VALUES (?, ?, ?, ?)", angebot_data)
 
         # Instantiate the repository and service
-        self.repository = ProductRepository(self.db)
-        self.service = ProductService(self.repository)
+        self.repository = OffersRepository(self.db)
+        self.service = OffersService(self.repository)
 
     def tearDown(self):
         # Close the DuckDB connection after each test
