@@ -16,7 +16,7 @@ from impl.service.OffersService import OffersService
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
-    filename='process_log.log',
+    filename='01_calculate_index_space.log',
     filemode='w'
 )
 

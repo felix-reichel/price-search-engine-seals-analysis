@@ -6,7 +6,7 @@ from impl.loaders.init_db import DatabaseInitializer
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
-    filename='process_log.log',
+    filename='00_init_db.log',
     filemode='w'
 )
 

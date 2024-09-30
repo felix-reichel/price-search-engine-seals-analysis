@@ -12,9 +12,5 @@ class BaseRepository:
         self.db_source = db_source
         self.table_name = table_name
 
-    def add_data(self,
-                 data: pl.DataFrame):
-        self.db_source.insert_df(self.table_name, data)
-
     def fetch_all(self) -> pl.DataFrame:
         raise NotImplementedError()
