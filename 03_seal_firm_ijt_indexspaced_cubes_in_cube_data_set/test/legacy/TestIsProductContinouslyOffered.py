@@ -1,6 +1,8 @@
-import unittest
 import datetime as dt
+import unittest
+
 import polars as pl
+
 from impl.static import is_product_continuously_offered
 
 

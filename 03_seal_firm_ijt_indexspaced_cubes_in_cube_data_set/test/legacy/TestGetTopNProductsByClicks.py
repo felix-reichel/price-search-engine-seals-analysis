@@ -1,7 +1,9 @@
+import datetime as dt
 import unittest
 from unittest.mock import MagicMock
-import datetime as dt
+
 import polars as pl
+
 from impl.static import get_top_n_products_by_clicks
 
 

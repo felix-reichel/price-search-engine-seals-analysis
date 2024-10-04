@@ -1,5 +1,6 @@
-import unittest
 import datetime as dt
+import unittest
+
 import polars as pl
 
 from impl.static import filter_continuously_offered_products

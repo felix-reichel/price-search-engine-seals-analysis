@@ -1,16 +1,15 @@
-import unittest
 import datetime as dt
-import polars as pl
-from impl.db.datasource import DuckDBDataSource
-from impl.service.OffersService import OffersService
-from impl.repository.OffersRepository import OffersRepository
+import unittest
+
+from ..base.DuckDbBaseTest import DuckDbBaseTest
+from impl.repository.offers_repository import OffersRepository
+from impl.service.offers_service import OffersService
 
 
-class TestFilterContinuouslyOfferedProductsDuckDb(unittest.TestCase):
+class TestFilterContinuouslyOfferedProductsDuckDb(DuckDbBaseTest):
 
     def setUp(self):
-        # Setup DuckDB connection and create the 'angebot' table
-        self.db = DuckDBDataSource(db_path=':memory:')
+        super().setUp()
         self.db.conn.execute("""
             CREATE TABLE angebot (
                 produkt_id STRING,
@@ -61,10 +60,6 @@ class TestFilterContinuouslyOfferedProductsDuckDb(unittest.TestCase):
         # Instantiate the repository and service
         self.repository = OffersRepository(self.db)
         self.service = OffersService(self.repository)
-
-    def tearDown(self):
-        # Close the DuckDB connection after each test
-        self.db.close()
 
     def test_filter_continuously_offered_products(self):
         # Expected to pass for product1 and product2, fail for product3

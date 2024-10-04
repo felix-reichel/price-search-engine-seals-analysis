@@ -1,15 +1,10 @@
 import logging
 
 from impl.db.datasource import DuckDBDataSource
-from impl.loaders.init_db import DatabaseInitializer
+from impl.db.loaders.init_db import DatabaseInitializer
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    filename='00_init_db.log',
-    filemode='w'
-)
-
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', filename='00_init_db.log',
+                    filemode='w')
 logger = logging.getLogger(__name__)
 
 if __name__ == '__main__':

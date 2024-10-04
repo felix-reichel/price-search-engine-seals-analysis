@@ -1,16 +1,16 @@
-import unittest
 import datetime as dt
-from impl.db.datasource import DuckDBDataSource
-from impl.repository.OffersRepository import OffersRepository
-from impl.service.OffersService import OffersService
-from impl.static import calculate_running_var_t_from_u
+import unittest
+
+from ..base.DuckDbBaseTest import DuckDbBaseTest
+from impl.helpers import calculate_running_var_t_from_u
+from impl.repository.offers_repository import OffersRepository
+from impl.service.offers_service import OffersService
 
 
-class TestGetOfferedWeeksDuckDb(unittest.TestCase):
+class TestGetOfferedWeeksDuckDb(DuckDbBaseTest):
 
     def setUp(self):
-        # Setup DuckDB connection and create the 'angebot' table
-        self.db = DuckDBDataSource(db_path=':memory:')
+        super().setUp()
         self.db.conn.execute("""
             CREATE TABLE angebot (
                 produkt_id STRING,
@@ -33,10 +33,6 @@ class TestGetOfferedWeeksDuckDb(unittest.TestCase):
         # Instantiate repository and service
         self.repository = OffersRepository(self.db)
         self.service = OffersService(self.repository)
-
-    def tearDown(self):
-        # Close the DuckDB connection after each test
-        self.db.close()
 
     def test_get_offered_weeks_within_observation_window(self):
         prod_id = 'P1'

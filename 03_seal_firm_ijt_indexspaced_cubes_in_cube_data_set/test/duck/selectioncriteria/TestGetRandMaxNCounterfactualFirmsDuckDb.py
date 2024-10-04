@@ -1,16 +1,16 @@
-import unittest
 import datetime as dt
+import unittest
 from unittest.mock import patch
-from impl.db.datasource import DuckDBDataSource
-from impl.repository.OffersRepository import OffersRepository
-from impl.service.OffersService import OffersService
+
+from ..base.DuckDbBaseTest import DuckDbBaseTest
+from impl.repository.offers_repository import OffersRepository
+from impl.service.offers_service import OffersService
 
 
-class TestGetRandMaxNCounterfactualFirmsDuckDb(unittest.TestCase):
+class TestGetRandMaxNCounterfactualFirmsDuckDb(DuckDbBaseTest):
 
     def setUp(self):
-        # Setup DuckDB connection and create the 'angebot' table
-        self.db = DuckDBDataSource(db_path=':memory:')
+        super().setUp()
         self.db.conn.execute("""
             CREATE TABLE angebot (
                 produkt_id STRING,
@@ -70,10 +70,6 @@ class TestGetRandMaxNCounterfactualFirmsDuckDb(unittest.TestCase):
 
         # Expected firms
         self.expected_firms = set(self.allowed_firms)
-
-    def tearDown(self):
-        # Close the DuckDB connection after each test
-        self.db.close()
 
     def assert_firms_are_valid(self, result):
         """

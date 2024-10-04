@@ -1,16 +1,15 @@
 import datetime as dt
 import unittest
 
-from impl.db.datasource import DuckDBDataSource
-from impl.repository.ClicksRepository import ClicksRepository
-from impl.service.ClicksService import ClicksService
+from ..base.DuckDbBaseTest import DuckDbBaseTest
+from impl.repository.clicks_repository import ClicksRepository
+from impl.service.clicks_service import ClicksService
 
 
-class TestGetTopNProductsByClicksDuckDb(unittest.TestCase):
+class TestGetTopNProductsByClicksDuckDb(DuckDbBaseTest):
 
     def setUp(self):
-        # Setup DuckDB connection and create the 'clicks' table
-        self.db = DuckDBDataSource(db_path=':memory:')
+        super().setUp()
         self.db.conn.execute("""
             CREATE TABLE clicks (
                 haendler_bez STRING,
@@ -50,10 +49,6 @@ class TestGetTopNProductsByClicksDuckDb(unittest.TestCase):
         # Instantiate repository and service
         self.repository = ClicksRepository(self.db)
         self.service = ClicksService(self.repository)
-
-    def tearDown(self):
-        # Close the DuckDB connection after each test
-        self.db.close()
 
     def test_get_top_products_by_clicks_firm1(self):
         actual_top_products = self.service.get_top_n_products_by_clicks(

@@ -46,11 +46,13 @@ CLICKS_DTYPE = {
 }
 
 
+@PendingDeprecationWarning
 @lru_cache(maxsize=None)
 def calculate_running_var_t_from_u_cached(unix_time):
     return calculate_running_var_t_from_u(unix_time)
 
 
+@PendingDeprecationWarning
 def load_relevant_angebot_data(seal_date, allowed_firms):
     seal_year, seal_week = get_week_year_from_seal_date(seal_date)
     relevant_files = generate_weeks_around_seal(seal_year, seal_week,
@@ -77,6 +79,7 @@ def load_relevant_angebot_data(seal_date, allowed_firms):
     return angebot_data_filtered
 
 
+@PendingDeprecationWarning
 def load_relevant_click_data(seal_date):
     seal_year, seal_month = get_year_month_from_seal_date(seal_date)
     relevant_files = generate_months_around_seal(seal_year, seal_month)
@@ -99,6 +102,7 @@ def load_relevant_click_data(seal_date):
     return pl.concat(df_list)
 
 
+@PendingDeprecationWarning
 def process_main_firm_single_product(product, geizhals_id, seal_date, angebot_data):
     main_product_results = [{
         'produkt_id': product,
@@ -120,6 +124,7 @@ def process_main_firm_single_product(product, geizhals_id, seal_date, angebot_da
     return main_product_results
 
 
+@PendingDeprecationWarning
 def process_counterfactual_firm_single_product(product, counterfactual_firm, seal_date, angebot_data):
     counterfactual_results = [{
         'produkt_id': product,
@@ -141,6 +146,7 @@ def process_counterfactual_firm_single_product(product, counterfactual_firm, sea
     return counterfactual_results
 
 
+@PendingDeprecationWarning
 def gather_tasks_for_product(product, seal_date, angebot_data, seal_firms, geizhals_id, allowed_firms):
     tasks = [(product, geizhals_id, seal_date, angebot_data, True)]
     counterfactual_firms = get_rand_max_N_counterfactual_firms(
@@ -153,6 +159,7 @@ def gather_tasks_for_product(product, seal_date, angebot_data, seal_firms, geizh
     return tasks
 
 
+@PendingDeprecationWarning
 def process_task(args):
     product, firm, seal_date, angebot_data, is_main_firm = args
     if is_main_firm:
@@ -161,6 +168,7 @@ def process_task(args):
         return process_counterfactual_firm_single_product(product, firm, seal_date, angebot_data)
 
 
+@PendingDeprecationWarning
 def process_seal_firm(seal_firm_data, result_counter):
     (
         haendler_bez, geizhals_id, seal_date, seal_firms,
@@ -218,6 +226,7 @@ def process_seal_firm(seal_firm_data, result_counter):
     return True
 
 
+@PendingDeprecationWarning
 def main(parallel=False):
     logger.info("Starting main process.")
 
@@ -272,4 +281,4 @@ def main(parallel=False):
 
 
 if __name__ == '__main__':
-    main(parallel=False)  # Set parallel=True to enable parallel processing
+    pass

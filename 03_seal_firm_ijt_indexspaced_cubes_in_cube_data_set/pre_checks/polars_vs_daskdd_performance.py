@@ -1,7 +1,9 @@
 import os
 import time
+
 import dask.dataframe as dd
 import polars as pl
+
 from CONFIG import PARQUET_FILES_DIR, ANGEBOTE_FOLDER
 
 

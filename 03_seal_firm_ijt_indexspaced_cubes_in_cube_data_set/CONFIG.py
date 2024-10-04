@@ -1,17 +1,19 @@
 # CONFIG.py
-from multiprocessing import cpu_count
+import os
 from pathlib import Path
 
+import psutil
+
 # DEFINITION OF GLOBAL CONSTANTS #
+# First gets the upper bound from env var vs. logical then gets the lower bound constrained.
+NCPUS = min(max(int(os.getenv("NCPUS", os.cpu_count())), psutil.cpu_count(logical=True)), 120)
+MAX_CPU_USAGE_PERCENTAGE = 0.7
 
-# TODO: Get NCPUS from Env instead...
-# THREADS = 200
 DUCKDB_PATH = ':memory:'
-MAX_DUCKDB_THREADS = 20     # SCap 32 test - 8 py - 4 buffer
-
+MAX_DUCKDB_THREADS = min(20, int(NCPUS * MAX_CPU_USAGE_PERCENTAGE))  # SCap 32 test - 8 py - 4 buffer
 
 # Processors
-SPAWN_MAX_MAIN_PROCESSES_AMOUNT = 10
+SPAWN_MAX_MAIN_PROCESSES_AMOUNT = 8
 
 # Loaders
 OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED = 52
@@ -21,7 +23,7 @@ OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_POST_SEAL_CONSIDERED = 26
 RANDOM_SAMPLER_DETERMINISTIC_SEED = 42
 
 # Sampler Params
-RANDOM_PRODUCTS_AMOUNTS = 50 # 50 previously doesn't return any valid prods for firm 1
+RANDOM_PRODUCTS_AMOUNTS = 50  # 50 previously doesn't return any valid prods for firm 1
 RANDOM_COUNTERFACTUAL_FIRMS_AMOUNT = 10  # + 1 from the firm looking
 
 # Params
@@ -60,22 +62,18 @@ FORBIDDEN_RETAILER_KEYWORDS = [
 ]
 
 # UNIX TIME ORIGIN u0 from which the running variable t populates
-
 # A feasible time origin might be the first Unix time of all retailers or products.
 # The time origin of products according to produkt.parquet is 1145814095 (Sun Apr 23 2006 17:41:35 GMT+0000).
 # The time origin of haendler is 1179027421 (Sun May 13 2007 03:37:01 GMT+0000).
 # Therefore, Seal Changes approx. >= July 2007 are relevant.
-
 # UNIX_TIME_ORIGIN (Mon May 14 2007 00:00:00 GMT+0200)
 UNIX_TIME_ORIGIN = 1179093600
 
 UNIX_TIME_ORIGIN_FIRST_WEEK_WEDNESDAY = UNIX_TIME_ORIGIN + UNIX_WEDNESDAY_MIDDAY_INTERCEPT
-
 # UNIX_TIME_ORIGIN + t=8 weeks
 UNIX_TIME_ORIGIN_T8_INTERCEPT = UNIX_TIME_ORIGIN + 8 * UNIX_WEEK
 
 # UNIX TIME COLLAPSE u1 until the running variable t populates
-
 # Because we observe seal changes (S) of firms until 2022, and we want to look 1 year after,
 # the Unix time runs until the end of 2023, which yields:
 # Sun Dec 31 2023 00:00:00 GMT+0100
@@ -107,7 +105,7 @@ SEAL_CHANGE_FIRMS = './data/final_matrix.csv'  # Contains j ∈ { J_G } in the c
 # and t_seal_change in the column Guetesiegel First Date in the format of 12.07.2007 until row 255
 # the seal provider is in the first column
 
-# ANGEBOTE FOLDER
+# ANGEBOTE FOLDERS
 ANGEBOTE_FOLDER_1 = "angebot_06_10"
 ANGEBOTE_FOLDER_2 = "angebot_11_15"
 ANGEBOTE_FOLDER_3 = "angebot"
@@ -132,13 +130,10 @@ ANGEBOTE_FOLDER = [ANGEBOTE_FOLDER_1, ANGEBOTE_FOLDER_2, ANGEBOTE_FOLDER_3]
 # CLICKS FOLDER
 CLICKS_FOLDER = "clicks"
 
-# SINGLE FILES
-
 # ANGEBOT FILE PATHS SCHEME
 # Where:
 # {year} has always 4 digits
 # {week} has always 2 digits
-
 # Starting from 2006w16 up to 2023w43
 # but we need only:
 # w can go until 50, 51, 52, 53 (business year)

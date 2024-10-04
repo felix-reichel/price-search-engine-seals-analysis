@@ -1,6 +1,8 @@
 import glob
 import logging
+
 from tqdm import tqdm
+
 from impl.db.datasource import DuckDBDataSource
 from impl.db.querybuilder import QueryBuilder
 
@@ -21,7 +23,7 @@ click_file_pattern = [
 def initialize_tables(
         db: DuckDBDataSource
 ):
-    db.query(
+    db.queryAsPl(
         """
         CREATE TABLE IF NOT EXISTS angebot (
             produkt_id BIGINT,
@@ -31,7 +33,7 @@ def initialize_tables(
         );
         """
     )
-    db.query(
+    db.queryAsPl(
         """
         CREATE TABLE IF NOT EXISTS clicks (
             produkt_id BIGINT,
@@ -75,7 +77,7 @@ def import_angebot_data(
                 )
                 .insert_into('angebot')
             )
-            db.query(insert_query)
+            db.queryAsPl(insert_query)
             progress_bar.update(1)
 
 
@@ -101,7 +103,7 @@ def import_click_data(
             )
             .insert_into('clicks')
         )
-        db.query(insert_query)
+        db.queryAsPl(insert_query)
 
 
 def load_data(
@@ -123,7 +125,7 @@ def check_table_record_count(
 ):
     logger.info(f"Checking {table_label} table record count.")
     count_query = QueryBuilder(table_name).select("COUNT(*) AS count").build()
-    result = db.query(count_query)
+    result = db.queryAsPl(count_query)
     logger.info(f"{table_label} table record count: {result.iloc[0]['count']}")
 
 

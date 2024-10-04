@@ -1,10 +1,10 @@
 import unittest
+from tempfile import NamedTemporaryFile
 
-import pytest
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
-from tempfile import NamedTemporaryFile
+import pytest
 
 from impl.calc.VariableCalculator import VariableCalculator, \
     mean_computation, sum_computation

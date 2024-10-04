@@ -1,6 +1,6 @@
+import datetime as dt
 import unittest
 
-import datetime as dt
 import polars as pl
 
 from impl.static import get_offered_weeks, calculate_running_var_t_from_u

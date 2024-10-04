@@ -1,6 +1,7 @@
+from multiprocessing import Pool, cpu_count
+
 import pandas as pd
 import pyarrow.parquet as pq
-from multiprocessing import Pool, cpu_count
 from tqdm import tqdm
 
 

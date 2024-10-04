@@ -1,6 +1,6 @@
-import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from tqdm import tqdm
 
 filtered_haendler_bez = pd.read_csv('../data/filtered_haendler_bez.csv', sep=';', header=None)

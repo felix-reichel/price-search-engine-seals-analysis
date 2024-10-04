@@ -2,16 +2,15 @@ import datetime as dt
 import unittest
 from unittest.mock import patch
 
-from impl.db.datasource import DuckDBDataSource
-from impl.repository.OffersRepository import OffersRepository
-from impl.service.OffersService import OffersService
+from ..base.DuckDbBaseTest import DuckDbBaseTest
+from impl.repository.offers_repository import OffersRepository
+from impl.service.offers_service import OffersService
 
 
-class TestGetRandomNProductsDeterministic(unittest.TestCase):
+class TestGetRandomNProductsDeterministic(DuckDbBaseTest):
 
     def setUp(self):
-        # Setup DuckDB connection and create tables
-        self.db = DuckDBDataSource(db_path=':memory:')
+        super().setUp()
         self.db.conn.execute("""
             CREATE TABLE angebot (
                 produkt_id STRING,
@@ -45,10 +44,6 @@ class TestGetRandomNProductsDeterministic(unittest.TestCase):
         # Instantiate repository and service
         self.repository = OffersRepository(self.db)
         self.service = OffersService(self.repository)
-
-    def tearDown(self):
-        # Close the DuckDB connection after each test
-        self.db.close()
 
     def test_random_n_products_within_N(self):
         # Test where the number of products within the observation window is greater than or equal to N

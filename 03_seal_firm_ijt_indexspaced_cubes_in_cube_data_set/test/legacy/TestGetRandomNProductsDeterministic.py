@@ -1,7 +1,9 @@
-import unittest
 import datetime as dt
-import polars as pl
+import unittest
 from unittest.mock import patch
+
+import polars as pl
+
 from impl.static import get_random_n_products_deterministic
 
 
