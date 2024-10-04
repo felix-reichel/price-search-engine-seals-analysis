@@ -17,6 +17,7 @@ class OffersRepository():
         self.db_source = db_source
         self.table_name = table_name
 
+    # TODO: Refactor ME
     def fetch_offered_weeks(
             self,
             product_id: str,
@@ -75,7 +76,7 @@ class OffersRepository():
             .select('produkt_id')
             .distinct()
             .where(f"haendler_bez = '{retailer}'")
-            .where(f"dtimebegin <= {observation_end_unix} AND dtimeend >= {observation_start_unix}")
+            .where(f"dtimebegin <= '{observation_end_unix}' AND dtimeend >= '{observation_start_unix}'")
             .build()
         )
         return self.db_source.query(query)

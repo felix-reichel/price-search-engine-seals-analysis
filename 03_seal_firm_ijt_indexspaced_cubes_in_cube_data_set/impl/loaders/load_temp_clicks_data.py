@@ -1,7 +1,7 @@
 from tqdm import tqdm
 import os
 from CONFIG import CLICKS_SCHEME, PARQUET_FILES_DIR, CLICKS_FOLDER
-from impl.main import get_year_month_from_seal_date, generate_months_around_seal
+from impl.helpers import get_year_month_from_seal_date, generate_months_around_seal, file_exists_in_folders
 from impl.db.querybuilder import QueryBuilder
 from impl.db.datasource import DuckDBDataSource
 import logging
@@ -13,7 +13,7 @@ def load_click_data(
         db: DuckDBDataSource,
         seal_date,
         columns=None,
-        table_name='clicks_temp',
+        table_name='clicks',
         parquet_dir=PARQUET_FILES_DIR,
         file_scheme=CLICKS_SCHEME
 ):
@@ -27,10 +27,10 @@ def load_click_data(
 
     with tqdm(total=total_files, desc="Loading Click Data", unit="file", ncols=100) as pbar:
         for month in relevant_months:
-            file_name = file_scheme.format(year=seal_year, month=f"{month:02d}")
-            file_path = parquet_dir / file_name
+            file_name = month
+            file_path = file_exists_in_folders(file_name, CLICKS_FOLDER)
 
-            if os.path.isfile(file_path):
+            if file_path:
                 if not table_created:
                     logger.info(f"Creating table from {file_path}")
                     db.load_parquet_to_table(file_path, table_name, columns=columns)
@@ -42,23 +42,24 @@ def load_click_data(
             pbar.update(1)
 
     if table_created:
-        count_query = QueryBuilder(table_name) \
-            .select('COUNT(*) AS count') \
+        count_query = (
+            QueryBuilder('clicks')
+            .select('COUNT(*) AS total_rows')
+            .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
             .build()
-
-        count_result = db.query(count_query)
-        count = count_result.iloc[0]['count']
-        logger.info(f"Total Click data rows loaded: {count}")
-        return count
+        )
+        result = db.query(count_query)
+        logger.info(f"Total rows in Clicks data: {result[0][0]}")
+        return result[0][0]
     else:
-        logger.warning(f"No relevant Click data found for seal date {seal_date}.")
+        logger.warning(f"No relevant Clicks data found for seal date {seal_date}.")
         return 0
 
 
 def load_click_data_v2(
         db: DuckDBDataSource,
         seal_date,
-        table_name='clicks_temp',
+        table_name='clicks',
         parquet_dir=PARQUET_FILES_DIR,
         file_scheme=CLICKS_SCHEME,
         click_folder=CLICKS_FOLDER

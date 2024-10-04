@@ -3,7 +3,7 @@ import os
 
 import CONFIG
 from CONFIG import ANGEBOTE_SCHEME, PARQUET_FILES_DIR, ANGEBOTE_FOLDER
-from impl.helpers import get_week_year_from_seal_date, generate_weeks_around_seal
+from impl.helpers import get_week_year_from_seal_date, generate_weeks_around_seal, file_exists_in_folders
 from impl.db.querybuilder import QueryBuilder
 from impl.db.datasource import DuckDBDataSource
 import logging
@@ -39,32 +39,33 @@ def load_angebot_data(db: DuckDBDataSource,
 
     with tqdm(total=total_files, desc="Loading Offer Data", unit="file", ncols=100) as progress_bar:
         for week in relevant_weeks:
-            file_name = ANGEBOTE_SCHEME.format(year=seal_year, week=week)
-            file_path = PARQUET_FILES_DIR / file_name
+            # this already is in SCHEME format ... file_name = ANGEBOTE_SCHEME.format(year=seal_year, week=week)
+            file_name = week
+            file_path = file_exists_in_folders(file_name, ANGEBOTE_FOLDER)
 
-            if os.path.isfile(file_path):
+            if file_path:
                 if not table_initialized:
                     logger.info(f"Initializing table from {file_path}")
-                    db.load_parquet_to_table(file_path, 'offer_temp', columns=columns)
+                    db.load_parquet_to_table(file_path, 'angebot', columns=columns)
                     table_initialized = True
                 else:
                     logger.info(f"Adding data from {file_path}")
-                    db.append_parquet_to_table(file_path, 'offer_temp', columns=columns)
+                    db.append_parquet_to_table(file_path, 'angebot', columns=columns)
 
             progress_bar.update(1)
 
     if table_initialized:
         count_query = (
-            QueryBuilder('offer_temp')
+            QueryBuilder('angebot')
             .select('COUNT(*) AS total_rows')
             .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
             .build()
         )
 
         result = db.query(count_query)
-        total_rows = result.iloc[0]['total_rows']
-        logger.info(f"Total rows in Offer data: {total_rows}")
-        return total_rows
+        # total_rows = result.iloc[0]['total_rows']
+        logger.info(f"Total rows in Offer data: {result[0][0]}")
+        return result[0][0]
     else:
         logger.warning(f"No relevant offer data found for seal date {seal_date}.")
         return 0
@@ -73,7 +74,7 @@ def load_angebot_data(db: DuckDBDataSource,
 def load_angebot_data_v2(db: DuckDBDataSource,
                          seal_date_str,
                          offer_folder=None,
-                         table_name='offer_temp'):
+                         table_name='angebot'):
     seal_year, seal_week = get_week_year_from_seal_date(seal_date_str)
     relevant_weeks = generate_weeks_around_seal(seal_year, seal_week,
                                                 CONFIG.OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED,
@@ -100,7 +101,7 @@ def load_angebot_data_v2(db: DuckDBDataSource,
                 QueryBuilder(table_name)
                 .select('*')
                 .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
-                .insert_into('offer')
+                .insert_into('angebot')
             )
             db.query(insert_query)
 

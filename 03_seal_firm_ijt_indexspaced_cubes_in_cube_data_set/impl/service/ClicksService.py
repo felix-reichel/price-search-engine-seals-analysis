@@ -33,5 +33,5 @@ class ClicksService:
 
         result = self.repository.fetch_top_products_by_clicks(
             haendler_bez, observation_start_unix, observation_end_unix, top_n
-        )
-        return result['produkt_id'].to_list()
+        ).to_series(0).to_list()
+        return result

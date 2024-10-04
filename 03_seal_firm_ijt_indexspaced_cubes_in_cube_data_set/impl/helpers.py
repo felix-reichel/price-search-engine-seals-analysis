@@ -106,6 +106,11 @@ def file_exists_in_folders(file_name, folders, base_dir=PARQUET_FILES_DIR):
     - folders (list): A list of folder paths to search in.
     - base_dir (str): The base directory where folders are located.
     """
+    if isinstance(folders, str): # FOLDERS? Only for the weak!!
+        folder = folders
+        file_path = os.path.join(base_dir, folder, file_name)
+        if os.path.isfile(file_path):
+            return file_path
     for folder in folders:
         file_path = os.path.join(base_dir, folder, file_name)
         if os.path.isfile(file_path):

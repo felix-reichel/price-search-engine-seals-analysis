@@ -18,6 +18,7 @@ class OffersService:
                  repository: OffersRepository):
         self.repository = repository
 
+    # TODO: Refactor ME
     def get_offered_weeks(
             self,
             prod_id: str,
@@ -55,13 +56,17 @@ class OffersService:
             allowed_firms: list):
 
         seal_date = date_to_unix_time(seal_date_str)
-        angebot_data = self.repository.fetch_counterfactual_firms(product_id, seal_date)
-
-        firms_offering_product = angebot_data['haendler_bez'].to_list()
-        counterfactual_firms = [f for f in firms_offering_product if f not in seal_firms and f in allowed_firms]
+        angebot_data = self.repository.fetch_counterfactual_firms(product_id, seal_date).to_series(0).to_list()
+        
+        counterfactual_firms = []
+        for f in angebot_data:
+            if f not in seal_firms: # and f in allowed_firms:
+                counterfactual_firms.append(f)
 
         random.seed(RANDOM_SAMPLER_DETERMINISTIC_SEED)
-        return random.sample(counterfactual_firms, min(len(counterfactual_firms), RANDOM_COUNTERFACTUAL_FIRMS_AMOUNT))
+        
+        sample = random.sample(counterfactual_firms, min(len(counterfactual_firms), RANDOM_COUNTERFACTUAL_FIRMS_AMOUNT))
+        return sample
 
     def get_random_n_products_deterministic(self,
                                             haendler_bez: str,
@@ -119,7 +124,7 @@ class OffersService:
                 if offered_period_start <= current_date <= offered_period_end:
                     week_number = current_date.isocalendar()[1]
                     offered_weeks.add(week_number)
-                current_date += dt.timedelta(days=1)
+                current_date += dt.timedelta(weeks=1)
 
         weeks_with_no_offers = 0
         for i in range(weeks * 2 + 1):

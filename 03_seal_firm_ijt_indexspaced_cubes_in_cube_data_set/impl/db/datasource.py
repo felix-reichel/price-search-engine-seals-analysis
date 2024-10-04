@@ -11,13 +11,20 @@ logger = logging.getLogger(__name__)
 
 
 class DuckDBDataSource:
-    def __init__(self, db_path: str = CONFIG.DUCKDB_PATH, threads: int = CONFIG.DUCKDB_THREADS):
+    def __init__(self, db_path: str = CONFIG.DUCKDB_PATH, threads: int = CONFIG.MAX_DUCKDB_THREADS):
         self.conn = duckdb.connect(db_path, config={'threads': threads})
+        
         self.set_threads(threads)
+        
+        # self.conn.execute("SET enable_profiling = 'json';")
+        
+        self.conn.execute("SET allocator_background_threads=true;")
+        self.conn.execute("SET allocator_background_threads=4;")
+        
         self.initialize_file_log_table()
 
     def set_threads(self, threads: int):
-        effective_threads = max(threads, cpu_count() - 1)
+        effective_threads = CONFIG.MAX_DUCKDB_THREADS # max(threads, cpu_count()/12 - 1)
         logger.info(f"Setting DuckDB to use {effective_threads} threads.")
         self.conn.execute(f"PRAGMA threads={effective_threads}")
 

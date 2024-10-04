@@ -5,3 +5,4 @@ pandas
 pytest
 pyarrow
 duckdb==1.1.1
+psutil
