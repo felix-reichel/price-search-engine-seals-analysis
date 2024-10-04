@@ -7,6 +7,7 @@ from tqdm import tqdm
 import CONFIG
 from impl.db.datasource import DuckDBDataSource
 from impl.helpers import calculate_running_var_t_from_u
+from impl.loaders.init_db import DatabaseInitializer
 from impl.loaders.load_temp_offers_data import load_angebot_data_v2, initialize_offer_table
 from impl.repository.FilteredRetailerNamesRepository import FilteredRetailerNamesRepository
 from impl.repository.OffersRepository import OffersRepository
@@ -198,14 +199,20 @@ def calculate_index_space(parallel=False):
 
 
 if __name__ == '__main__':
-    db = DuckDBDataSource(db_path='../sealchangefirms_duck.db')
+    # 00
+    db = DuckDBDataSource()
+    db_initializer = DatabaseInitializer(db)
+    db_initializer.initialize_database()
 
     logger.info("Verifying that required tables are present.")
     required_tables = ['seal_change_firms', 'filtered_haendler_bez', 'products', 'retailers']
+
     for table in required_tables:
         result = db.query(f"SELECT COUNT(*) FROM {table}")
         logger.info(f"Table {table} exists with {result[0][0]} rows.")
     logger.info("Database initialization completed and tables verified.")
+
+    # 01
 
     allowed_firms = (FilteredRetailerNamesRepository(db)
                      .fetch_all_filtered_retailers())

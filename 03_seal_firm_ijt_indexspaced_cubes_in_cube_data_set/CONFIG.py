@@ -5,7 +5,7 @@ from pathlib import Path
 # DEFINITION OF GLOBAL CONSTANTS #
 
 # THREADS = 200
-DUCKDB_PATH = 'sealchangefirms_duck.db'
+DUCKDB_PATH = ':memory:'
 DUCKDB_THREADS = 8
 
 

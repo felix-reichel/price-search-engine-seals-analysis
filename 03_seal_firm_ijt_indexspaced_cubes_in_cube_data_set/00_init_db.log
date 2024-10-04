@@ -1,0 +1,90 @@
+2024-09-21 11:32:27,465 - INFO - Setting DuckDB to use 9 threads.
+2024-09-21 11:32:27,466 - INFO - Initialized file_log table.
+2024-09-21 11:32:27,466 - INFO - Executing query: DROP TABLE IF EXISTS seal_change_firms
+2024-09-21 11:32:27,527 - INFO - Table 'seal_change_firms' dropped successfully.
+2024-09-21 11:32:27,527 - INFO - Executing query: DROP TABLE IF EXISTS filtered_haendler_bez
+2024-09-21 11:32:27,527 - INFO - Table 'filtered_haendler_bez' dropped successfully.
+2024-09-21 11:32:27,527 - INFO - Executing query: DROP TABLE IF EXISTS products
+2024-09-21 11:32:27,528 - INFO - Table 'products' dropped successfully.
+2024-09-21 11:32:27,528 - INFO - Executing query: DROP TABLE IF EXISTS retailers
+2024-09-21 11:32:27,530 - INFO - Table 'retailers' dropped successfully.
+2024-09-21 11:32:27,530 - INFO - Executing query: DROP TABLE IF EXISTS file_log
+2024-09-21 11:32:27,530 - INFO - Table 'file_log' dropped successfully.
+2024-09-21 11:32:27,531 - INFO - Initialized file_log table.
+2024-09-21 11:32:27,531 - INFO - Executing query: 
+        CREATE TABLE IF NOT EXISTS seal_change_firms (
+            seal_cp_filename STRING,
+            seal_firm_id STRING,
+            matched_haendler_bez STRING, 
+            seal_date_str STRING,
+            is_at BOOL,
+            is_de BOOL,
+            is_not_de_and_not_at BOOL
+        )
+    
+2024-09-21 11:32:27,531 - INFO - Table 'seal_change_firms' created successfully.
+2024-09-21 11:32:27,531 - INFO - Executing query: 
+        CREATE TABLE IF NOT EXISTS filtered_haendler_bez (
+            filtered_haendler_bez_id INT8,
+            haendler_bez STRING
+        )
+    
+2024-09-21 11:32:27,531 - INFO - Table 'filtered_haendler_bez' created successfully.
+2024-09-21 11:32:27,531 - INFO - Executing query: 
+        CREATE TABLE IF NOT EXISTS products (
+            produkt_id BIGINT,
+            dtime_birth BIGINT,
+            dtime_death BIGINT,
+            produkt_bez STRING,
+            subsubkat STRING
+        )
+    
+2024-09-21 11:32:27,531 - INFO - Table 'products' created successfully.
+2024-09-21 11:32:27,531 - INFO - Executing query: 
+        CREATE TABLE IF NOT EXISTS retailers (
+            haendler_bez STRING,
+            is_at INT8,
+            is_de INT8,
+            is_uk INT8,
+            is_nl INT8,
+            laden INT8,
+            abhol INT8,
+            online INT8,
+            lon FLOAT4,
+            lat FLOAT4,
+            versandk_default STRING,
+            kunden_id BIGINT,
+            mastercard INT8,
+            visa INT8,
+            amex INT8,
+            dinersclub INT8,
+            vk_at INT8,
+            vk_de INT8,
+            nn_at INT8,
+            nn_de INT8,
+            liefert_at INT8,
+            liefert_de INT8,
+            liefert_uk INT8,
+            liefert_pl INT8,
+            liefert_nl INT8,
+            liefert_ie INT8,
+            is_pl INT8,
+            dtimeBegin BIGINT,
+            dtimeEnd FLOAT4
+        )
+    
+2024-09-21 11:32:27,531 - INFO - Table 'retailers' created successfully.
+2024-09-21 11:32:27,589 - INFO - Note: NumExpr detected 10 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2024-09-21 11:32:27,590 - INFO - NumExpr defaulting to 8 threads.
+2024-09-21 11:32:27,692 - INFO - Loading CSV from ./data/final_matrix.csv into table seal_change_firms
+2024-09-21 11:32:27,692 - INFO - Loading data from ./data/final_matrix.csv
+2024-09-21 11:32:27,695 - INFO - Logged file insertion: ./data/final_matrix.csv at 2024-09-21 11:32:27.695414
+2024-09-21 11:32:27,695 - INFO - Loading CSV from ./data/filtered_haendler_bez.csv into table filtered_haendler_bez
+2024-09-21 11:32:27,695 - INFO - Loading data from ./data/filtered_haendler_bez.csv
+2024-09-21 11:32:27,705 - INFO - Logged file insertion: ./data/filtered_haendler_bez.csv at 2024-09-21 11:32:27.705689
+2024-09-21 11:32:27,706 - INFO - Loading Parquet from data/produkt.parquet into table products
+2024-09-21 11:32:27,706 - INFO - Loading data from data/produkt.parquet
+2024-09-21 11:32:29,833 - INFO - Logged file insertion: data/produkt.parquet at 2024-09-21 11:32:29.833285
+2024-09-21 11:32:29,834 - INFO - Loading Parquet from data/haendler.parquet into table retailers
+2024-09-21 11:32:29,834 - INFO - Loading data from data/haendler.parquet
+2024-09-21 11:32:33,299 - INFO - Logged file insertion: data/haendler.parquet at 2024-09-21 11:32:33.299355
