@@ -5,8 +5,14 @@ from pathlib import Path
 import psutil
 
 # DEFINITION OF GLOBAL CONSTANTS #
-# First gets the upper bound from env var vs. logical then gets the lower bound constrained.
-NCPUS = min(max(int(os.getenv("NCPUS", os.cpu_count())), psutil.cpu_count(logical=True)), 120)
+L_CAPS_CONSTRAINT = (128-8)
+
+MAXIMIN = min(9, psutil.cpu_count(logical=True))
+
+MAXIMIN_NCPUSMAX = max(int(os.getenv("NCPUS", os.cpu_count())), MAXIMIN)
+
+NCPUS = min(MAXIMIN_NCPUSMAX, L_CAPS_CONSTRAINT)
+
 MAX_CPU_USAGE_PERCENTAGE = 0.7
 
 DUCKDB_PATH = ':memory:'

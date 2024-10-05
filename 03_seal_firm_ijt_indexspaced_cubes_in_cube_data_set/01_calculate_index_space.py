@@ -56,19 +56,21 @@ def process_single_product(product, firm_id, seal_date_str, product_service, has
 
 def gather_tasks(product, seal_date_str, seal_firms, geizhals_id, allowed_firms, product_service):
     tasks = [(product, geizhals_id, seal_date_str, True, product_service)]
-    logger.info(f"Main task for product {product}: {geizhals_id}")
+    # logger.info(f"Main task for product {product}: {geizhals_id}")
 
     counterfactual_firms = product_service.get_rand_max_N_counterfactual_firms(product, seal_date_str, seal_firms,
                                                                                allowed_firms)
-    logger.info(f"Counterfactual firms for product {product}: {counterfactual_firms}")
+    # logger.info(f"Counterfactual firms for product {product}: {counterfactual_firms}")
 
     tasks += [(product, firm, seal_date_str, False, product_service) for firm in counterfactual_firms]
+
+    logger.info(f"Total tasks amounted for selected seal change firm are: {len(tasks)}")
     return tasks
 
 
 def process_task(args):
     product, firm, seal_date_str, is_main_firm, product_service = args
-    logger.info(f"Processing {'main' if is_main_firm else 'counterfactual'} firm task: {firm} for product {product}")
+    # logger.info(f"Processing {'main' if is_main_firm else 'counterfactual'} firm task: {firm} for product {product}")
     return process_single_product(product, firm, seal_date_str, product_service, int(is_main_firm))
 
 
