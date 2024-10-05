@@ -11,7 +11,7 @@ The observational unit $\text{obs}(i, j, t)$ is defined as:
 - **$j$**: company (`geizhals_firm_id`)
 - **$t$**: week (calculated running variable from UNIX time, starting from the defined UNIX TIME ORIGIN).
 
-### $t \in$ Period $T$ ($t \in T_{\text{max length truncated symmetric (i,j)}}$):
+### $t \in$ Period $T$ ($t \in T_{\text{max length truncated symmetric (i,j)}} \subseteq T_{\text{inflow}}$):
 The observation period covers a **truncated**, **symmetric** window of 26 weeks before and 26 weeks after ($t \leq 52$ weeks) the quality seal award date. Only products with a new offer spell from 52 weeks before the seal date and/or 26 weeks after the seal date are considered ($t \leq 78$ weeks, "Offer Spells Inflow").
 
 $$
@@ -43,7 +43,6 @@ $$
 I_{\text{selected}} = \{ i \mid i \in I_{\text{offered}} \cup I_{\text{top N}} \text{ and } i \text{ is offered by } j \in J_{\text{seal}} \text{ during } T_{\text{max length truncated symmetric}} \}
 $$
 
-
 ### $(i, j, t)$ Unbalanced Sample:
 If products or companies are not available during the maximum observation period ($26*2 = 52$ weeks), those observations will be missing ("panel attrition"). 
 
@@ -61,13 +60,6 @@ $$
 
 Where:
 - $\text{SealChange}(j, t)$ is a function returning 1 if firm $j$ experiences a seal status change at time $t$.
-
-### ~~Step 2: Select 50 Products per Firm~~
-~~For each firm (**$j$**), we select 50 products (**$i$**) based on:~~
-~~1. Random sampling of 50 products (to draw from a normal distribution).~~
-~~2. Continuous offering by the firm at least $W$ weeks before and $W$ weeks after the seal award (allowing for 1 missing week). DEFINITION: No offer spell in the week exists.~~
-
-Notice: RANDOM SELECTION OF PRODUCTS DOES NOT YIELD ANY SUITABLE (§) PRODUCT FOR FIRM 1 (0815-at) FOR SUBSEQUENT COUNTERFACTUAL SELECTION.
 
 ### Step 2: Select Top N Products per Firm
 
@@ -107,7 +99,6 @@ $$
 
 Where:
 - If $|J_{\text{cf}}(i)| \leq 10$, all firms are selected. Otherwise, 10 firms are selected randomly.
-
 
 ### Dataset Dimensions:
 The dataset size is based on the firms $J_G + J_C$ (seal and counterfactual firms), products ($I_{g+c}$), and **truncated**, **symmetric** time periods (up to $T_{maxLength}=26*2$ weeks).
@@ -162,7 +153,6 @@ Check if `vfb_at` was available before 2007 in the "Verfügbarkeit" data.
 
 ### Step 9: Output Final Data Set
 - Output the final dataset to a CSV-file.
-
 
 ## Estimated Dataset Size
 The maximum number of observations is estimated based on combinations of firms, products, and weeks:
