@@ -118,7 +118,7 @@ def process_seal_firm(seal_firm_data, result_counter, db):
         for task in tasks:
             results = process_task(task)
 
-            logger.info(f"Results of task {task}: {results}")
+            # logger.info(f"Results of task {task}: {results}")
 
             write_results_to_csv(results, csvfile)
 

@@ -190,36 +190,87 @@ The following tests are implemented:
 ## Configuration Details (`CONFIG.py`)
 
 ### Processors
-
-- **SPAWN_MAX_MAIN_PROCESSES_AMOUNT**: 10
+- **[size]_CAPS_CONSTRAINT**: Dynamic (CAPS_THREADS-BUFFER)
+- **MAXIMIN**: Dynamic
+- **MAXIMIN_NCPUSMAX**: Dynamic, based on environment or CPU count
+- **NCPUS**: Minimum of MAXIMIN_NCPUSMAX and [size]_CAPS_CONSTRAINT
+- **MAX_CPU_USAGE_PERCENTAGE**: 70%
+- **MAX_DUCKDB_THREADS**: Dynamic (capped based on NCPUS and CPU usage)
 
 ### Loaders
-- **OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED**: 52 weeks
-- **OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_POST_SEAL_CONSIDERED**: 26 weeks
+- **OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED**: 52 weeks (1 year)
+- **OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_POST_SEAL_CONSIDERED**: 26 weeks (6 months)
+
+### UNIX Time Constants
+- **UNIX_HOUR**: 3600 seconds
+- **UNIX_DAY**: 86400 seconds
+- **UNIX_WEEK**: 604800 seconds
+- **UNIX_MONTH**: 2629743 seconds (approx.)
+- **UNIX_YEAR**: 31556926 seconds (approx.)
+- **UNIX_WEDNESDAY_MIDDAY_INTERCEPT**: 2.5 days after UNIX start of the week
+- **UNIX_TIME_ORIGIN**: May 14, 2007 (1179093600)
+- **UNIX_TIME_COLLAPSE**: December 31, 2023 (1703977200)
 
 ### Sampler
 - **RANDOM_SAMPLER_DETERMINISTIC_SEED**: 42
-- **RANDOM_PRODUCTS_AMOUNTS**: 50
-- **RANDOM_COUNTERFACTUAL_FIRMS_AMOUNT**: 10
+- **RANDOM_PRODUCTS_AMOUNTS**: 50 products
+- **RANDOM_COUNTERFACTUAL_FIRMS_AMOUNT**: 10 firms (max)
 
-### UNIX Time Origin
-- **UNIX_TIME_ORIGIN**: 1179093600 (Mon May 14, 2007)
-- **UNIX_TIME_COLLAPSE**: 1703977200 (Sun Dec 31, 2023)
+### Observational Parameters
+- **MAX_TIME_WINDOW_WEEKS_AROUND_SEAL_WEEKS_AMOUNT**: 52 weeks
+- **TOP_PRODUCTS_OF_SEAL_CHANGE_FIRM_BY_CLICKS_AMOUNT**: 200 products
+- **HAS_WEEKS_BEFORE_AND_AFTER_PRODUCT_ANGEBOTEN_AMOUNT**: Minimum of 4 weeks before and after the seal
+- **MAX_WEEKS_BEFORE_AFTER_PRODUCT_ANGEBOTEN_MISSING_ALLOWED_AMOUNT**: 1 missing week allowed
+- **MAX_DAYS_ANGEBOT_MISSING_WITHIN_WEEK**: 0 days missing allowed
 
-### Global File Paths
-- **PARQUET_FILES_DIR**: `../data`
+### CSV Settings
+- **CSV_IMPORT_DELIM_STYLE**: `;`
+- **CSV_OUTPUT_DELIM_STYLE**: `,`
 
-### Specific Files
+### Static Input Files
 - **FILTERED_HAENDLER_BEZ**: `../data/filtered_haendler_bez.csv`
 - **SEAL_CHANGE_FIRMS**: `../data/final_matrix.csv`
-- **ANGEBOTE_FOLDERS**: 
+
+### Parquet Files and Folders
+- **PARQUET_FILES_DIR**: Path to parquet files directory
+- **ANGEBOTE_FOLDER**: Folders for product offers:
   - `angebot_06_10`
   - `angebot_11_15`
   - `angebot`
+- **VERSAND_FOLDER**: Shipping cost data folder:
+  - `versand_06_10`
+  - `versand_11_15`
+  - `versand`
+- **VERFUEGBARKEIT_FOLDER**: Availability data folder:
+  - `verfuegbarkeit_06_10`
+  - `verfuegbarkeit_11_15`
+  - `verfuegbarkeit`
+- **CLICKS_FOLDER**: Folder for click data:
+  - `clicks/clicks_<YYYY>m<MM>.parquet`
+- **LCT_CLUSTER_FOLDER**: Folder for LCT clusters:
+  - `lct_cluster/lct_cluster_<YYYY>m<MM>.parquet`
+- **RETAILERS_FILE**: `haendler.parquet`
+- **SCRAPER_IPS_FILE**: `scrapper_ips.parquet`
+- **PRODUCTS_FILE**: `produkt.parquet`
+- **MARKEN_FILE**: `marken.parquet`
+- **PRODUCT_RATINGS_FILE**: `produktbewertung.parquet`
+- **HAENDLERBEWERTUNG_FILE**: `haendlerbewertung.parquet`
+- **DAILY_HBEW_FILE**: `daily_hbew.parquet`
+- **CONTINUING_OFFERS_FILE**: `continuing_offers.parquet`
+- **PRODUCT_SPECS_FOLDERS**: Folders for product specifications:
+  - `prod_specs_ssc`
+  - `prod_specs_sc`
+  - `prod_specs_cat`
+- **SSC_SC_CATS_FILE**: `ssc_sc_cats.parquet`
+- **LOOKUPS_FOLDER**: `lookups`
+- **ABFRAGE_PRODUKT_BEW_FOLDER**: `abfrage_produkt_bew`
+- **ABFRAGE_HAENDLER_BEW_FOLDER**: `abfrage_haendler_bew`
+- **ABFRAGE_FILTER_FOLDER**: `abfrage_filter`
+- **CATEGORY_FILES**: 
+  - `categories.parquet`
+  - `subcats.parquet`
+  - `subsubcats.parquet`
+  - `ssc_sc_cats.parquet`
 
-- **CLICKS_FOLDER**: `clicks`
-- **RETAILERS**: `haendler.parquet`
-- **PRODUCTS**: `produkt.parquet`
-- **SCRAPER_IPS**: `scrapper_ips.parquet`
 
 ...
