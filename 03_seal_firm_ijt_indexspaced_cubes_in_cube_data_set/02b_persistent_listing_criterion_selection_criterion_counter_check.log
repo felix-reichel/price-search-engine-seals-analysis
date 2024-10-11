@@ -1,0 +1,3214 @@
+2024-10-11 14:15:41,848 - INFO - Initializing in-memory database.
+2024-10-11 14:15:41,848 - INFO - Establishing new DuckDB connection with db_path=:memory:
+2024-10-11 14:15:42,041 - INFO - DuckDB Config - threads: 512 - The number of total threads used by the system.
+2024-10-11 14:15:42,044 - INFO - Initialized file_log table.
+2024-10-11 14:15:42,044 - INFO - Executing query: DROP TABLE IF EXISTS seal_change_firms
+2024-10-11 14:15:42,045 - INFO - Table 'seal_change_firms' dropped successfully.
+2024-10-11 14:15:42,045 - INFO - Executing query: DROP TABLE IF EXISTS filtered_haendler_bez
+2024-10-11 14:15:42,046 - INFO - Table 'filtered_haendler_bez' dropped successfully.
+2024-10-11 14:15:42,046 - INFO - Executing query: DROP TABLE IF EXISTS products
+2024-10-11 14:15:42,047 - INFO - Table 'products' dropped successfully.
+2024-10-11 14:15:42,047 - INFO - Executing query: DROP TABLE IF EXISTS retailers
+2024-10-11 14:15:42,047 - INFO - Table 'retailers' dropped successfully.
+2024-10-11 14:15:42,047 - INFO - Executing query: DROP TABLE IF EXISTS file_log
+2024-10-11 14:15:42,049 - INFO - Table 'file_log' dropped successfully.
+2024-10-11 14:15:42,050 - INFO - Initialized file_log table.
+2024-10-11 14:15:42,050 - INFO - Executing query: 
+        CREATE TABLE IF NOT EXISTS seal_change_firms (
+            seal_cp_filename STRING,
+            seal_firm_id STRING,
+            matched_haendler_bez STRING, 
+            seal_date_str STRING,
+            is_at BOOL,
+            is_de BOOL,
+            is_not_de_and_not_at BOOL
+        )
+    
+2024-10-11 14:15:48,417 - INFO - Table 'seal_change_firms' created successfully.
+2024-10-11 14:15:48,417 - INFO - Executing query: 
+        CREATE TABLE IF NOT EXISTS filtered_haendler_bez (
+            filtered_haendler_bez_id INT8,
+            haendler_bez STRING
+        )
+    
+2024-10-11 14:15:48,421 - INFO - Table 'filtered_haendler_bez' created successfully.
+2024-10-11 14:15:48,422 - INFO - Executing query: 
+        CREATE TABLE IF NOT EXISTS products (
+            produkt_id BIGINT,
+            dtime_birth BIGINT,
+            dtime_death BIGINT,
+            produkt_bez STRING,
+            subsubkat STRING
+        )
+    
+2024-10-11 14:15:48,423 - INFO - Table 'products' created successfully.
+2024-10-11 14:15:48,423 - INFO - Executing query: 
+        CREATE TABLE IF NOT EXISTS retailers (
+            haendler_bez STRING,
+            is_at INT8,
+            is_de INT8,
+            is_uk INT8,
+            is_nl INT8,
+            laden INT8,
+            abhol INT8,
+            online INT8,
+            lon FLOAT4,
+            lat FLOAT4,
+            versandk_default STRING,
+            kunden_id BIGINT,
+            mastercard INT8,
+            visa INT8,
+            amex INT8,
+            dinersclub INT8,
+            vk_at INT8,
+            vk_de INT8,
+            nn_at INT8,
+            nn_de INT8,
+            liefert_at INT8,
+            liefert_de INT8,
+            liefert_uk INT8,
+            liefert_pl INT8,
+            liefert_nl INT8,
+            liefert_ie INT8,
+            is_pl INT8,
+            dtimeBegin BIGINT,
+            dtimeEnd FLOAT4
+        )
+    
+2024-10-11 14:15:48,424 - INFO - Table 'retailers' created successfully.
+2024-10-11 14:15:50,298 - INFO - Note: detected 1920 virtual cores but NumExpr set to maximum of 64, check "NUMEXPR_MAX_THREADS" environment variable.
+2024-10-11 14:15:50,298 - INFO - Note: NumExpr detected 1920 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2024-10-11 14:15:54,087 - INFO - Loading CSV from ./data/final_matrix.csv into table seal_change_firms
+2024-10-11 14:15:54,087 - INFO - Loading data from ./data/final_matrix.csv
+2024-10-11 14:15:54,231 - INFO - Logged file insertion: ./data/final_matrix.csv at 2024-10-11 14:15:54.218032
+2024-10-11 14:15:54,232 - INFO - Loading CSV from ./data/filtered_haendler_bez.csv into table filtered_haendler_bez
+2024-10-11 14:15:54,232 - INFO - Loading data from ./data/filtered_haendler_bez.csv
+2024-10-11 14:15:54,274 - INFO - Logged file insertion: ./data/filtered_haendler_bez.csv at 2024-10-11 14:15:54.273573
+2024-10-11 14:15:54,276 - INFO - Loading Parquet from /nfn_vwl/geizhals/zieg_pq_db/produkt.parquet into table products
+2024-10-11 14:15:54,276 - INFO - Loading data from /nfn_vwl/geizhals/zieg_pq_db/produkt.parquet
+2024-10-11 14:15:56,810 - INFO - Logged file insertion: /nfn_vwl/geizhals/zieg_pq_db/produkt.parquet at 2024-10-11 14:15:56.806108
+2024-10-11 14:15:56,813 - INFO - Loading Parquet from /nfn_vwl/geizhals/zieg_pq_db/haendler.parquet into table retailers
+2024-10-11 14:15:56,813 - INFO - Loading data from /nfn_vwl/geizhals/zieg_pq_db/haendler.parquet
+2024-10-11 14:16:02,994 - INFO - Logged file insertion: /nfn_vwl/geizhals/zieg_pq_db/haendler.parquet at 2024-10-11 14:16:02.990311
+2024-10-11 14:16:02,995 - INFO - DB initialized.
+2024-10-11 14:16:02,995 - INFO - Executing query: SELECT  * FROM seal_change_firms  WHERE 1=1
+2024-10-11 14:16:07,114 - INFO - Processing retailer 0815-at with seal date UNIX 1184191200
+2024-10-11 14:16:07,115 - INFO - Executing query for retailer: 0815-at
+2024-10-11 14:16:07,115 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = '0815-at'
+        AND dtimebegin < (1184191200 - 31449600)
+        AND dtimeend > (1184191200 + 15724800);
+    
+2024-10-11 14:16:07,605 - INFO - Retailer 0815-at: No affected products found.
+2024-10-11 14:16:07,605 - INFO - Processing retailer eu0815-eu with seal date UNIX 1575500400
+2024-10-11 14:16:07,605 - INFO - Executing query for retailer: eu0815-eu
+2024-10-11 14:16:07,605 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'eu0815-eu'
+        AND dtimebegin < (1575500400 - 31449600)
+        AND dtimeend > (1575500400 + 15724800);
+    
+2024-10-11 14:16:20,646 - INFO - shape: (13, 4)
+┌────────────┬──────────────┬────────────┬────────────┐
+│ produkt_id ┆ haendler_bez ┆ dtimebegin ┆ dtimeend   │
+│ ---        ┆ ---          ┆ ---        ┆ ---        │
+│ i32        ┆ str          ┆ i32        ┆ i32        │
+╞════════════╪══════════════╪════════════╪════════════╡
+│ 1319124    ┆ eu0815-eu    ┆ 1513594789 ┆ 1591720703 │
+│ 1507605    ┆ eu0815-eu    ┆ 1513594789 ┆ 1591720703 │
+│ 1534067    ┆ eu0815-eu    ┆ 1513594789 ┆ 1591720703 │
+│ 1595668    ┆ eu0815-eu    ┆ 1513594789 ┆ 1591720703 │
+│ 1802191    ┆ eu0815-eu    ┆ 1523441550 ┆ 1591720703 │
+│ …          ┆ …            ┆ …          ┆ …          │
+│ 1856415    ┆ eu0815-eu    ┆ 1532521254 ┆ 1591720703 │
+│ 1462837    ┆ eu0815-eu    ┆ 1537215520 ┆ 1591720703 │
+│ 1464609    ┆ eu0815-eu    ┆ 1537378684 ┆ 1591720703 │
+│ 1464615    ┆ eu0815-eu    ┆ 1537215520 ┆ 1591720703 │
+│ 1935069    ┆ eu0815-eu    ┆ 1543255265 ┆ 1591720703 │
+└────────────┴──────────────┴────────────┴────────────┘
+2024-10-11 14:16:20,890 - INFO - Retailer eu0815-eu: 13 unique products, 13 rows found.
+2024-10-11 14:16:20,893 - INFO - Processing retailer 1ashop with seal date UNIX 1149458400
+2024-10-11 14:16:20,893 - INFO - Executing query for retailer: 1ashop
+2024-10-11 14:16:20,893 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = '1ashop'
+        AND dtimebegin < (1149458400 - 31449600)
+        AND dtimeend > (1149458400 + 15724800);
+    
+2024-10-11 14:16:21,817 - INFO - Retailer 1ashop: No affected products found.
+2024-10-11 14:16:21,819 - INFO - Processing retailer a1-net with seal date UNIX 1077663600
+2024-10-11 14:16:21,819 - INFO - Executing query for retailer: a1-net
+2024-10-11 14:16:21,819 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'a1-net'
+        AND dtimebegin < (1077663600 - 31449600)
+        AND dtimeend > (1077663600 + 15724800);
+    
+2024-10-11 14:16:22,816 - INFO - Retailer a1-net: No affected products found.
+2024-10-11 14:16:22,817 - INFO - Processing retailer alleskueche-com with seal date UNIX 1140649200
+2024-10-11 14:16:22,817 - INFO - Executing query for retailer: alleskueche-com
+2024-10-11 14:16:22,817 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'alleskueche-com'
+        AND dtimebegin < (1140649200 - 31449600)
+        AND dtimeend > (1140649200 + 15724800);
+    
+2024-10-11 14:16:23,841 - INFO - Retailer alleskueche-com: No affected products found.
+2024-10-11 14:16:23,842 - INFO - Processing retailer aquaristikshop-de with seal date UNIX 1020636000
+2024-10-11 14:16:23,842 - INFO - Executing query for retailer: aquaristikshop-de
+2024-10-11 14:16:23,842 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'aquaristikshop-de'
+        AND dtimebegin < (1020636000 - 31449600)
+        AND dtimeend > (1020636000 + 15724800);
+    
+2024-10-11 14:16:24,826 - INFO - Retailer aquaristikshop-de: No affected products found.
+2024-10-11 14:16:24,828 - INFO - Processing retailer atte-at with seal date UNIX 1120428000
+2024-10-11 14:16:24,828 - INFO - Executing query for retailer: atte-at
+2024-10-11 14:16:24,828 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'atte-at'
+        AND dtimebegin < (1120428000 - 31449600)
+        AND dtimeend > (1120428000 + 15724800);
+    
+2024-10-11 14:16:25,868 - INFO - Retailer atte-at: No affected products found.
+2024-10-11 14:16:25,869 - INFO - Processing retailer austriansupermarket-at with seal date UNIX 1165964400
+2024-10-11 14:16:25,869 - INFO - Executing query for retailer: austriansupermarket-at
+2024-10-11 14:16:25,869 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'austriansupermarket-at'
+        AND dtimebegin < (1165964400 - 31449600)
+        AND dtimeend > (1165964400 + 15724800);
+    
+2024-10-11 14:16:26,768 - INFO - Retailer austriansupermarket-at: No affected products found.
+2024-10-11 14:16:26,769 - INFO - Processing retailer bauguru-at with seal date UNIX 1528063200
+2024-10-11 14:16:26,769 - INFO - Executing query for retailer: bauguru-at
+2024-10-11 14:16:26,769 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'bauguru-at'
+        AND dtimebegin < (1528063200 - 31449600)
+        AND dtimeend > (1528063200 + 15724800);
+    
+2024-10-11 14:16:33,340 - INFO - Retailer bauguru-at: No affected products found.
+2024-10-11 14:16:33,342 - INFO - Processing retailer bauhaus-at with seal date UNIX 1646694000
+2024-10-11 14:16:33,342 - INFO - Executing query for retailer: bauhaus-at
+2024-10-11 14:16:33,342 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'bauhaus-at'
+        AND dtimebegin < (1646694000 - 31449600)
+        AND dtimeend > (1646694000 + 15724800);
+    
+2024-10-11 14:16:42,410 - INFO - Retailer bauhaus-at: No affected products found.
+2024-10-11 14:16:42,412 - INFO - Processing retailer beamer-at with seal date UNIX 1220997600
+2024-10-11 14:16:42,412 - INFO - Executing query for retailer: beamer-at
+2024-10-11 14:16:42,412 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'beamer-at'
+        AND dtimebegin < (1220997600 - 31449600)
+        AND dtimeend > (1220997600 + 15724800);
+    
+2024-10-11 14:16:43,840 - INFO - shape: (2, 4)
+┌────────────┬──────────────┬────────────┬────────────┐
+│ produkt_id ┆ haendler_bez ┆ dtimebegin ┆ dtimeend   │
+│ ---        ┆ ---          ┆ ---        ┆ ---        │
+│ i32        ┆ str          ┆ i32        ┆ i32        │
+╞════════════╪══════════════╪════════════╪════════════╡
+│ 119861     ┆ beamer-at    ┆ 1179556862 ┆ 1249386802 │
+│ 181397     ┆ beamer-at    ┆ 1183049331 ┆ 1269977575 │
+└────────────┴──────────────┴────────────┴────────────┘
+2024-10-11 14:16:43,971 - INFO - Retailer beamer-at: 2 unique products, 2 rows found.
+2024-10-11 14:16:44,004 - INFO - Processing retailer bewaesserungsprofi-at with seal date UNIX 1600898400
+2024-10-11 14:16:44,004 - INFO - Executing query for retailer: bewaesserungsprofi-at
+2024-10-11 14:16:44,004 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'bewaesserungsprofi-at'
+        AND dtimebegin < (1600898400 - 31449600)
+        AND dtimeend > (1600898400 + 15724800);
+    
+2024-10-11 14:16:56,779 - INFO - Retailer bewaesserungsprofi-at: No affected products found.
+2024-10-11 14:16:56,781 - INFO - Processing retailer bikemore-at with seal date UNIX 1245103200
+2024-10-11 14:16:56,781 - INFO - Executing query for retailer: bikemore-at
+2024-10-11 14:16:56,781 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'bikemore-at'
+        AND dtimebegin < (1245103200 - 31449600)
+        AND dtimeend > (1245103200 + 15724800);
+    
+2024-10-11 14:16:57,733 - INFO - Retailer bikemore-at: No affected products found.
+2024-10-11 14:16:57,733 - INFO - Processing retailer bikepalast-at with seal date UNIX 1114898400
+2024-10-11 14:16:57,733 - INFO - Executing query for retailer: bikepalast-at
+2024-10-11 14:16:57,734 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'bikepalast-at'
+        AND dtimebegin < (1114898400 - 31449600)
+        AND dtimeend > (1114898400 + 15724800);
+    
+2024-10-11 14:16:58,453 - INFO - Retailer bikepalast-at: No affected products found.
+2024-10-11 14:16:58,453 - INFO - Processing retailer bikepirat-at with seal date UNIX 1327359600
+2024-10-11 14:16:58,453 - INFO - Executing query for retailer: bikepirat-at
+2024-10-11 14:16:58,453 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'bikepirat-at'
+        AND dtimebegin < (1327359600 - 31449600)
+        AND dtimeend > (1327359600 + 15724800);
+    
+2024-10-11 14:16:59,212 - INFO - Retailer bikepirat-at: No affected products found.
+2024-10-11 14:16:59,213 - INFO - Processing retailer blue-tomato-at with seal date UNIX 1253484000
+2024-10-11 14:16:59,213 - INFO - Executing query for retailer: blue-tomato-at
+2024-10-11 14:16:59,213 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'blue-tomato-at'
+        AND dtimebegin < (1253484000 - 31449600)
+        AND dtimeend > (1253484000 + 15724800);
+    
+2024-10-11 14:17:00,065 - INFO - Retailer blue-tomato-at: No affected products found.
+2024-10-11 14:17:00,067 - INFO - Processing retailer bsh-at with seal date UNIX 1624917600
+2024-10-11 14:17:00,067 - INFO - Executing query for retailer: bsh-at
+2024-10-11 14:17:00,067 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'bsh-at'
+        AND dtimebegin < (1624917600 - 31449600)
+        AND dtimeend > (1624917600 + 15724800);
+    
+2024-10-11 14:17:12,068 - INFO - Retailer bsh-at: No affected products found.
+2024-10-11 14:17:12,069 - INFO - Processing retailer cls-at with seal date UNIX 1415919600
+2024-10-11 14:17:12,069 - INFO - Executing query for retailer: cls-at
+2024-10-11 14:17:12,069 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'cls-at'
+        AND dtimebegin < (1415919600 - 31449600)
+        AND dtimeend > (1415919600 + 15724800);
+    
+2024-10-11 14:17:15,794 - INFO - Retailer cls-at: No affected products found.
+2024-10-11 14:17:15,796 - INFO - Processing retailer computeruniverse-at with seal date UNIX 1020549600
+2024-10-11 14:17:15,796 - INFO - Executing query for retailer: computeruniverse-at
+2024-10-11 14:17:15,796 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'computeruniverse-at'
+        AND dtimebegin < (1020549600 - 31449600)
+        AND dtimeend > (1020549600 + 15724800);
+    
+2024-10-11 14:17:16,507 - INFO - Retailer computeruniverse-at: No affected products found.
+2024-10-11 14:17:16,508 - INFO - Processing retailer comstern-at with seal date UNIX 1320706800
+2024-10-11 14:17:16,508 - INFO - Executing query for retailer: comstern-at
+2024-10-11 14:17:16,508 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'comstern-at'
+        AND dtimebegin < (1320706800 - 31449600)
+        AND dtimeend > (1320706800 + 15724800);
+    
+2024-10-11 14:17:17,181 - INFO - Retailer comstern-at: No affected products found.
+2024-10-11 14:17:17,181 - INFO - Processing retailer comstern-de with seal date UNIX 1324422000
+2024-10-11 14:17:17,181 - INFO - Executing query for retailer: comstern-de
+2024-10-11 14:17:17,181 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'comstern-de'
+        AND dtimebegin < (1324422000 - 31449600)
+        AND dtimeend > (1324422000 + 15724800);
+    
+2024-10-11 14:17:17,808 - INFO - Retailer comstern-de: No affected products found.
+2024-10-11 14:17:17,808 - INFO - Processing retailer connox-at with seal date UNIX 1485298800
+2024-10-11 14:17:17,808 - INFO - Executing query for retailer: connox-at
+2024-10-11 14:17:17,808 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'connox-at'
+        AND dtimebegin < (1485298800 - 31449600)
+        AND dtimeend > (1485298800 + 15724800);
+    
+2024-10-11 14:17:19,846 - INFO - Retailer connox-at: No affected products found.
+2024-10-11 14:17:19,848 - INFO - Processing retailer conrad-at with seal date UNIX 1130277600
+2024-10-11 14:17:19,849 - INFO - Executing query for retailer: conrad-at
+2024-10-11 14:17:19,849 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'conrad-at'
+        AND dtimebegin < (1130277600 - 31449600)
+        AND dtimeend > (1130277600 + 15724800);
+    
+2024-10-11 14:17:20,534 - INFO - Retailer conrad-at: No affected products found.
+2024-10-11 14:17:20,534 - INFO - Processing retailer decathlon-at with seal date UNIX 1535320800
+2024-10-11 14:17:20,534 - INFO - Executing query for retailer: decathlon-at
+2024-10-11 14:17:20,534 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'decathlon-at'
+        AND dtimebegin < (1535320800 - 31449600)
+        AND dtimeend > (1535320800 + 15724800);
+    
+2024-10-11 14:17:26,624 - INFO - Retailer decathlon-at: No affected products found.
+2024-10-11 14:17:26,626 - INFO - Processing retailer deichmann-at with seal date UNIX 1591308000
+2024-10-11 14:17:26,626 - INFO - Executing query for retailer: deichmann-at
+2024-10-11 14:17:26,626 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'deichmann-at'
+        AND dtimebegin < (1591308000 - 31449600)
+        AND dtimeend > (1591308000 + 15724800);
+    
+2024-10-11 14:17:38,904 - INFO - Retailer deichmann-at: No affected products found.
+2024-10-11 14:17:38,906 - INFO - Processing retailer derschweighofer-at with seal date UNIX 1540332000
+2024-10-11 14:17:38,906 - INFO - Executing query for retailer: derschweighofer-at
+2024-10-11 14:17:38,906 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'derschweighofer-at'
+        AND dtimebegin < (1540332000 - 31449600)
+        AND dtimeend > (1540332000 + 15724800);
+    
+2024-10-11 14:17:45,834 - INFO - shape: (108, 4)
+┌────────────┬────────────────────┬────────────┬────────────┐
+│ produkt_id ┆ haendler_bez       ┆ dtimebegin ┆ dtimeend   │
+│ ---        ┆ ---                ┆ ---        ┆ ---        │
+│ i32        ┆ str                ┆ i32        ┆ i32        │
+╞════════════╪════════════════════╪════════════╪════════════╡
+│ 672688     ┆ derschweighofer-at ┆ 1492079435 ┆ 1585336519 │
+│ 704796     ┆ derschweighofer-at ┆ 1492079435 ┆ 1585336519 │
+│ 704825     ┆ derschweighofer-at ┆ 1492079435 ┆ 1585336519 │
+│ 704869     ┆ derschweighofer-at ┆ 1492079435 ┆ 1585336519 │
+│ 704973     ┆ derschweighofer-at ┆ 1492079435 ┆ 1585336519 │
+│ …          ┆ …                  ┆ …          ┆ …          │
+│ 1283785    ┆ derschweighofer-at ┆ 1502509944 ┆ 1585336519 │
+│ 1704813    ┆ derschweighofer-at ┆ 1507143747 ┆ 1585336519 │
+│ 1280605    ┆ derschweighofer-at ┆ 1508556352 ┆ 1562781399 │
+│ 1709443    ┆ derschweighofer-at ┆ 1508302789 ┆ 1561747753 │
+│ 1280551    ┆ derschweighofer-at ┆ 1508556352 ┆ 1559587983 │
+└────────────┴────────────────────┴────────────┴────────────┘
+2024-10-11 14:17:45,837 - INFO - Retailer derschweighofer-at: 108 unique products, 108 rows found.
+2024-10-11 14:17:45,838 - INFO - Processing retailer ditech-at with seal date UNIX 1236121200
+2024-10-11 14:17:45,839 - INFO - Executing query for retailer: ditech-at
+2024-10-11 14:17:45,839 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'ditech-at'
+        AND dtimebegin < (1236121200 - 31449600)
+        AND dtimeend > (1236121200 + 15724800);
+    
+2024-10-11 14:17:46,523 - INFO - Retailer ditech-at: No affected products found.
+2024-10-11 14:17:46,525 - INFO - Processing retailer drei-at with seal date UNIX 1114552800
+2024-10-11 14:17:46,525 - INFO - Executing query for retailer: drei-at
+2024-10-11 14:17:46,525 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'drei-at'
+        AND dtimebegin < (1114552800 - 31449600)
+        AND dtimeend > (1114552800 + 15724800);
+    
+2024-10-11 14:17:47,203 - INFO - Retailer drei-at: No affected products found.
+2024-10-11 14:17:47,203 - INFO - Processing retailer dreiland.at with seal date UNIX 1653429600
+2024-10-11 14:17:47,203 - INFO - Executing query for retailer: dreiland.at
+2024-10-11 14:17:47,204 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'dreiland.at'
+        AND dtimebegin < (1653429600 - 31449600)
+        AND dtimeend > (1653429600 + 15724800);
+    
+2024-10-11 14:17:55,174 - INFO - Retailer dreiland.at: No affected products found.
+2024-10-11 14:17:55,176 - INFO - Processing retailer ecotec with seal date UNIX 1006383600
+2024-10-11 14:17:55,176 - INFO - Executing query for retailer: ecotec
+2024-10-11 14:17:55,176 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'ecotec'
+        AND dtimebegin < (1006383600 - 31449600)
+        AND dtimeend > (1006383600 + 15724800);
+    
+2024-10-11 14:17:55,792 - INFO - Retailer ecotec: No affected products found.
+2024-10-11 14:17:55,792 - INFO - Processing retailer eis-at with seal date UNIX 1613343600
+2024-10-11 14:17:55,792 - INFO - Executing query for retailer: eis-at
+2024-10-11 14:17:55,793 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'eis-at'
+        AND dtimebegin < (1613343600 - 31449600)
+        AND dtimeend > (1613343600 + 15724800);
+    
+2024-10-11 14:18:06,360 - INFO - Retailer eis-at: No affected products found.
+2024-10-11 14:18:06,362 - INFO - Processing retailer electronic4you-at with seal date UNIX 1204412400
+2024-10-11 14:18:06,362 - INFO - Executing query for retailer: electronic4you-at
+2024-10-11 14:18:06,362 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'electronic4you-at'
+        AND dtimebegin < (1204412400 - 31449600)
+        AND dtimeend > (1204412400 + 15724800);
+    
+2024-10-11 14:18:07,006 - INFO - Retailer electronic4you-at: No affected products found.
+2024-10-11 14:18:07,008 - INFO - Processing retailer eposcomputer-at with seal date UNIX 1657663200
+2024-10-11 14:18:07,008 - INFO - Executing query for retailer: eposcomputer-at
+2024-10-11 14:18:07,008 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'eposcomputer-at'
+        AND dtimebegin < (1657663200 - 31449600)
+        AND dtimeend > (1657663200 + 15724800);
+    
+2024-10-11 14:18:15,454 - INFO - Retailer eposcomputer-at: No affected products found.
+2024-10-11 14:18:15,456 - INFO - Processing retailer expert-at with seal date UNIX 980118000
+2024-10-11 14:18:15,456 - INFO - Executing query for retailer: expert-at
+2024-10-11 14:18:15,456 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'expert-at'
+        AND dtimebegin < (980118000 - 31449600)
+        AND dtimeend > (980118000 + 15724800);
+    
+2024-10-11 14:18:16,073 - INFO - Retailer expert-at: No affected products found.
+2024-10-11 14:18:16,074 - INFO - Processing retailer fairplacevorarlberg-at with seal date UNIX 1638745200
+2024-10-11 14:18:16,074 - INFO - Executing query for retailer: fairplacevorarlberg-at
+2024-10-11 14:18:16,074 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'fairplacevorarlberg-at'
+        AND dtimebegin < (1638745200 - 31449600)
+        AND dtimeend > (1638745200 + 15724800);
+    
+2024-10-11 14:18:26,540 - INFO - Retailer fairplacevorarlberg-at: No affected products found.
+2024-10-11 14:18:26,542 - INFO - Processing retailer feingeist-at with seal date UNIX 1604444400
+2024-10-11 14:18:26,542 - INFO - Executing query for retailer: feingeist-at
+2024-10-11 14:18:26,542 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'feingeist-at'
+        AND dtimebegin < (1604444400 - 31449600)
+        AND dtimeend > (1604444400 + 15724800);
+    
+2024-10-11 14:18:39,150 - INFO - Retailer feingeist-at: No affected products found.
+2024-10-11 14:18:39,152 - INFO - Processing retailer fitstore24-at with seal date UNIX 1286488800
+2024-10-11 14:18:39,152 - INFO - Executing query for retailer: fitstore24-at
+2024-10-11 14:18:39,152 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'fitstore24-at'
+        AND dtimebegin < (1286488800 - 31449600)
+        AND dtimeend > (1286488800 + 15724800);
+    
+2024-10-11 14:18:40,051 - INFO - Retailer fitstore24-at: No affected products found.
+2024-10-11 14:18:40,053 - INFO - Processing retailer fliegfix-at with seal date UNIX 1304546400
+2024-10-11 14:18:40,053 - INFO - Executing query for retailer: fliegfix-at
+2024-10-11 14:18:40,053 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'fliegfix-at'
+        AND dtimebegin < (1304546400 - 31449600)
+        AND dtimeend > (1304546400 + 15724800);
+    
+2024-10-11 14:18:41,075 - INFO - Retailer fliegfix-at: No affected products found.
+2024-10-11 14:18:41,077 - INFO - Processing retailer gameware with seal date UNIX 1472508000
+2024-10-11 14:18:41,077 - INFO - Executing query for retailer: gameware
+2024-10-11 14:18:41,077 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'gameware'
+        AND dtimebegin < (1472508000 - 31449600)
+        AND dtimeend > (1472508000 + 15724800);
+    
+2024-10-11 14:18:43,156 - INFO - shape: (186, 4)
+┌────────────┬──────────────┬────────────┬────────────┐
+│ produkt_id ┆ haendler_bez ┆ dtimebegin ┆ dtimeend   │
+│ ---        ┆ ---          ┆ ---        ┆ ---        │
+│ i32        ┆ str          ┆ i32        ┆ i32        │
+╞════════════╪══════════════╪════════════╪════════════╡
+│ 1126893    ┆ gameware     ┆ 1433769421 ┆ 1597164343 │
+│ 1126899    ┆ gameware     ┆ 1433769421 ┆ 1597164343 │
+│ 910224     ┆ gameware     ┆ 1433769421 ┆ 1551975998 │
+│ 1100636    ┆ gameware     ┆ 1433769421 ┆ 1551975998 │
+│ 1131679    ┆ gameware     ┆ 1433769421 ┆ 1530896442 │
+│ …          ┆ …            ┆ …          ┆ …          │
+│ 348783     ┆ gameware     ┆ 1437567809 ┆ 1530611881 │
+│ 799304     ┆ gameware     ┆ 1437746089 ┆ 1530611881 │
+│ 1067723    ┆ gameware     ┆ 1437656131 ┆ 1515419606 │
+│ 983932     ┆ gameware     ┆ 1437478338 ┆ 1515432063 │
+│ 283827     ┆ gameware     ┆ 1437478338 ┆ 1510238636 │
+└────────────┴──────────────┴────────────┴────────────┘
+2024-10-11 14:18:43,160 - INFO - Retailer gameware: 186 unique products, 186 rows found.
+2024-10-11 14:18:43,163 - INFO - Processing retailer grillshopat-at with seal date UNIX 1135119600
+2024-10-11 14:18:43,163 - INFO - Executing query for retailer: grillshopat-at
+2024-10-11 14:18:43,163 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'grillshopat-at'
+        AND dtimebegin < (1135119600 - 31449600)
+        AND dtimeend > (1135119600 + 15724800);
+    
+2024-10-11 14:18:43,752 - INFO - Retailer grillshopat-at: No affected products found.
+2024-10-11 14:18:43,754 - INFO - Processing retailer haushaltsparadies-at with seal date UNIX 1536530400
+2024-10-11 14:18:43,754 - INFO - Executing query for retailer: haushaltsparadies-at
+2024-10-11 14:18:43,754 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'haushaltsparadies-at'
+        AND dtimebegin < (1536530400 - 31449600)
+        AND dtimeend > (1536530400 + 15724800);
+    
+2024-10-11 14:18:50,161 - INFO - Retailer haushaltsparadies-at: No affected products found.
+2024-10-11 14:18:50,163 - INFO - Processing retailer hdaustriashopat-at with seal date UNIX 1464127200
+2024-10-11 14:18:50,163 - INFO - Executing query for retailer: hdaustriashopat-at
+2024-10-11 14:18:50,163 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'hdaustriashopat-at'
+        AND dtimebegin < (1464127200 - 31449600)
+        AND dtimeend > (1464127200 + 15724800);
+    
+2024-10-11 14:18:50,786 - INFO - Retailer hdaustriashopat-at: No affected products found.
+2024-10-11 14:18:50,787 - INFO - Processing retailer herbst-h-de with seal date UNIX 1592258400
+2024-10-11 14:18:50,787 - INFO - Executing query for retailer: herbst-h-de
+2024-10-11 14:18:50,787 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'herbst-h-de'
+        AND dtimebegin < (1592258400 - 31449600)
+        AND dtimeend > (1592258400 + 15724800);
+    
+2024-10-11 14:19:02,755 - INFO - Retailer herbst-h-de: No affected products found.
+2024-10-11 14:19:02,757 - INFO - Processing retailer topelektronik-at with seal date UNIX 1343512800
+2024-10-11 14:19:02,757 - INFO - Executing query for retailer: topelektronik-at
+2024-10-11 14:19:02,757 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'topelektronik-at'
+        AND dtimebegin < (1343512800 - 31449600)
+        AND dtimeend > (1343512800 + 15724800);
+    
+2024-10-11 14:19:03,372 - INFO - Retailer topelektronik-at: No affected products found.
+2024-10-11 14:19:03,373 - INFO - Processing retailer kagis-at with seal date UNIX 1584486000
+2024-10-11 14:19:03,373 - INFO - Executing query for retailer: kagis-at
+2024-10-11 14:19:03,373 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'kagis-at'
+        AND dtimebegin < (1584486000 - 31449600)
+        AND dtimeend > (1584486000 + 15724800);
+    
+2024-10-11 14:19:15,234 - INFO - Retailer kagis-at: No affected products found.
+2024-10-11 14:19:15,236 - INFO - Processing retailer massjalousiencom-at with seal date UNIX 1499896800
+2024-10-11 14:19:15,236 - INFO - Executing query for retailer: massjalousiencom-at
+2024-10-11 14:19:15,236 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'massjalousiencom-at'
+        AND dtimebegin < (1499896800 - 31449600)
+        AND dtimeend > (1499896800 + 15724800);
+    
+2024-10-11 14:19:17,889 - INFO - Retailer massjalousiencom-at: No affected products found.
+2024-10-11 14:19:17,891 - INFO - Processing retailer megavitalshop.de with seal date UNIX 1021327200
+2024-10-11 14:19:17,891 - INFO - Executing query for retailer: megavitalshop.de
+2024-10-11 14:19:17,891 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'megavitalshop.de'
+        AND dtimebegin < (1021327200 - 31449600)
+        AND dtimeend > (1021327200 + 15724800);
+    
+2024-10-11 14:19:18,486 - INFO - Retailer megavitalshop.de: No affected products found.
+2024-10-11 14:19:18,487 - INFO - Processing retailer msport-at with seal date UNIX 1226444400
+2024-10-11 14:19:18,487 - INFO - Executing query for retailer: msport-at
+2024-10-11 14:19:18,487 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'msport-at'
+        AND dtimebegin < (1226444400 - 31449600)
+        AND dtimeend > (1226444400 + 15724800);
+    
+2024-10-11 14:19:19,228 - INFO - Retailer msport-at: No affected products found.
+2024-10-11 14:19:19,230 - INFO - Processing retailer mylemon-at with seal date UNIX 1209852000
+2024-10-11 14:19:19,230 - INFO - Executing query for retailer: mylemon-at
+2024-10-11 14:19:19,230 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'mylemon-at'
+        AND dtimebegin < (1209852000 - 31449600)
+        AND dtimeend > (1209852000 + 15724800);
+    
+2024-10-11 14:19:19,903 - INFO - Retailer mylemon-at: No affected products found.
+2024-10-11 14:19:19,905 - INFO - Processing retailer myrobotcenter.de with seal date UNIX 1225839600
+2024-10-11 14:19:19,905 - INFO - Executing query for retailer: myrobotcenter.de
+2024-10-11 14:19:19,905 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'myrobotcenter.de'
+        AND dtimebegin < (1225839600 - 31449600)
+        AND dtimeend > (1225839600 + 15724800);
+    
+2024-10-11 14:19:20,642 - INFO - Retailer myrobotcenter.de: No affected products found.
+2024-10-11 14:19:20,644 - INFO - Processing retailer mytrendyphone-at with seal date UNIX 1441576800
+2024-10-11 14:19:20,644 - INFO - Executing query for retailer: mytrendyphone-at
+2024-10-11 14:19:20,644 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'mytrendyphone-at'
+        AND dtimebegin < (1441576800 - 31449600)
+        AND dtimeend > (1441576800 + 15724800);
+    
+2024-10-11 14:19:21,217 - INFO - Retailer mytrendyphone-at: No affected products found.
+2024-10-11 14:19:21,218 - INFO - Processing retailer nakedoptics-at with seal date UNIX 1571608800
+2024-10-11 14:19:21,218 - INFO - Executing query for retailer: nakedoptics-at
+2024-10-11 14:19:21,218 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'nakedoptics-at'
+        AND dtimebegin < (1571608800 - 31449600)
+        AND dtimeend > (1571608800 + 15724800);
+    
+2024-10-11 14:19:32,210 - INFO - Retailer nakedoptics-at: No affected products found.
+2024-10-11 14:19:32,212 - INFO - Processing retailer nackermann-at with seal date UNIX 1245880800
+2024-10-11 14:19:32,212 - INFO - Executing query for retailer: nackermann-at
+2024-10-11 14:19:32,212 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'nackermann-at'
+        AND dtimebegin < (1245880800 - 31449600)
+        AND dtimeend > (1245880800 + 15724800);
+    
+2024-10-11 14:19:32,980 - INFO - shape: (1, 4)
+┌────────────┬───────────────┬────────────┬────────────┐
+│ produkt_id ┆ haendler_bez  ┆ dtimebegin ┆ dtimeend   │
+│ ---        ┆ ---           ┆ ---        ┆ ---        │
+│ i32        ┆ str           ┆ i32        ┆ i32        │
+╞════════════╪═══════════════╪════════════╪════════════╡
+│ 258354     ┆ nackermann-at ┆ 1209188424 ┆ 1270731249 │
+└────────────┴───────────────┴────────────┴────────────┘
+2024-10-11 14:19:32,984 - INFO - Retailer nackermann-at: 1 unique products, 1 rows found.
+2024-10-11 14:19:32,985 - INFO - Processing retailer nespresso.de with seal date UNIX 1615330800
+2024-10-11 14:19:32,985 - INFO - Executing query for retailer: nespresso.de
+2024-10-11 14:19:32,985 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'nespresso.de'
+        AND dtimebegin < (1615330800 - 31449600)
+        AND dtimeend > (1615330800 + 15724800);
+    
+2024-10-11 14:19:43,675 - INFO - Retailer nespresso.de: No affected products found.
+2024-10-11 14:19:43,677 - INFO - Processing retailer o-look24-at with seal date UNIX 1220133600
+2024-10-11 14:19:43,677 - INFO - Executing query for retailer: o-look24-at
+2024-10-11 14:19:43,677 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'o-look24-at'
+        AND dtimebegin < (1220133600 - 31449600)
+        AND dtimeend > (1220133600 + 15724800);
+    
+2024-10-11 14:19:44,360 - INFO - Retailer o-look24-at: No affected products found.
+2024-10-11 14:19:44,362 - INFO - Processing retailer hornbachoesterreich-at with seal date UNIX 1371074400
+2024-10-11 14:19:44,362 - INFO - Executing query for retailer: hornbachoesterreich-at
+2024-10-11 14:19:44,362 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'hornbachoesterreich-at'
+        AND dtimebegin < (1371074400 - 31449600)
+        AND dtimeend > (1371074400 + 15724800);
+    
+2024-10-11 14:19:45,843 - INFO - Retailer hornbachoesterreich-at: No affected products found.
+2024-10-11 14:19:45,845 - INFO - Processing retailer outzeit-at with seal date UNIX 1609110000
+2024-10-11 14:19:45,845 - INFO - Executing query for retailer: outzeit-at
+2024-10-11 14:19:45,845 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'outzeit-at'
+        AND dtimebegin < (1609110000 - 31449600)
+        AND dtimeend > (1609110000 + 15724800);
+    
+2024-10-11 14:19:56,318 - INFO - Retailer outzeit-at: No affected products found.
+2024-10-11 14:19:56,320 - INFO - Processing retailer polleosport-at with seal date UNIX 1614034800
+2024-10-11 14:19:56,320 - INFO - Executing query for retailer: polleosport-at
+2024-10-11 14:19:56,320 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'polleosport-at'
+        AND dtimebegin < (1614034800 - 31449600)
+        AND dtimeend > (1614034800 + 15724800);
+    
+2024-10-11 14:20:07,326 - INFO - Retailer polleosport-at: No affected products found.
+2024-10-11 14:20:07,328 - INFO - Processing retailer reifendirekt-at with seal date UNIX 1456182000
+2024-10-11 14:20:07,328 - INFO - Executing query for retailer: reifendirekt-at
+2024-10-11 14:20:07,328 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'reifendirekt-at'
+        AND dtimebegin < (1456182000 - 31449600)
+        AND dtimeend > (1456182000 + 15724800);
+    
+2024-10-11 14:20:07,924 - INFO - Retailer reifendirekt-at: No affected products found.
+2024-10-11 14:20:07,925 - INFO - Processing retailer reifenshop-at with seal date UNIX 1629669600
+2024-10-11 14:20:07,925 - INFO - Executing query for retailer: reifenshop-at
+2024-10-11 14:20:07,925 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'reifenshop-at'
+        AND dtimebegin < (1629669600 - 31449600)
+        AND dtimeend > (1629669600 + 15724800);
+    
+2024-10-11 14:20:18,451 - INFO - Retailer reifenshop-at: No affected products found.
+2024-10-11 14:20:18,453 - INFO - Processing retailer shoepping-at with seal date UNIX 1479855600
+2024-10-11 14:20:18,453 - INFO - Executing query for retailer: shoepping-at
+2024-10-11 14:20:18,453 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'shoepping-at'
+        AND dtimebegin < (1479855600 - 31449600)
+        AND dtimeend > (1479855600 + 15724800);
+    
+2024-10-11 14:20:20,190 - INFO - Retailer shoepping-at: No affected products found.
+2024-10-11 14:20:20,191 - INFO - Processing retailer elektronet-at with seal date UNIX 1119736800
+2024-10-11 14:20:20,192 - INFO - Executing query for retailer: elektronet-at
+2024-10-11 14:20:20,192 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'elektronet-at'
+        AND dtimebegin < (1119736800 - 31449600)
+        AND dtimeend > (1119736800 + 15724800);
+    
+2024-10-11 14:20:20,799 - INFO - Retailer elektronet-at: No affected products found.
+2024-10-11 14:20:20,801 - INFO - Processing retailer unimarkt-at with seal date UNIX 1538949600
+2024-10-11 14:20:20,801 - INFO - Executing query for retailer: unimarkt-at
+2024-10-11 14:20:20,801 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'unimarkt-at'
+        AND dtimebegin < (1538949600 - 31449600)
+        AND dtimeend > (1538949600 + 15724800);
+    
+2024-10-11 14:20:27,443 - INFO - Retailer unimarkt-at: No affected products found.
+2024-10-11 14:20:27,445 - INFO - Processing retailer siemensbsh-at with seal date UNIX 1655848800
+2024-10-11 14:20:27,445 - INFO - Executing query for retailer: siemensbsh-at
+2024-10-11 14:20:27,445 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'siemensbsh-at'
+        AND dtimebegin < (1655848800 - 31449600)
+        AND dtimeend > (1655848800 + 15724800);
+    
+2024-10-11 14:20:35,519 - INFO - Retailer siemensbsh-at: No affected products found.
+2024-10-11 14:20:35,521 - INFO - Processing retailer tiroled-at with seal date UNIX 1480460400
+2024-10-11 14:20:35,521 - INFO - Executing query for retailer: tiroled-at
+2024-10-11 14:20:35,521 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'tiroled-at'
+        AND dtimebegin < (1480460400 - 31449600)
+        AND dtimeend > (1480460400 + 15724800);
+    
+2024-10-11 14:20:37,283 - INFO - Retailer tiroled-at: No affected products found.
+2024-10-11 14:20:37,285 - INFO - Processing retailer tonershop with seal date UNIX 1062367200
+2024-10-11 14:20:37,285 - INFO - Executing query for retailer: tonershop
+2024-10-11 14:20:37,285 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'tonershop'
+        AND dtimebegin < (1062367200 - 31449600)
+        AND dtimeend > (1062367200 + 15724800);
+    
+2024-10-11 14:20:37,882 - INFO - Retailer tonershop: No affected products found.
+2024-10-11 14:20:37,884 - INFO - Processing retailer triverti-at with seal date UNIX 1502056800
+2024-10-11 14:20:37,884 - INFO - Executing query for retailer: triverti-at
+2024-10-11 14:20:37,884 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'triverti-at'
+        AND dtimebegin < (1502056800 - 31449600)
+        AND dtimeend > (1502056800 + 15724800);
+    
+2024-10-11 14:20:40,574 - INFO - Retailer triverti-at: No affected products found.
+2024-10-11 14:20:40,576 - INFO - Processing retailer vds-online with seal date UNIX 1208728800
+2024-10-11 14:20:40,576 - INFO - Executing query for retailer: vds-online
+2024-10-11 14:20:40,576 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'vds-online'
+        AND dtimebegin < (1208728800 - 31449600)
+        AND dtimeend > (1208728800 + 15724800);
+    
+2024-10-11 14:20:41,231 - INFO - Retailer vds-online: No affected products found.
+2024-10-11 14:20:41,233 - INFO - Processing retailer vienna-camera with seal date UNIX 1043622000
+2024-10-11 14:20:41,233 - INFO - Executing query for retailer: vienna-camera
+2024-10-11 14:20:41,233 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'vienna-camera'
+        AND dtimebegin < (1043622000 - 31449600)
+        AND dtimeend > (1043622000 + 15724800);
+    
+2024-10-11 14:20:41,822 - INFO - Retailer vienna-camera: No affected products found.
+2024-10-11 14:20:41,823 - INFO - Processing retailer wutscheroptik-at with seal date UNIX 1541372400
+2024-10-11 14:20:41,823 - INFO - Executing query for retailer: wutscheroptik-at
+2024-10-11 14:20:41,823 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'wutscheroptik-at'
+        AND dtimebegin < (1541372400 - 31449600)
+        AND dtimeend > (1541372400 + 15724800);
+    
+2024-10-11 14:20:48,864 - INFO - Retailer wutscheroptik-at: No affected products found.
+2024-10-11 14:20:48,866 - INFO - Processing retailer babymarkt-at with seal date UNIX 1369605600
+2024-10-11 14:20:48,866 - INFO - Executing query for retailer: babymarkt-at
+2024-10-11 14:20:48,866 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'babymarkt-at'
+        AND dtimebegin < (1369605600 - 31449600)
+        AND dtimeend > (1369605600 + 15724800);
+    
+2024-10-11 14:20:50,368 - INFO - Retailer babymarkt-at: No affected products found.
+2024-10-11 14:20:50,370 - INFO - Processing retailer cyberport-at with seal date UNIX 1318975200
+2024-10-11 14:20:50,370 - INFO - Executing query for retailer: cyberport-at
+2024-10-11 14:20:50,370 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'cyberport-at'
+        AND dtimebegin < (1318975200 - 31449600)
+        AND dtimeend > (1318975200 + 15724800);
+    
+2024-10-11 14:20:50,954 - INFO - Retailer cyberport-at: No affected products found.
+2024-10-11 14:20:50,955 - INFO - Processing retailer dilife-at with seal date UNIX 1361919600
+2024-10-11 14:20:50,955 - INFO - Executing query for retailer: dilife-at
+2024-10-11 14:20:50,955 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'dilife-at'
+        AND dtimebegin < (1361919600 - 31449600)
+        AND dtimeend > (1361919600 + 15724800);
+    
+2024-10-11 14:20:52,576 - INFO - Retailer dilife-at: No affected products found.
+2024-10-11 14:20:52,579 - INFO - Processing retailer douglas-at with seal date UNIX 1392332400
+2024-10-11 14:20:52,579 - INFO - Executing query for retailer: douglas-at
+2024-10-11 14:20:52,579 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'douglas-at'
+        AND dtimebegin < (1392332400 - 31449600)
+        AND dtimeend > (1392332400 + 15724800);
+    
+2024-10-11 14:20:55,149 - INFO - Retailer douglas-at: No affected products found.
+2024-10-11 14:20:55,151 - INFO - Processing retailer expondo-at with seal date UNIX 1463954400
+2024-10-11 14:20:55,151 - INFO - Executing query for retailer: expondo-at
+2024-10-11 14:20:55,151 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'expondo-at'
+        AND dtimebegin < (1463954400 - 31449600)
+        AND dtimeend > (1463954400 + 15724800);
+    
+2024-10-11 14:20:55,734 - INFO - Retailer expondo-at: No affected products found.
+2024-10-11 14:20:55,735 - INFO - Processing retailer futurexat-at with seal date UNIX 1322175600
+2024-10-11 14:20:55,736 - INFO - Executing query for retailer: futurexat-at
+2024-10-11 14:20:55,736 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'futurexat-at'
+        AND dtimebegin < (1322175600 - 31449600)
+        AND dtimeend > (1322175600 + 15724800);
+    
+2024-10-11 14:20:56,311 - INFO - Retailer futurexat-at: No affected products found.
+2024-10-11 14:20:56,313 - INFO - Processing retailer kaiserkraft-de with seal date UNIX 1363647600
+2024-10-11 14:20:56,313 - INFO - Executing query for retailer: kaiserkraft-de
+2024-10-11 14:20:56,313 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'kaiserkraft-de'
+        AND dtimebegin < (1363647600 - 31449600)
+        AND dtimeend > (1363647600 + 15724800);
+    
+2024-10-11 14:20:57,808 - INFO - Retailer kaiserkraft-de: No affected products found.
+2024-10-11 14:20:57,810 - INFO - Processing retailer naehprinz-at with seal date UNIX 1322002800
+2024-10-11 14:20:57,810 - INFO - Executing query for retailer: naehprinz-at
+2024-10-11 14:20:57,810 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'naehprinz-at'
+        AND dtimebegin < (1322002800 - 31449600)
+        AND dtimeend > (1322002800 + 15724800);
+    
+2024-10-11 14:20:58,391 - INFO - Retailer naehprinz-at: No affected products found.
+2024-10-11 14:20:58,393 - INFO - Processing retailer ottoversand-at with seal date UNIX 1316469600
+2024-10-11 14:20:58,393 - INFO - Executing query for retailer: ottoversand-at
+2024-10-11 14:20:58,393 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'ottoversand-at'
+        AND dtimebegin < (1316469600 - 31449600)
+        AND dtimeend > (1316469600 + 15724800);
+    
+2024-10-11 14:20:58,982 - INFO - Retailer ottoversand-at: No affected products found.
+2024-10-11 14:20:58,983 - INFO - Processing retailer quelle-at with seal date UNIX 1324508400
+2024-10-11 14:20:58,983 - INFO - Executing query for retailer: quelle-at
+2024-10-11 14:20:58,983 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'quelle-at'
+        AND dtimebegin < (1324508400 - 31449600)
+        AND dtimeend > (1324508400 + 15724800);
+    
+2024-10-11 14:20:59,533 - INFO - Retailer quelle-at: No affected products found.
+2024-10-11 14:20:59,535 - INFO - Processing retailer servusapotheke-at with seal date UNIX 1422486000
+2024-10-11 14:20:59,535 - INFO - Executing query for retailer: servusapotheke-at
+2024-10-11 14:20:59,535 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'servusapotheke-at'
+        AND dtimebegin < (1422486000 - 31449600)
+        AND dtimeend > (1422486000 + 15724800);
+    
+2024-10-11 14:21:00,083 - INFO - Retailer servusapotheke-at: No affected products found.
+2024-10-11 14:21:00,085 - INFO - Processing retailer nextrosolar-at with seal date UNIX 1289343600
+2024-10-11 14:21:00,085 - INFO - Executing query for retailer: nextrosolar-at
+2024-10-11 14:21:00,085 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'nextrosolar-at'
+        AND dtimebegin < (1289343600 - 31449600)
+        AND dtimeend > (1289343600 + 15724800);
+    
+2024-10-11 14:21:00,954 - INFO - Retailer nextrosolar-at: No affected products found.
+2024-10-11 14:21:00,956 - INFO - Processing retailer universal-at with seal date UNIX 1322175600
+2024-10-11 14:21:00,956 - INFO - Executing query for retailer: universal-at
+2024-10-11 14:21:00,956 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'universal-at'
+        AND dtimebegin < (1322175600 - 31449600)
+        AND dtimeend > (1322175600 + 15724800);
+    
+2024-10-11 14:21:01,526 - INFO - Retailer universal-at: No affected products found.
+2024-10-11 14:21:01,527 - INFO - Processing retailer vbshobby-at with seal date UNIX 1378677600
+2024-10-11 14:21:01,528 - INFO - Executing query for retailer: vbshobby-at
+2024-10-11 14:21:01,528 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'vbshobby-at'
+        AND dtimebegin < (1378677600 - 31449600)
+        AND dtimeend > (1378677600 + 15724800);
+    
+2024-10-11 14:21:03,681 - INFO - Retailer vbshobby-at: No affected products found.
+2024-10-11 14:21:03,683 - INFO - Processing retailer grillundco-at with seal date UNIX 1397080800
+2024-10-11 14:21:03,683 - INFO - Executing query for retailer: grillundco-at
+2024-10-11 14:21:03,683 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'grillundco-at'
+        AND dtimebegin < (1397080800 - 31449600)
+        AND dtimeend > (1397080800 + 15724800);
+    
+2024-10-11 14:21:06,011 - INFO - Retailer grillundco-at: No affected products found.
+2024-10-11 14:21:06,014 - INFO - Processing retailer mobilestar-at with seal date UNIX 1397599200
+2024-10-11 14:21:06,014 - INFO - Executing query for retailer: mobilestar-at
+2024-10-11 14:21:06,014 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'mobilestar-at'
+        AND dtimebegin < (1397599200 - 31449600)
+        AND dtimeend > (1397599200 + 15724800);
+    
+2024-10-11 14:21:08,898 - INFO - Retailer mobilestar-at: No affected products found.
+2024-10-11 14:21:08,900 - INFO - Processing retailer xxlsports-at with seal date UNIX 1505685600
+2024-10-11 14:21:08,900 - INFO - Executing query for retailer: xxlsports-at
+2024-10-11 14:21:08,900 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'xxlsports-at'
+        AND dtimebegin < (1505685600 - 31449600)
+        AND dtimeend > (1505685600 + 15724800);
+    
+2024-10-11 14:21:12,132 - INFO - Retailer xxlsports-at: No affected products found.
+2024-10-11 14:21:12,134 - INFO - Processing retailer zeltstadtat-at with seal date UNIX 1421276400
+2024-10-11 14:21:12,134 - INFO - Executing query for retailer: zeltstadtat-at
+2024-10-11 14:21:12,134 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'zeltstadtat-at'
+        AND dtimebegin < (1421276400 - 31449600)
+        AND dtimeend > (1421276400 + 15724800);
+    
+2024-10-11 14:21:12,722 - INFO - Retailer zeltstadtat-at: No affected products found.
+2024-10-11 14:21:12,723 - INFO - Processing retailer abcdentalcare-de with seal date UNIX 1379455200
+2024-10-11 14:21:12,723 - INFO - Executing query for retailer: abcdentalcare-de
+2024-10-11 14:21:12,723 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'abcdentalcare-de'
+        AND dtimebegin < (1379455200 - 31449600)
+        AND dtimeend > (1379455200 + 15724800);
+    
+2024-10-11 14:21:14,533 - INFO - Retailer abcdentalcare-de: No affected products found.
+2024-10-11 14:21:14,534 - INFO - Processing retailer albamoda-de with seal date UNIX 1301522400
+2024-10-11 14:21:14,535 - INFO - Executing query for retailer: albamoda-de
+2024-10-11 14:21:14,535 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'albamoda-de'
+        AND dtimebegin < (1301522400 - 31449600)
+        AND dtimeend > (1301522400 + 15724800);
+    
+2024-10-11 14:21:15,501 - INFO - Retailer albamoda-de: No affected products found.
+2024-10-11 14:21:15,503 - INFO - Processing retailer allestechnik-de with seal date UNIX 1478732400
+2024-10-11 14:21:15,503 - INFO - Executing query for retailer: allestechnik-de
+2024-10-11 14:21:15,503 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'allestechnik-de'
+        AND dtimebegin < (1478732400 - 31449600)
+        AND dtimeend > (1478732400 + 15724800);
+    
+2024-10-11 14:21:17,331 - INFO - Retailer allestechnik-de: No affected products found.
+2024-10-11 14:21:17,333 - INFO - Processing retailer alternate-at with seal date UNIX 954453600
+2024-10-11 14:21:17,333 - INFO - Executing query for retailer: alternate-at
+2024-10-11 14:21:17,333 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'alternate-at'
+        AND dtimebegin < (954453600 - 31449600)
+        AND dtimeend > (954453600 + 15724800);
+    
+2024-10-11 14:21:17,944 - INFO - Retailer alternate-at: No affected products found.
+2024-10-11 14:21:17,946 - INFO - Processing retailer aponeo-de with seal date UNIX 1233529200
+2024-10-11 14:21:17,946 - INFO - Executing query for retailer: aponeo-de
+2024-10-11 14:21:17,946 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'aponeo-de'
+        AND dtimebegin < (1233529200 - 31449600)
+        AND dtimeend > (1233529200 + 15724800);
+    
+2024-10-11 14:21:18,614 - INFO - Retailer aponeo-de: No affected products found.
+2024-10-11 14:21:18,616 - INFO - Processing retailer aquaristikshop-de with seal date UNIX 1010617200
+2024-10-11 14:21:18,616 - INFO - Executing query for retailer: aquaristikshop-de
+2024-10-11 14:21:18,616 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'aquaristikshop-de'
+        AND dtimebegin < (1010617200 - 31449600)
+        AND dtimeend > (1010617200 + 15724800);
+    
+2024-10-11 14:21:19,172 - INFO - Retailer aquaristikshop-de: No affected products found.
+2024-10-11 14:21:19,173 - INFO - Processing retailer arlt with seal date UNIX 1235430000
+2024-10-11 14:21:19,173 - INFO - Executing query for retailer: arlt
+2024-10-11 14:21:19,173 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'arlt'
+        AND dtimebegin < (1235430000 - 31449600)
+        AND dtimeend > (1235430000 + 15724800);
+    
+2024-10-11 14:21:19,927 - INFO - Retailer arlt: No affected products found.
+2024-10-11 14:21:19,929 - INFO - Processing retailer betzold-de with seal date UNIX 1245621600
+2024-10-11 14:21:19,929 - INFO - Executing query for retailer: betzold-de
+2024-10-11 14:21:19,929 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'betzold-de'
+        AND dtimebegin < (1245621600 - 31449600)
+        AND dtimeend > (1245621600 + 15724800);
+    
+2024-10-11 14:21:20,699 - INFO - Retailer betzold-de: No affected products found.
+2024-10-11 14:21:20,701 - INFO - Processing retailer asmc-de with seal date UNIX 1309816800
+2024-10-11 14:21:20,701 - INFO - Executing query for retailer: asmc-de
+2024-10-11 14:21:20,701 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'asmc-de'
+        AND dtimebegin < (1309816800 - 31449600)
+        AND dtimeend > (1309816800 + 15724800);
+    
+2024-10-11 14:21:21,273 - INFO - Retailer asmc-de: No affected products found.
+2024-10-11 14:21:21,275 - INFO - Processing retailer atu-de with seal date UNIX 1404943200
+2024-10-11 14:21:21,275 - INFO - Executing query for retailer: atu-de
+2024-10-11 14:21:21,275 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'atu-de'
+        AND dtimebegin < (1404943200 - 31449600)
+        AND dtimeend > (1404943200 + 15724800);
+    
+2024-10-11 14:21:24,602 - INFO - Retailer atu-de: No affected products found.
+2024-10-11 14:21:24,604 - INFO - Processing retailer austriansupermarket-at with seal date UNIX 1448924400
+2024-10-11 14:21:24,604 - INFO - Executing query for retailer: austriansupermarket-at
+2024-10-11 14:21:24,604 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'austriansupermarket-at'
+        AND dtimebegin < (1448924400 - 31449600)
+        AND dtimeend > (1448924400 + 15724800);
+    
+2024-10-11 14:21:25,200 - INFO - Retailer austriansupermarket-at: No affected products found.
+2024-10-11 14:21:25,201 - INFO - Processing retailer autoteileguenstig-de with seal date UNIX 1265324400
+2024-10-11 14:21:25,201 - INFO - Executing query for retailer: autoteileguenstig-de
+2024-10-11 14:21:25,201 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'autoteileguenstig-de'
+        AND dtimebegin < (1265324400 - 31449600)
+        AND dtimeend > (1265324400 + 15724800);
+    
+2024-10-11 14:21:25,963 - INFO - Retailer autoteileguenstig-de: No affected products found.
+2024-10-11 14:21:25,965 - INFO - Processing retailer avivamed-de with seal date UNIX 1222120800
+2024-10-11 14:21:25,965 - INFO - Executing query for retailer: avivamed-de
+2024-10-11 14:21:25,965 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'avivamed-de'
+        AND dtimebegin < (1222120800 - 31449600)
+        AND dtimeend > (1222120800 + 15724800);
+    
+2024-10-11 14:21:26,660 - INFO - Retailer avivamed-de: No affected products found.
+2024-10-11 14:21:26,661 - INFO - Processing retailer babista-de with seal date UNIX 1301007600
+2024-10-11 14:21:26,662 - INFO - Executing query for retailer: babista-de
+2024-10-11 14:21:26,662 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'babista-de'
+        AND dtimebegin < (1301007600 - 31449600)
+        AND dtimeend > (1301007600 + 15724800);
+    
+2024-10-11 14:21:27,653 - INFO - Retailer babista-de: No affected products found.
+2024-10-11 14:21:27,655 - INFO - Processing retailer babywalz-de with seal date UNIX 1260313200
+2024-10-11 14:21:27,655 - INFO - Executing query for retailer: babywalz-de
+2024-10-11 14:21:27,655 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'babywalz-de'
+        AND dtimebegin < (1260313200 - 31449600)
+        AND dtimeend > (1260313200 + 15724800);
+    
+2024-10-11 14:21:28,417 - INFO - Retailer babywalz-de: No affected products found.
+2024-10-11 14:21:28,418 - INFO - Processing retailer backwinkel-de with seal date UNIX 1328828400
+2024-10-11 14:21:28,419 - INFO - Executing query for retailer: backwinkel-de
+2024-10-11 14:21:28,419 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'backwinkel-de'
+        AND dtimebegin < (1328828400 - 31449600)
+        AND dtimeend > (1328828400 + 15724800);
+    
+2024-10-11 14:21:29,051 - INFO - Retailer backwinkel-de: No affected products found.
+2024-10-11 14:21:29,052 - INFO - Processing retailer baddepot-de with seal date UNIX 1365544800
+2024-10-11 14:21:29,052 - INFO - Executing query for retailer: baddepot-de
+2024-10-11 14:21:29,052 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'baddepot-de'
+        AND dtimebegin < (1365544800 - 31449600)
+        AND dtimeend > (1365544800 + 15724800);
+    
+2024-10-11 14:21:30,900 - INFO - Retailer baddepot-de: No affected products found.
+2024-10-11 14:21:30,901 - INFO - Processing retailer bader-de with seal date UNIX 1117404000
+2024-10-11 14:21:30,901 - INFO - Executing query for retailer: bader-de
+2024-10-11 14:21:30,902 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'bader-de'
+        AND dtimebegin < (1117404000 - 31449600)
+        AND dtimeend > (1117404000 + 15724800);
+    
+2024-10-11 14:21:31,481 - INFO - Retailer bader-de: No affected products found.
+2024-10-11 14:21:31,482 - INFO - Processing retailer baerschuhe-de with seal date UNIX 1130277600
+2024-10-11 14:21:31,482 - INFO - Executing query for retailer: baerschuhe-de
+2024-10-11 14:21:31,482 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'baerschuhe-de'
+        AND dtimebegin < (1130277600 - 31449600)
+        AND dtimeend > (1130277600 + 15724800);
+    
+2024-10-11 14:21:32,052 - INFO - Retailer baerschuhe-de: No affected products found.
+2024-10-11 14:21:32,053 - INFO - Processing retailer baldurgarten-de with seal date UNIX 1133305200
+2024-10-11 14:21:32,053 - INFO - Executing query for retailer: baldurgarten-de
+2024-10-11 14:21:32,053 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'baldurgarten-de'
+        AND dtimebegin < (1133305200 - 31449600)
+        AND dtimeend > (1133305200 + 15724800);
+    
+2024-10-11 14:21:32,595 - INFO - Retailer baldurgarten-de: No affected products found.
+2024-10-11 14:21:32,596 - INFO - Processing retailer baslerbeauty-at with seal date UNIX 1250805600
+2024-10-11 14:21:32,596 - INFO - Executing query for retailer: baslerbeauty-at
+2024-10-11 14:21:32,596 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'baslerbeauty-at'
+        AND dtimebegin < (1250805600 - 31449600)
+        AND dtimeend > (1250805600 + 15724800);
+    
+2024-10-11 14:21:33,298 - INFO - Retailer baslerbeauty-at: No affected products found.
+2024-10-11 14:21:33,300 - INFO - Processing retailer baulinger-de with seal date UNIX 1592344800
+2024-10-11 14:21:33,300 - INFO - Executing query for retailer: baulinger-de
+2024-10-11 14:21:33,300 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'baulinger-de'
+        AND dtimebegin < (1592344800 - 31449600)
+        AND dtimeend > (1592344800 + 15724800);
+    
+2024-10-11 14:21:45,986 - INFO - Retailer baulinger-de: No affected products found.
+2024-10-11 14:21:45,988 - INFO - Processing retailer beautywelt-de with seal date UNIX 1471471200
+2024-10-11 14:21:45,988 - INFO - Executing query for retailer: beautywelt-de
+2024-10-11 14:21:45,988 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'beautywelt-de'
+        AND dtimebegin < (1471471200 - 31449600)
+        AND dtimeend > (1471471200 + 15724800);
+    
+2024-10-11 14:21:47,623 - INFO - Retailer beautywelt-de: No affected products found.
+2024-10-11 14:21:47,625 - INFO - Processing retailer blitzhandel24-de with seal date UNIX 1547074800
+2024-10-11 14:21:47,625 - INFO - Executing query for retailer: blitzhandel24-de
+2024-10-11 14:21:47,625 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'blitzhandel24-de'
+        AND dtimebegin < (1547074800 - 31449600)
+        AND dtimeend > (1547074800 + 15724800);
+    
+2024-10-11 14:21:55,408 - INFO - Retailer blitzhandel24-de: No affected products found.
+2024-10-11 14:21:55,410 - INFO - Processing retailer brandschutzzentrale-de with seal date UNIX 1588802400
+2024-10-11 14:21:55,410 - INFO - Executing query for retailer: brandschutzzentrale-de
+2024-10-11 14:21:55,410 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'brandschutzzentrale-de'
+        AND dtimebegin < (1588802400 - 31449600)
+        AND dtimeend > (1588802400 + 15724800);
+    
+2024-10-11 14:22:08,462 - INFO - Retailer brandschutzzentrale-de: No affected products found.
+2024-10-11 14:22:08,464 - INFO - Processing retailer breuninger-de with seal date UNIX 1272837600
+2024-10-11 14:22:08,464 - INFO - Executing query for retailer: breuninger-de
+2024-10-11 14:22:08,464 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'breuninger-de'
+        AND dtimebegin < (1272837600 - 31449600)
+        AND dtimeend > (1272837600 + 15724800);
+    
+2024-10-11 14:22:09,258 - INFO - Retailer breuninger-de: No affected products found.
+2024-10-11 14:22:09,260 - INFO - Processing retailer christ-de with seal date UNIX 1292194800
+2024-10-11 14:22:09,260 - INFO - Executing query for retailer: christ-de
+2024-10-11 14:22:09,260 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'christ-de'
+        AND dtimebegin < (1292194800 - 31449600)
+        AND dtimeend > (1292194800 + 15724800);
+    
+2024-10-11 14:22:10,024 - INFO - Retailer christ-de: No affected products found.
+2024-10-11 14:22:10,026 - INFO - Processing retailer computeruniverse with seal date UNIX 1000936800
+2024-10-11 14:22:10,026 - INFO - Executing query for retailer: computeruniverse
+2024-10-11 14:22:10,027 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'computeruniverse'
+        AND dtimebegin < (1000936800 - 31449600)
+        AND dtimeend > (1000936800 + 15724800);
+    
+2024-10-11 14:22:10,621 - INFO - Retailer computeruniverse: No affected products found.
+2024-10-11 14:22:10,622 - INFO - Processing retailer connox-de with seal date UNIX 1209420000
+2024-10-11 14:22:10,622 - INFO - Executing query for retailer: connox-de
+2024-10-11 14:22:10,622 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'connox-de'
+        AND dtimebegin < (1209420000 - 31449600)
+        AND dtimeend > (1209420000 + 15724800);
+    
+2024-10-11 14:22:11,316 - INFO - Retailer connox-de: No affected products found.
+2024-10-11 14:22:11,318 - INFO - Processing retailer conrad-de with seal date UNIX 1290639600
+2024-10-11 14:22:11,318 - INFO - Executing query for retailer: conrad-de
+2024-10-11 14:22:11,318 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'conrad-de'
+        AND dtimebegin < (1290639600 - 31449600)
+        AND dtimeend > (1290639600 + 15724800);
+    
+2024-10-11 14:22:12,275 - INFO - shape: (17, 4)
+┌────────────┬──────────────┬────────────┬────────────┐
+│ produkt_id ┆ haendler_bez ┆ dtimebegin ┆ dtimeend   │
+│ ---        ┆ ---          ┆ ---        ┆ ---        │
+│ i32        ┆ str          ┆ i32        ┆ i32        │
+╞════════════╪══════════════╪════════════╪════════════╡
+│ 186541     ┆ conrad-de    ┆ 1255350665 ┆ 1310625131 │
+│ 269373     ┆ conrad-de    ┆ 1255641935 ┆ 1310625131 │
+│ 316760     ┆ conrad-de    ┆ 1255350665 ┆ 1310625131 │
+│ 334206     ┆ conrad-de    ┆ 1255350665 ┆ 1310625131 │
+│ 410612     ┆ conrad-de    ┆ 1255350665 ┆ 1310625131 │
+│ …          ┆ …            ┆ …          ┆ …          │
+│ 142752     ┆ conrad-de    ┆ 1256937853 ┆ 1310625131 │
+│ 311978     ┆ conrad-de    ┆ 1256937853 ┆ 1310625131 │
+│ 91379      ┆ conrad-de    ┆ 1257182613 ┆ 1310625131 │
+│ 155548     ┆ conrad-de    ┆ 1257548287 ┆ 1310625131 │
+│ 426251     ┆ conrad-de    ┆ 1257548287 ┆ 1310625131 │
+└────────────┴──────────────┴────────────┴────────────┘
+2024-10-11 14:22:12,279 - INFO - Retailer conrad-de: 17 unique products, 17 rows found.
+2024-10-11 14:22:12,280 - INFO - Processing retailer coolblue-de with seal date UNIX 1637190000
+2024-10-11 14:22:12,280 - INFO - Executing query for retailer: coolblue-de
+2024-10-11 14:22:12,280 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'coolblue-de'
+        AND dtimebegin < (1637190000 - 31449600)
+        AND dtimeend > (1637190000 + 15724800);
+    
+2024-10-11 14:22:22,077 - INFO - Retailer coolblue-de: No affected products found.
+2024-10-11 14:22:22,079 - INFO - Processing retailer coolinarium-de with seal date UNIX 1352847600
+2024-10-11 14:22:22,079 - INFO - Executing query for retailer: coolinarium-de
+2024-10-11 14:22:22,079 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'coolinarium-de'
+        AND dtimebegin < (1352847600 - 31449600)
+        AND dtimeend > (1352847600 + 15724800);
+    
+2024-10-11 14:22:23,537 - INFO - Retailer coolinarium-de: No affected products found.
+2024-10-11 14:22:23,539 - INFO - Processing retailer cyberport-at with seal date UNIX 1233874800
+2024-10-11 14:22:23,539 - INFO - Executing query for retailer: cyberport-at
+2024-10-11 14:22:23,539 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'cyberport-at'
+        AND dtimebegin < (1233874800 - 31449600)
+        AND dtimeend > (1233874800 + 15724800);
+    
+2024-10-11 14:22:24,271 - INFO - Retailer cyberport-at: No affected products found.
+2024-10-11 14:22:24,273 - INFO - Processing retailer cyclotron with seal date UNIX 1389135600
+2024-10-11 14:22:24,273 - INFO - Executing query for retailer: cyclotron
+2024-10-11 14:22:24,273 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'cyclotron'
+        AND dtimebegin < (1389135600 - 31449600)
+        AND dtimeend > (1389135600 + 15724800);
+    
+2024-10-11 14:22:27,008 - INFO - Retailer cyclotron: No affected products found.
+2024-10-11 14:22:27,010 - INFO - Processing retailer dakineshop-de with seal date UNIX 1402351200
+2024-10-11 14:22:27,010 - INFO - Executing query for retailer: dakineshop-de
+2024-10-11 14:22:27,010 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'dakineshop-de'
+        AND dtimebegin < (1402351200 - 31449600)
+        AND dtimeend > (1402351200 + 15724800);
+    
+2024-10-11 14:22:29,982 - INFO - Retailer dakineshop-de: No affected products found.
+2024-10-11 14:22:29,985 - INFO - Processing retailer dehner-de with seal date UNIX 1447282800
+2024-10-11 14:22:29,985 - INFO - Executing query for retailer: dehner-de
+2024-10-11 14:22:29,985 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'dehner-de'
+        AND dtimebegin < (1447282800 - 31449600)
+        AND dtimeend > (1447282800 + 15724800);
+    
+2024-10-11 14:22:30,535 - INFO - Retailer dehner-de: No affected products found.
+2024-10-11 14:22:30,537 - INFO - Processing retailer deichmann-de with seal date UNIX 1346882400
+2024-10-11 14:22:30,537 - INFO - Executing query for retailer: deichmann-de
+2024-10-11 14:22:30,537 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'deichmann-de'
+        AND dtimebegin < (1346882400 - 31449600)
+        AND dtimeend > (1346882400 + 15724800);
+    
+2024-10-11 14:22:31,066 - INFO - Retailer deichmann-de: No affected products found.
+2024-10-11 14:22:31,067 - INFO - Processing retailer deichmann-at with seal date UNIX 1346882400
+2024-10-11 14:22:31,067 - INFO - Executing query for retailer: deichmann-at
+2024-10-11 14:22:31,068 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'deichmann-at'
+        AND dtimebegin < (1346882400 - 31449600)
+        AND dtimeend > (1346882400 + 15724800);
+    
+2024-10-11 14:22:31,615 - INFO - Retailer deichmann-at: No affected products found.
+2024-10-11 14:22:31,616 - INFO - Processing retailer delinat-de with seal date UNIX 1280095200
+2024-10-11 14:22:31,616 - INFO - Executing query for retailer: delinat-de
+2024-10-11 14:22:31,617 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'delinat-de'
+        AND dtimebegin < (1280095200 - 31449600)
+        AND dtimeend > (1280095200 + 15724800);
+    
+2024-10-11 14:22:32,397 - INFO - Retailer delinat-de: No affected products found.
+2024-10-11 14:22:32,399 - INFO - Processing retailer diemer-de with seal date UNIX 1315346400
+2024-10-11 14:22:32,399 - INFO - Executing query for retailer: diemer-de
+2024-10-11 14:22:32,399 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'diemer-de'
+        AND dtimebegin < (1315346400 - 31449600)
+        AND dtimeend > (1315346400 + 15724800);
+    
+2024-10-11 14:22:32,993 - INFO - Retailer diemer-de: No affected products found.
+2024-10-11 14:22:32,994 - INFO - Processing retailer digitalo-de with seal date UNIX 1289516400
+2024-10-11 14:22:32,994 - INFO - Executing query for retailer: digitalo-de
+2024-10-11 14:22:32,994 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'digitalo-de'
+        AND dtimebegin < (1289516400 - 31449600)
+        AND dtimeend > (1289516400 + 15724800);
+    
+2024-10-11 14:22:33,783 - INFO - Retailer digitalo-de: No affected products found.
+2024-10-11 14:22:33,785 - INFO - Processing retailer divestore-de with seal date UNIX 984697200
+2024-10-11 14:22:33,785 - INFO - Executing query for retailer: divestore-de
+2024-10-11 14:22:33,785 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'divestore-de'
+        AND dtimebegin < (984697200 - 31449600)
+        AND dtimeend > (984697200 + 15724800);
+    
+2024-10-11 14:22:34,418 - INFO - Retailer divestore-de: No affected products found.
+2024-10-11 14:22:34,419 - INFO - Processing retailer dm-de with seal date UNIX 1436911200
+2024-10-11 14:22:34,419 - INFO - Executing query for retailer: dm-de
+2024-10-11 14:22:34,419 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'dm-de'
+        AND dtimebegin < (1436911200 - 31449600)
+        AND dtimeend > (1436911200 + 15724800);
+    
+2024-10-11 14:22:35,012 - INFO - Retailer dm-de: No affected products found.
+2024-10-11 14:22:35,014 - INFO - Processing retailer doorout-de with seal date UNIX 1259190000
+2024-10-11 14:22:35,014 - INFO - Executing query for retailer: doorout-de
+2024-10-11 14:22:35,014 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'doorout-de'
+        AND dtimebegin < (1259190000 - 31449600)
+        AND dtimeend > (1259190000 + 15724800);
+    
+2024-10-11 14:22:35,782 - INFO - Retailer doorout-de: No affected products found.
+2024-10-11 14:22:35,784 - INFO - Processing retailer douglas-de with seal date UNIX 1246399200
+2024-10-11 14:22:35,784 - INFO - Executing query for retailer: douglas-de
+2024-10-11 14:22:35,784 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'douglas-de'
+        AND dtimebegin < (1246399200 - 31449600)
+        AND dtimeend > (1246399200 + 15724800);
+    
+2024-10-11 14:22:36,512 - INFO - Retailer douglas-de: No affected products found.
+2024-10-11 14:22:36,514 - INFO - Processing retailer emp-at with seal date UNIX 1195426800
+2024-10-11 14:22:36,515 - INFO - Executing query for retailer: emp-at
+2024-10-11 14:22:36,515 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'emp-at'
+        AND dtimebegin < (1195426800 - 31449600)
+        AND dtimeend > (1195426800 + 15724800);
+    
+2024-10-11 14:22:37,136 - INFO - Retailer emp-at: No affected products found.
+2024-10-11 14:22:37,138 - INFO - Processing retailer easycosmetic-de with seal date UNIX 1233529200
+2024-10-11 14:22:37,138 - INFO - Executing query for retailer: easycosmetic-de
+2024-10-11 14:22:37,138 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'easycosmetic-de'
+        AND dtimebegin < (1233529200 - 31449600)
+        AND dtimeend > (1233529200 + 15724800);
+    
+2024-10-11 14:22:37,834 - INFO - Retailer easycosmetic-de: No affected products found.
+2024-10-11 14:22:37,836 - INFO - Processing retailer ebrosia-de with seal date UNIX 1214344800
+2024-10-11 14:22:37,837 - INFO - Executing query for retailer: ebrosia-de
+2024-10-11 14:22:37,837 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'ebrosia-de'
+        AND dtimebegin < (1214344800 - 31449600)
+        AND dtimeend > (1214344800 + 15724800);
+    
+2024-10-11 14:22:38,597 - INFO - Retailer ebrosia-de: No affected products found.
+2024-10-11 14:22:38,599 - INFO - Processing retailer edeloptics-de with seal date UNIX 1346709600
+2024-10-11 14:22:38,599 - INFO - Executing query for retailer: edeloptics-de
+2024-10-11 14:22:38,599 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'edeloptics-de'
+        AND dtimebegin < (1346709600 - 31449600)
+        AND dtimeend > (1346709600 + 15724800);
+    
+2024-10-11 14:22:39,294 - INFO - Retailer edeloptics-de: No affected products found.
+2024-10-11 14:22:39,295 - INFO - Processing retailer electronic4you-at with seal date UNIX 1407276000
+2024-10-11 14:22:39,295 - INFO - Executing query for retailer: electronic4you-at
+2024-10-11 14:22:39,295 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'electronic4you-at'
+        AND dtimebegin < (1407276000 - 31449600)
+        AND dtimeend > (1407276000 + 15724800);
+    
+2024-10-11 14:22:43,265 - INFO - Retailer electronic4you-at: No affected products found.
+2024-10-11 14:22:43,267 - INFO - Processing retailer electronis with seal date UNIX 1240869600
+2024-10-11 14:22:43,268 - INFO - Executing query for retailer: electronis
+2024-10-11 14:22:43,268 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'electronis'
+        AND dtimebegin < (1240869600 - 31449600)
+        AND dtimeend > (1240869600 + 15724800);
+    
+2024-10-11 14:22:43,982 - INFO - Retailer electronis: No affected products found.
+2024-10-11 14:22:43,984 - INFO - Processing retailer elektroland24-de with seal date UNIX 1499292000
+2024-10-11 14:22:43,984 - INFO - Executing query for retailer: elektroland24-de
+2024-10-11 14:22:43,984 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'elektroland24-de'
+        AND dtimebegin < (1499292000 - 31449600)
+        AND dtimeend > (1499292000 + 15724800);
+    
+2024-10-11 14:22:46,979 - INFO - Retailer elektroland24-de: No affected products found.
+2024-10-11 14:22:46,981 - INFO - Processing retailer ellajuwelen-de with seal date UNIX 1620079200
+2024-10-11 14:22:46,981 - INFO - Executing query for retailer: ellajuwelen-de
+2024-10-11 14:22:46,981 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'ellajuwelen-de'
+        AND dtimebegin < (1620079200 - 31449600)
+        AND dtimeend > (1620079200 + 15724800);
+    
+2024-10-11 14:22:56,850 - INFO - Retailer ellajuwelen-de: No affected products found.
+2024-10-11 14:22:56,852 - INFO - Processing retailer engelhorn-de with seal date UNIX 1470261600
+2024-10-11 14:22:56,852 - INFO - Executing query for retailer: engelhorn-de
+2024-10-11 14:22:56,852 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'engelhorn-de'
+        AND dtimebegin < (1470261600 - 31449600)
+        AND dtimeend > (1470261600 + 15724800);
+    
+2024-10-11 14:22:58,576 - INFO - Retailer engelhorn-de: No affected products found.
+2024-10-11 14:22:58,578 - INFO - Processing retailer equippr-de with seal date UNIX 1554847200
+2024-10-11 14:22:58,578 - INFO - Executing query for retailer: equippr-de
+2024-10-11 14:22:58,578 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'equippr-de'
+        AND dtimebegin < (1554847200 - 31449600)
+        AND dtimeend > (1554847200 + 15724800);
+    
+2024-10-11 14:23:07,250 - INFO - Retailer equippr-de: No affected products found.
+2024-10-11 14:23:07,252 - INFO - Processing retailer erkmann-de with seal date UNIX 1445986800
+2024-10-11 14:23:07,252 - INFO - Executing query for retailer: erkmann-de
+2024-10-11 14:23:07,252 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'erkmann-de'
+        AND dtimebegin < (1445986800 - 31449600)
+        AND dtimeend > (1445986800 + 15724800);
+    
+2024-10-11 14:23:07,795 - INFO - Retailer erkmann-de: No affected products found.
+2024-10-11 14:23:07,797 - INFO - Processing retailer erwinmueller-de with seal date UNIX 1179698400
+2024-10-11 14:23:07,797 - INFO - Executing query for retailer: erwinmueller-de
+2024-10-11 14:23:07,797 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'erwinmueller-de'
+        AND dtimebegin < (1179698400 - 31449600)
+        AND dtimeend > (1179698400 + 15724800);
+    
+2024-10-11 14:23:08,343 - INFO - Retailer erwinmueller-de: No affected products found.
+2024-10-11 14:23:08,344 - INFO - Processing retailer expondo-de with seal date UNIX 1421017200
+2024-10-11 14:23:08,344 - INFO - Executing query for retailer: expondo-de
+2024-10-11 14:23:08,344 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'expondo-de'
+        AND dtimebegin < (1421017200 - 31449600)
+        AND dtimeend > (1421017200 + 15724800);
+    
+2024-10-11 14:23:08,903 - INFO - Retailer expondo-de: No affected products found.
+2024-10-11 14:23:08,904 - INFO - Processing retailer fera24-at with seal date UNIX 1630533600
+2024-10-11 14:23:08,904 - INFO - Executing query for retailer: fera24-at
+2024-10-11 14:23:08,904 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'fera24-at'
+        AND dtimebegin < (1630533600 - 31449600)
+        AND dtimeend > (1630533600 + 15724800);
+    
+2024-10-11 14:23:21,103 - INFO - Retailer fera24-at: No affected products found.
+2024-10-11 14:23:21,105 - INFO - Processing retailer fera24-de with seal date UNIX 1630533600
+2024-10-11 14:23:21,105 - INFO - Executing query for retailer: fera24-de
+2024-10-11 14:23:21,105 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'fera24-de'
+        AND dtimebegin < (1630533600 - 31449600)
+        AND dtimeend > (1630533600 + 15724800);
+    
+2024-10-11 14:23:32,357 - INFO - Retailer fera24-de: No affected products found.
+2024-10-11 14:23:32,359 - INFO - Processing retailer galaxus-de with seal date UNIX 1574982000
+2024-10-11 14:23:32,359 - INFO - Executing query for retailer: galaxus-de
+2024-10-11 14:23:32,359 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'galaxus-de'
+        AND dtimebegin < (1574982000 - 31449600)
+        AND dtimeend > (1574982000 + 15724800);
+    
+2024-10-11 14:23:44,265 - INFO - Retailer galaxus-de: No affected products found.
+2024-10-11 14:23:44,267 - INFO - Processing retailer gamingoase-de with seal date UNIX 1535580000
+2024-10-11 14:23:44,267 - INFO - Executing query for retailer: gamingoase-de
+2024-10-11 14:23:44,267 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'gamingoase-de'
+        AND dtimebegin < (1535580000 - 31449600)
+        AND dtimeend > (1535580000 + 15724800);
+    
+2024-10-11 14:23:50,598 - INFO - Retailer gamingoase-de: No affected products found.
+2024-10-11 14:23:50,600 - INFO - Processing retailer gartentraeume-de with seal date UNIX 1512601200
+2024-10-11 14:23:50,600 - INFO - Executing query for retailer: gartentraeume-de
+2024-10-11 14:23:50,600 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'gartentraeume-de'
+        AND dtimebegin < (1512601200 - 31449600)
+        AND dtimeend > (1512601200 + 15724800);
+    
+2024-10-11 14:23:53,377 - INFO - Retailer gartentraeume-de: No affected products found.
+2024-10-11 14:23:53,379 - INFO - Processing retailer poetschkede-de with seal date UNIX 1370988000
+2024-10-11 14:23:53,379 - INFO - Executing query for retailer: poetschkede-de
+2024-10-11 14:23:53,379 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'poetschkede-de'
+        AND dtimebegin < (1370988000 - 31449600)
+        AND dtimeend > (1370988000 + 15724800);
+    
+2024-10-11 14:23:54,992 - INFO - Retailer poetschkede-de: No affected products found.
+2024-10-11 14:23:54,994 - INFO - Processing retailer globetrotter-de with seal date UNIX 1037919600
+2024-10-11 14:23:54,994 - INFO - Executing query for retailer: globetrotter-de
+2024-10-11 14:23:54,994 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'globetrotter-de'
+        AND dtimebegin < (1037919600 - 31449600)
+        AND dtimeend > (1037919600 + 15724800);
+    
+2024-10-11 14:23:55,605 - INFO - Retailer globetrotter-de: No affected products found.
+2024-10-11 14:23:55,606 - INFO - Processing retailer hagelshop-de with seal date UNIX 1218146400
+2024-10-11 14:23:55,606 - INFO - Executing query for retailer: hagelshop-de
+2024-10-11 14:23:55,607 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'hagelshop-de'
+        AND dtimebegin < (1218146400 - 31449600)
+        AND dtimeend > (1218146400 + 15724800);
+    
+2024-10-11 14:23:56,264 - INFO - Retailer hagelshop-de: No affected products found.
+2024-10-11 14:23:56,266 - INFO - Processing retailer hansnatur-de with seal date UNIX 1221170400
+2024-10-11 14:23:56,266 - INFO - Executing query for retailer: hansnatur-de
+2024-10-11 14:23:56,266 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'hansnatur-de'
+        AND dtimebegin < (1221170400 - 31449600)
+        AND dtimeend > (1221170400 + 15724800);
+    
+2024-10-11 14:23:56,947 - INFO - Retailer hansnatur-de: No affected products found.
+2024-10-11 14:23:56,949 - INFO - Processing retailer hardwarearea-de with seal date UNIX 1641769200
+2024-10-11 14:23:56,949 - INFO - Executing query for retailer: hardwarearea-de
+2024-10-11 14:23:56,949 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'hardwarearea-de'
+        AND dtimebegin < (1641769200 - 31449600)
+        AND dtimeend > (1641769200 + 15724800);
+    
+2024-10-11 14:24:06,570 - INFO - Retailer hardwarearea-de: No affected products found.
+2024-10-11 14:24:06,572 - INFO - Processing retailer harlander-de with seal date UNIX 1200438000
+2024-10-11 14:24:06,572 - INFO - Executing query for retailer: harlander-de
+2024-10-11 14:24:06,572 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'harlander-de'
+        AND dtimebegin < (1200438000 - 31449600)
+        AND dtimeend > (1200438000 + 15724800);
+    
+2024-10-11 14:24:07,200 - INFO - Retailer harlander-de: No affected products found.
+2024-10-11 14:24:07,201 - INFO - Processing retailer heimkino-aktuell-de with seal date UNIX 1486076400
+2024-10-11 14:24:07,202 - INFO - Executing query for retailer: heimkino-aktuell-de
+2024-10-11 14:24:07,202 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'heimkino-aktuell-de'
+        AND dtimebegin < (1486076400 - 31449600)
+        AND dtimeend > (1486076400 + 15724800);
+    
+2024-10-11 14:24:09,532 - INFO - Retailer heimkino-aktuell-de: No affected products found.
+2024-10-11 14:24:09,534 - INFO - Processing retailer heimwerkertools-at with seal date UNIX 1589752800
+2024-10-11 14:24:09,534 - INFO - Executing query for retailer: heimwerkertools-at
+2024-10-11 14:24:09,534 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'heimwerkertools-at'
+        AND dtimebegin < (1589752800 - 31449600)
+        AND dtimeend > (1589752800 + 15724800);
+    
+2024-10-11 14:24:21,943 - INFO - Retailer heimwerkertools-at: No affected products found.
+2024-10-11 14:24:21,945 - INFO - Processing retailer heine-de with seal date UNIX 1652824800
+2024-10-11 14:24:21,945 - INFO - Executing query for retailer: heine-de
+2024-10-11 14:24:21,945 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'heine-de'
+        AND dtimebegin < (1652824800 - 31449600)
+        AND dtimeend > (1652824800 + 15724800);
+    
+2024-10-11 14:24:30,294 - INFO - Retailer heine-de: No affected products found.
+2024-10-11 14:24:30,296 - INFO - Processing retailer hessnatur-at with seal date UNIX 1258066800
+2024-10-11 14:24:30,296 - INFO - Executing query for retailer: hessnatur-at
+2024-10-11 14:24:30,296 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'hessnatur-at'
+        AND dtimebegin < (1258066800 - 31449600)
+        AND dtimeend > (1258066800 + 15724800);
+    
+2024-10-11 14:24:31,000 - INFO - Retailer hessnatur-at: No affected products found.
+2024-10-11 14:24:31,002 - INFO - Processing retailer fotokoch with seal date UNIX 1266879600
+2024-10-11 14:24:31,002 - INFO - Executing query for retailer: fotokoch
+2024-10-11 14:24:31,002 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'fotokoch'
+        AND dtimebegin < (1266879600 - 31449600)
+        AND dtimeend > (1266879600 + 15724800);
+    
+2024-10-11 14:24:31,839 - INFO - shape: (31, 4)
+┌────────────┬──────────────┬────────────┬────────────┐
+│ produkt_id ┆ haendler_bez ┆ dtimebegin ┆ dtimeend   │
+│ ---        ┆ ---          ┆ ---        ┆ ---        │
+│ i32        ┆ str          ┆ i32        ┆ i32        │
+╞════════════╪══════════════╪════════════╪════════════╡
+│ 83265      ┆ fotokoch     ┆ 1187873051 ┆ 1317056557 │
+│ 284625     ┆ fotokoch     ┆ 1191509973 ┆ 1284138196 │
+│ 284661     ┆ fotokoch     ┆ 1191509973 ┆ 1284138196 │
+│ 284675     ┆ fotokoch     ┆ 1191509973 ┆ 1284138196 │
+│ 285795     ┆ fotokoch     ┆ 1191495832 ┆ 1282776723 │
+│ …          ┆ …            ┆ …          ┆ …          │
+│ 380054     ┆ fotokoch     ┆ 1232383582 ┆ 1288775550 │
+│ 284898     ┆ fotokoch     ┆ 1233938619 ┆ 1291821951 │
+│ 220145     ┆ fotokoch     ┆ 1234974625 ┆ 1320917292 │
+│ 316664     ┆ fotokoch     ┆ 1234801665 ┆ 1308572478 │
+│ 310042     ┆ fotokoch     ┆ 1234801665 ┆ 1283429492 │
+└────────────┴──────────────┴────────────┴────────────┘
+2024-10-11 14:24:31,843 - INFO - Retailer fotokoch: 31 unique products, 31 rows found.
+2024-10-11 14:24:31,844 - INFO - Processing retailer hififabrik-de with seal date UNIX 1038265200
+2024-10-11 14:24:31,844 - INFO - Executing query for retailer: hififabrik-de
+2024-10-11 14:24:31,844 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'hififabrik-de'
+        AND dtimebegin < (1038265200 - 31449600)
+        AND dtimeend > (1038265200 + 15724800);
+    
+2024-10-11 14:24:32,408 - INFO - Retailer hififabrik-de: No affected products found.
+2024-10-11 14:24:32,409 - INFO - Processing retailer hifi-regler with seal date UNIX 1003096800
+2024-10-11 14:24:32,409 - INFO - Executing query for retailer: hifi-regler
+2024-10-11 14:24:32,409 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'hifi-regler'
+        AND dtimebegin < (1003096800 - 31449600)
+        AND dtimeend > (1003096800 + 15724800);
+    
+2024-10-11 14:24:32,979 - INFO - Retailer hifi-regler: No affected products found.
+2024-10-11 14:24:32,980 - INFO - Processing retailer hse24-de with seal date UNIX 1120773600
+2024-10-11 14:24:32,980 - INFO - Executing query for retailer: hse24-de
+2024-10-11 14:24:32,981 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'hse24-de'
+        AND dtimebegin < (1120773600 - 31449600)
+        AND dtimeend > (1120773600 + 15724800);
+    
+2024-10-11 14:24:33,580 - INFO - Retailer hse24-de: No affected products found.
+2024-10-11 14:24:33,581 - INFO - Processing retailer imwalking-de with seal date UNIX 1552258800
+2024-10-11 14:24:33,581 - INFO - Executing query for retailer: imwalking-de
+2024-10-11 14:24:33,581 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'imwalking-de'
+        AND dtimebegin < (1552258800 - 31449600)
+        AND dtimeend > (1552258800 + 15724800);
+    
+2024-10-11 14:24:42,073 - INFO - Retailer imwalking-de: No affected products found.
+2024-10-11 14:24:42,075 - INFO - Processing retailer insportline-de with seal date UNIX 1513810800
+2024-10-11 14:24:42,075 - INFO - Executing query for retailer: insportline-de
+2024-10-11 14:24:42,076 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'insportline-de'
+        AND dtimebegin < (1513810800 - 31449600)
+        AND dtimeend > (1513810800 + 15724800);
+    
+2024-10-11 14:24:45,280 - INFO - Retailer insportline-de: No affected products found.
+2024-10-11 14:24:45,282 - INFO - Processing retailer jakoo-de with seal date UNIX 1188511200
+2024-10-11 14:24:45,282 - INFO - Executing query for retailer: jakoo-de
+2024-10-11 14:24:45,282 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'jakoo-de'
+        AND dtimebegin < (1188511200 - 31449600)
+        AND dtimeend > (1188511200 + 15724800);
+    
+2024-10-11 14:24:45,872 - INFO - Retailer jakoo-de: No affected products found.
+2024-10-11 14:24:45,874 - INFO - Processing retailer kaiserkraft-de with seal date UNIX 1257375600
+2024-10-11 14:24:45,874 - INFO - Executing query for retailer: kaiserkraft-de
+2024-10-11 14:24:45,874 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'kaiserkraft-de'
+        AND dtimebegin < (1257375600 - 31449600)
+        AND dtimeend > (1257375600 + 15724800);
+    
+2024-10-11 14:24:46,587 - INFO - Retailer kaiserkraft-de: No affected products found.
+2024-10-11 14:24:46,589 - INFO - Processing retailer kitchenland-de with seal date UNIX 1434492000
+2024-10-11 14:24:46,589 - INFO - Executing query for retailer: kitchenland-de
+2024-10-11 14:24:46,589 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'kitchenland-de'
+        AND dtimebegin < (1434492000 - 31449600)
+        AND dtimeend > (1434492000 + 15724800);
+    
+2024-10-11 14:24:47,179 - INFO - Retailer kitchenland-de: No affected products found.
+2024-10-11 14:24:47,180 - INFO - Processing retailer klingel-de with seal date UNIX 1118786400
+2024-10-11 14:24:47,180 - INFO - Executing query for retailer: klingel-de
+2024-10-11 14:24:47,180 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'klingel-de'
+        AND dtimebegin < (1118786400 - 31449600)
+        AND dtimeend > (1118786400 + 15724800);
+    
+2024-10-11 14:24:47,756 - INFO - Retailer klingel-de: No affected products found.
+2024-10-11 14:24:47,758 - INFO - Processing retailer kochform-de with seal date UNIX 1237935600
+2024-10-11 14:24:47,758 - INFO - Executing query for retailer: kochform-de
+2024-10-11 14:24:47,758 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'kochform-de'
+        AND dtimebegin < (1237935600 - 31449600)
+        AND dtimeend > (1237935600 + 15724800);
+    
+2024-10-11 14:24:48,460 - INFO - Retailer kochform-de: No affected products found.
+2024-10-11 14:24:48,462 - INFO - Processing retailer kodi-de with seal date UNIX 1454281200
+2024-10-11 14:24:48,462 - INFO - Executing query for retailer: kodi-de
+2024-10-11 14:24:48,462 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'kodi-de'
+        AND dtimebegin < (1454281200 - 31449600)
+        AND dtimeend > (1454281200 + 15724800);
+    
+2024-10-11 14:24:49,045 - INFO - Retailer kodi-de: No affected products found.
+2024-10-11 14:24:49,046 - INFO - Processing retailer kottezeller-de with seal date UNIX 1255384800
+2024-10-11 14:24:49,046 - INFO - Executing query for retailer: kottezeller-de
+2024-10-11 14:24:49,046 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'kottezeller-de'
+        AND dtimebegin < (1255384800 - 31449600)
+        AND dtimeend > (1255384800 + 15724800);
+    
+2024-10-11 14:24:49,798 - INFO - Retailer kottezeller-de: No affected products found.
+2024-10-11 14:24:49,800 - INFO - Processing retailer kueblersport-de with seal date UNIX 1473890400
+2024-10-11 14:24:49,800 - INFO - Executing query for retailer: kueblersport-de
+2024-10-11 14:24:49,800 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'kueblersport-de'
+        AND dtimebegin < (1473890400 - 31449600)
+        AND dtimeend > (1473890400 + 15724800);
+    
+2024-10-11 14:24:51,803 - INFO - Retailer kueblersport-de: No affected products found.
+2024-10-11 14:24:51,805 - INFO - Processing retailer lidlshop-de with seal date UNIX 1308520800
+2024-10-11 14:24:51,805 - INFO - Executing query for retailer: lidlshop-de
+2024-10-11 14:24:51,805 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'lidlshop-de'
+        AND dtimebegin < (1308520800 - 31449600)
+        AND dtimeend > (1308520800 + 15724800);
+    
+2024-10-11 14:24:52,414 - INFO - Retailer lidlshop-de: No affected products found.
+2024-10-11 14:24:52,415 - INFO - Processing retailer lights4fun-de with seal date UNIX 1364425200
+2024-10-11 14:24:52,415 - INFO - Executing query for retailer: lights4fun-de
+2024-10-11 14:24:52,415 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'lights4fun-de'
+        AND dtimebegin < (1364425200 - 31449600)
+        AND dtimeend > (1364425200 + 15724800);
+    
+2024-10-11 14:24:53,889 - INFO - Retailer lights4fun-de: No affected products found.
+2024-10-11 14:24:53,891 - INFO - Processing retailer louis-de with seal date UNIX 1125957600
+2024-10-11 14:24:53,891 - INFO - Executing query for retailer: louis-de
+2024-10-11 14:24:53,891 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'louis-de'
+        AND dtimebegin < (1125957600 - 31449600)
+        AND dtimeend > (1125957600 + 15724800);
+    
+2024-10-11 14:24:54,528 - INFO - Retailer louis-de: No affected products found.
+2024-10-11 14:24:54,530 - INFO - Processing retailer medpets-de with seal date UNIX 1349042400
+2024-10-11 14:24:54,530 - INFO - Executing query for retailer: medpets-de
+2024-10-11 14:24:54,530 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'medpets-de'
+        AND dtimebegin < (1349042400 - 31449600)
+        AND dtimeend > (1349042400 + 15724800);
+    
+2024-10-11 14:24:55,069 - INFO - Retailer medpets-de: No affected products found.
+2024-10-11 14:24:55,070 - INFO - Processing retailer medpex-de with seal date UNIX 1121637600
+2024-10-11 14:24:55,070 - INFO - Executing query for retailer: medpex-de
+2024-10-11 14:24:55,070 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'medpex-de'
+        AND dtimebegin < (1121637600 - 31449600)
+        AND dtimeend > (1121637600 + 15724800);
+    
+2024-10-11 14:24:55,648 - INFO - Retailer medpex-de: No affected products found.
+2024-10-11 14:24:55,649 - INFO - Processing retailer megavitalshop-de with seal date UNIX 998431200
+2024-10-11 14:24:55,649 - INFO - Executing query for retailer: megavitalshop-de
+2024-10-11 14:24:55,649 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'megavitalshop-de'
+        AND dtimebegin < (998431200 - 31449600)
+        AND dtimeend > (998431200 + 15724800);
+    
+2024-10-11 14:24:56,238 - INFO - Retailer megavitalshop-de: No affected products found.
+2024-10-11 14:24:56,238 - INFO - Processing retailer meintrendyhandy-de with seal date UNIX 1316124000
+2024-10-11 14:24:56,239 - INFO - Executing query for retailer: meintrendyhandy-de
+2024-10-11 14:24:56,239 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'meintrendyhandy-de'
+        AND dtimebegin < (1316124000 - 31449600)
+        AND dtimeend > (1316124000 + 15724800);
+    
+2024-10-11 14:24:56,806 - INFO - Retailer meintrendyhandy-de: No affected products found.
+2024-10-11 14:24:56,806 - INFO - Processing retailer misterspex-de with seal date UNIX 1220824800
+2024-10-11 14:24:56,806 - INFO - Executing query for retailer: misterspex-de
+2024-10-11 14:24:56,806 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'misterspex-de'
+        AND dtimebegin < (1220824800 - 31449600)
+        AND dtimeend > (1220824800 + 15724800);
+    
+2024-10-11 14:24:57,501 - INFO - Retailer misterspex-de: No affected products found.
+2024-10-11 14:24:57,503 - INFO - Processing retailer moebelboss-de with seal date UNIX 1316124000
+2024-10-11 14:24:57,503 - INFO - Executing query for retailer: moebelboss-de
+2024-10-11 14:24:57,503 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'moebelboss-de'
+        AND dtimebegin < (1316124000 - 31449600)
+        AND dtimeend > (1316124000 + 15724800);
+    
+2024-10-11 14:24:58,064 - INFO - Retailer moebelboss-de: No affected products found.
+2024-10-11 14:24:58,065 - INFO - Processing retailer moebel-plus-de with seal date UNIX 1402869600
+2024-10-11 14:24:58,065 - INFO - Executing query for retailer: moebel-plus-de
+2024-10-11 14:24:58,065 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'moebel-plus-de'
+        AND dtimebegin < (1402869600 - 31449600)
+        AND dtimeend > (1402869600 + 15724800);
+    
+2024-10-11 14:25:01,700 - INFO - shape: (199, 4)
+┌────────────┬────────────────┬────────────┬────────────┐
+│ produkt_id ┆ haendler_bez   ┆ dtimebegin ┆ dtimeend   │
+│ ---        ┆ ---            ┆ ---        ┆ ---        │
+│ i32        ┆ str            ┆ i32        ┆ i32        │
+╞════════════╪════════════════╪════════════╪════════════╡
+│ 842587     ┆ moebel-plus-de ┆ 1360235922 ┆ 1433769420 │
+│ 255772     ┆ moebel-plus-de ┆ 1360981634 ┆ 1427255372 │
+│ 637697     ┆ moebel-plus-de ┆ 1361334321 ┆ 1433769420 │
+│ 644892     ┆ moebel-plus-de ┆ 1361506753 ┆ 1433769420 │
+│ 628225     ┆ moebel-plus-de ┆ 1361334321 ┆ 1424225057 │
+│ …          ┆ …              ┆ …          ┆ …          │
+│ 958762     ┆ moebel-plus-de ┆ 1370877160 ┆ 1420690009 │
+│ 958770     ┆ moebel-plus-de ┆ 1370877160 ┆ 1420690009 │
+│ 960589     ┆ moebel-plus-de ┆ 1371051377 ┆ 1420690009 │
+│ 959680     ┆ moebel-plus-de ┆ 1370964162 ┆ 1419301091 │
+│ 959681     ┆ moebel-plus-de ┆ 1370964162 ┆ 1419301091 │
+└────────────┴────────────────┴────────────┴────────────┘
+2024-10-11 14:25:01,705 - INFO - Retailer moebel-plus-de: 199 unique products, 199 rows found.
+2024-10-11 14:25:01,709 - INFO - Processing retailer mona-de with seal date UNIX 1301007600
+2024-10-11 14:25:01,709 - INFO - Executing query for retailer: mona-de
+2024-10-11 14:25:01,709 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'mona-de'
+        AND dtimebegin < (1301007600 - 31449600)
+        AND dtimeend > (1301007600 + 15724800);
+    
+2024-10-11 14:25:02,669 - INFO - Retailer mona-de: No affected products found.
+2024-10-11 14:25:02,671 - INFO - Processing retailer morethancoffee-de with seal date UNIX 1483657200
+2024-10-11 14:25:02,672 - INFO - Executing query for retailer: morethancoffee-de
+2024-10-11 14:25:02,672 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'morethancoffee-de'
+        AND dtimebegin < (1483657200 - 31449600)
+        AND dtimeend > (1483657200 + 15724800);
+    
+2024-10-11 14:25:04,601 - INFO - Retailer morethancoffee-de: No affected products found.
+2024-10-11 14:25:04,603 - INFO - Processing retailer mp3-player with seal date UNIX 1064181600
+2024-10-11 14:25:04,603 - INFO - Executing query for retailer: mp3-player
+2024-10-11 14:25:04,603 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'mp3-player'
+        AND dtimebegin < (1064181600 - 31449600)
+        AND dtimeend > (1064181600 + 15724800);
+    
+2024-10-11 14:25:05,177 - INFO - Retailer mp3-player: No affected products found.
+2024-10-11 14:25:05,178 - INFO - Processing retailer mynotebook-de with seal date UNIX 1362351600
+2024-10-11 14:25:05,179 - INFO - Executing query for retailer: mynotebook-de
+2024-10-11 14:25:05,179 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'mynotebook-de'
+        AND dtimebegin < (1362351600 - 31449600)
+        AND dtimeend > (1362351600 + 15724800);
+    
+2024-10-11 14:25:06,611 - INFO - Retailer mynotebook-de: No affected products found.
+2024-10-11 14:25:06,613 - INFO - Processing retailer myrobotcenter-de with seal date UNIX 1276552800
+2024-10-11 14:25:06,613 - INFO - Executing query for retailer: myrobotcenter-de
+2024-10-11 14:25:06,613 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'myrobotcenter-de'
+        AND dtimebegin < (1276552800 - 31449600)
+        AND dtimeend > (1276552800 + 15724800);
+    
+2024-10-11 14:25:07,368 - INFO - Retailer myrobotcenter-de: No affected products found.
+2024-10-11 14:25:07,370 - INFO - Processing retailer neuetischkultur-de with seal date UNIX 1303077600
+2024-10-11 14:25:07,370 - INFO - Executing query for retailer: neuetischkultur-de
+2024-10-11 14:25:07,370 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'neuetischkultur-de'
+        AND dtimebegin < (1303077600 - 31449600)
+        AND dtimeend > (1303077600 + 15724800);
+    
+2024-10-11 14:25:08,331 - INFO - Retailer neuetischkultur-de: No affected products found.
+2024-10-11 14:25:08,333 - INFO - Processing retailer norma24-de with seal date UNIX 1468360800
+2024-10-11 14:25:08,333 - INFO - Executing query for retailer: norma24-de
+2024-10-11 14:25:08,333 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'norma24-de'
+        AND dtimebegin < (1468360800 - 31449600)
+        AND dtimeend > (1468360800 + 15724800);
+    
+2024-10-11 14:25:10,123 - INFO - Retailer norma24-de: No affected products found.
+2024-10-11 14:25:10,125 - INFO - Processing retailer outzeit-at with seal date UNIX 1604271600
+2024-10-11 14:25:10,125 - INFO - Executing query for retailer: outzeit-at
+2024-10-11 14:25:10,125 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'outzeit-at'
+        AND dtimebegin < (1604271600 - 31449600)
+        AND dtimeend > (1604271600 + 15724800);
+    
+2024-10-11 14:25:23,791 - INFO - Retailer outzeit-at: No affected products found.
+2024-10-11 14:25:23,793 - INFO - Processing retailer parfimo-de with seal date UNIX 1591653600
+2024-10-11 14:25:23,793 - INFO - Executing query for retailer: parfimo-de
+2024-10-11 14:25:23,793 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'parfimo-de'
+        AND dtimebegin < (1591653600 - 31449600)
+        AND dtimeend > (1591653600 + 15724800);
+    
+2024-10-11 14:25:36,140 - INFO - Retailer parfimo-de: No affected products found.
+2024-10-11 14:25:36,142 - INFO - Processing retailer parfumzentrum-de with seal date UNIX 1505253600
+2024-10-11 14:25:36,142 - INFO - Executing query for retailer: parfumzentrum-de
+2024-10-11 14:25:36,142 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'parfumzentrum-de'
+        AND dtimebegin < (1505253600 - 31449600)
+        AND dtimeend > (1505253600 + 15724800);
+    
+2024-10-11 14:25:38,987 - INFO - shape: (1, 4)
+┌────────────┬──────────────────┬────────────┬────────────┐
+│ produkt_id ┆ haendler_bez     ┆ dtimebegin ┆ dtimeend   │
+│ ---        ┆ ---              ┆ ---        ┆ ---        │
+│ i32        ┆ str              ┆ i32        ┆ i32        │
+╞════════════╪══════════════════╪════════════╪════════════╡
+│ 1209746    ┆ parfumzentrum-de ┆ 1472176386 ┆ 1524204175 │
+└────────────┴──────────────────┴────────────┴────────────┘
+2024-10-11 14:25:38,991 - INFO - Retailer parfumzentrum-de: 1 unique products, 1 rows found.
+2024-10-11 14:25:38,995 - INFO - Processing retailer parfumdreams-de with seal date UNIX 1258326000
+2024-10-11 14:25:38,996 - INFO - Executing query for retailer: parfumdreams-de
+2024-10-11 14:25:38,996 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'parfumdreams-de'
+        AND dtimebegin < (1258326000 - 31449600)
+        AND dtimeend > (1258326000 + 15724800);
+    
+2024-10-11 14:25:39,687 - INFO - Retailer parfumdreams-de: No affected products found.
+2024-10-11 14:25:39,689 - INFO - Processing retailer passiontec-de with seal date UNIX 1146693600
+2024-10-11 14:25:39,689 - INFO - Executing query for retailer: passiontec-de
+2024-10-11 14:25:39,689 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'passiontec-de'
+        AND dtimebegin < (1146693600 - 31449600)
+        AND dtimeend > (1146693600 + 15724800);
+    
+2024-10-11 14:25:40,257 - INFO - Retailer passiontec-de: No affected products found.
+2024-10-11 14:25:40,257 - INFO - Processing retailer pflanzenkoelle-de with seal date UNIX 1460930400
+2024-10-11 14:25:40,258 - INFO - Executing query for retailer: pflanzenkoelle-de
+2024-10-11 14:25:40,258 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'pflanzenkoelle-de'
+        AND dtimebegin < (1460930400 - 31449600)
+        AND dtimeend > (1460930400 + 15724800);
+    
+2024-10-11 14:25:40,794 - INFO - Retailer pflanzenkoelle-de: No affected products found.
+2024-10-11 14:25:40,796 - INFO - Processing retailer poco-de with seal date UNIX 1385679600
+2024-10-11 14:25:40,796 - INFO - Executing query for retailer: poco-de
+2024-10-11 14:25:40,796 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'poco-de'
+        AND dtimebegin < (1385679600 - 31449600)
+        AND dtimeend > (1385679600 + 15724800);
+    
+2024-10-11 14:25:43,612 - INFO - Retailer poco-de: No affected products found.
+2024-10-11 14:25:43,614 - INFO - Processing retailer pollin-at with seal date UNIX 1323817200
+2024-10-11 14:25:43,614 - INFO - Executing query for retailer: pollin-at
+2024-10-11 14:25:43,615 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'pollin-at'
+        AND dtimebegin < (1323817200 - 31449600)
+        AND dtimeend > (1323817200 + 15724800);
+    
+2024-10-11 14:25:44,158 - INFO - Retailer pollin-at: No affected products found.
+2024-10-11 14:25:44,160 - INFO - Processing retailer porta-de with seal date UNIX 1309471200
+2024-10-11 14:25:44,160 - INFO - Executing query for retailer: porta-de
+2024-10-11 14:25:44,160 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'porta-de'
+        AND dtimebegin < (1309471200 - 31449600)
+        AND dtimeend > (1309471200 + 15724800);
+    
+2024-10-11 14:25:44,683 - INFO - Retailer porta-de: No affected products found.
+2024-10-11 14:25:44,684 - INFO - Processing retailer proidee-de with seal date UNIX 1146693600
+2024-10-11 14:25:44,684 - INFO - Executing query for retailer: proidee-de
+2024-10-11 14:25:44,684 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'proidee-de'
+        AND dtimebegin < (1146693600 - 31449600)
+        AND dtimeend > (1146693600 + 15724800);
+    
+2024-10-11 14:25:45,215 - INFO - Retailer proidee-de: No affected products found.
+2024-10-11 14:25:45,216 - INFO - Processing retailer quelle-de with seal date UNIX 1384729200
+2024-10-11 14:25:45,216 - INFO - Executing query for retailer: quelle-de
+2024-10-11 14:25:45,216 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'quelle-de'
+        AND dtimebegin < (1384729200 - 31449600)
+        AND dtimeend > (1384729200 + 15724800);
+    
+2024-10-11 14:25:47,603 - INFO - Retailer quelle-de: No affected products found.
+2024-10-11 14:25:47,605 - INFO - Processing retailer reifencom-de with seal date UNIX 1627855200
+2024-10-11 14:25:47,605 - INFO - Executing query for retailer: reifencom-de
+2024-10-11 14:25:47,605 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'reifencom-de'
+        AND dtimebegin < (1627855200 - 31449600)
+        AND dtimeend > (1627855200 + 15724800);
+    
+2024-10-11 14:25:58,948 - INFO - Retailer reifencom-de: No affected products found.
+2024-10-11 14:25:58,950 - INFO - Processing retailer reifendirekt-de with seal date UNIX 1646348400
+2024-10-11 14:25:58,950 - INFO - Executing query for retailer: reifendirekt-de
+2024-10-11 14:25:58,950 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'reifendirekt-de'
+        AND dtimebegin < (1646348400 - 31449600)
+        AND dtimeend > (1646348400 + 15724800);
+    
+2024-10-11 14:26:08,546 - INFO - Retailer reifendirekt-de: No affected products found.
+2024-10-11 14:26:08,547 - INFO - Processing retailer reifenshop-at with seal date UNIX 1627855200
+2024-10-11 14:26:08,547 - INFO - Executing query for retailer: reifenshop-at
+2024-10-11 14:26:08,548 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'reifenshop-at'
+        AND dtimebegin < (1627855200 - 31449600)
+        AND dtimeend > (1627855200 + 15724800);
+    
+2024-10-11 14:26:19,438 - INFO - Retailer reifenshop-at: No affected products found.
+2024-10-11 14:26:19,440 - INFO - Processing retailer sackundpack-de with seal date UNIX 1000677600
+2024-10-11 14:26:19,440 - INFO - Executing query for retailer: sackundpack-de
+2024-10-11 14:26:19,440 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'sackundpack-de'
+        AND dtimebegin < (1000677600 - 31449600)
+        AND dtimeend > (1000677600 + 15724800);
+    
+2024-10-11 14:26:20,021 - INFO - Retailer sackundpack-de: No affected products found.
+2024-10-11 14:26:20,022 - INFO - Processing retailer sportland-de with seal date UNIX 1025820000
+2024-10-11 14:26:20,022 - INFO - Executing query for retailer: sportland-de
+2024-10-11 14:26:20,022 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'sportland-de'
+        AND dtimebegin < (1025820000 - 31449600)
+        AND dtimeend > (1025820000 + 15724800);
+    
+2024-10-11 14:26:20,584 - INFO - Retailer sportland-de: No affected products found.
+2024-10-11 14:26:20,585 - INFO - Processing retailer schecker-de with seal date UNIX 1274738400
+2024-10-11 14:26:20,585 - INFO - Executing query for retailer: schecker-de
+2024-10-11 14:26:20,585 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'schecker-de'
+        AND dtimebegin < (1274738400 - 31449600)
+        AND dtimeend > (1274738400 + 15724800);
+    
+2024-10-11 14:26:21,395 - INFO - Retailer schecker-de: No affected products found.
+2024-10-11 14:26:21,397 - INFO - Processing retailer schiebetuerenprofi-de with seal date UNIX 1490824800
+2024-10-11 14:26:21,397 - INFO - Executing query for retailer: schiebetuerenprofi-de
+2024-10-11 14:26:21,397 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'schiebetuerenprofi-de'
+        AND dtimebegin < (1490824800 - 31449600)
+        AND dtimeend > (1490824800 + 15724800);
+    
+2024-10-11 14:26:24,141 - INFO - Retailer schiebetuerenprofi-de: No affected products found.
+2024-10-11 14:26:24,143 - INFO - Processing retailer solarprofi24-de with seal date UNIX 1369346400
+2024-10-11 14:26:24,143 - INFO - Executing query for retailer: solarprofi24-de
+2024-10-11 14:26:24,143 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'solarprofi24-de'
+        AND dtimebegin < (1369346400 - 31449600)
+        AND dtimeend > (1369346400 + 15724800);
+    
+2024-10-11 14:26:25,982 - INFO - Retailer solarprofi24-de: No affected products found.
+2024-10-11 14:26:25,984 - INFO - Processing retailer sonono-de with seal date UNIX 1570744800
+2024-10-11 14:26:25,984 - INFO - Executing query for retailer: sonono-de
+2024-10-11 14:26:25,984 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'sonono-de'
+        AND dtimebegin < (1570744800 - 31449600)
+        AND dtimeend > (1570744800 + 15724800);
+    
+2024-10-11 14:26:37,698 - INFO - Retailer sonono-de: No affected products found.
+2024-10-11 14:26:37,701 - INFO - Processing retailer soundsystems-de with seal date UNIX 1355439600
+2024-10-11 14:26:37,701 - INFO - Executing query for retailer: soundsystems-de
+2024-10-11 14:26:37,701 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'soundsystems-de'
+        AND dtimebegin < (1355439600 - 31449600)
+        AND dtimeend > (1355439600 + 15724800);
+    
+2024-10-11 14:26:39,050 - INFO - Retailer soundsystems-de: No affected products found.
+2024-10-11 14:26:39,052 - INFO - Processing retailer smdv-de with seal date UNIX 1227222000
+2024-10-11 14:26:39,052 - INFO - Executing query for retailer: smdv-de
+2024-10-11 14:26:39,052 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'smdv-de'
+        AND dtimebegin < (1227222000 - 31449600)
+        AND dtimeend > (1227222000 + 15724800);
+    
+2024-10-11 14:26:39,804 - INFO - Retailer smdv-de: No affected products found.
+2024-10-11 14:26:39,806 - INFO - Processing retailer sportthieme-de with seal date UNIX 1197241200
+2024-10-11 14:26:39,806 - INFO - Executing query for retailer: sportthieme-de
+2024-10-11 14:26:39,806 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'sportthieme-de'
+        AND dtimebegin < (1197241200 - 31449600)
+        AND dtimeend > (1197241200 + 15724800);
+    
+2024-10-11 14:26:40,390 - INFO - Retailer sportthieme-de: No affected products found.
+2024-10-11 14:26:40,391 - INFO - Processing retailer sportscheck-at with seal date UNIX 1434924000
+2024-10-11 14:26:40,391 - INFO - Executing query for retailer: sportscheck-at
+2024-10-11 14:26:40,392 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'sportscheck-at'
+        AND dtimebegin < (1434924000 - 31449600)
+        AND dtimeend > (1434924000 + 15724800);
+    
+2024-10-11 14:26:40,938 - INFO - Retailer sportscheck-at: No affected products found.
+2024-10-11 14:26:40,939 - INFO - Processing retailer steckplatz-de with seal date UNIX 1487286000
+2024-10-11 14:26:40,939 - INFO - Executing query for retailer: steckplatz-de
+2024-10-11 14:26:40,939 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'steckplatz-de'
+        AND dtimebegin < (1487286000 - 31449600)
+        AND dtimeend > (1487286000 + 15724800);
+    
+2024-10-11 14:26:43,205 - INFO - Retailer steckplatz-de: No affected products found.
+2024-10-11 14:26:43,207 - INFO - Processing retailer studiobedarf24-de with seal date UNIX 1445900400
+2024-10-11 14:26:43,207 - INFO - Executing query for retailer: studiobedarf24-de
+2024-10-11 14:26:43,207 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'studiobedarf24-de'
+        AND dtimebegin < (1445900400 - 31449600)
+        AND dtimeend > (1445900400 + 15724800);
+    
+2024-10-11 14:26:43,786 - INFO - Retailer studiobedarf24-de: No affected products found.
+2024-10-11 14:26:43,788 - INFO - Processing retailer svh24-de with seal date UNIX 1229468400
+2024-10-11 14:26:43,788 - INFO - Executing query for retailer: svh24-de
+2024-10-11 14:26:43,788 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'svh24-de'
+        AND dtimebegin < (1229468400 - 31449600)
+        AND dtimeend > (1229468400 + 15724800);
+    
+2024-10-11 14:26:44,502 - INFO - Retailer svh24-de: No affected products found.
+2024-10-11 14:26:44,504 - INFO - Processing retailer tbsaachen-de with seal date UNIX 1317765600
+2024-10-11 14:26:44,504 - INFO - Executing query for retailer: tbsaachen-de
+2024-10-11 14:26:44,504 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'tbsaachen-de'
+        AND dtimebegin < (1317765600 - 31449600)
+        AND dtimeend > (1317765600 + 15724800);
+    
+2024-10-11 14:26:45,101 - INFO - Retailer tbsaachen-de: No affected products found.
+2024-10-11 14:26:45,103 - INFO - Processing retailer tchibo-at with seal date UNIX 973206000
+2024-10-11 14:26:45,104 - INFO - Executing query for retailer: tchibo-at
+2024-10-11 14:26:45,104 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'tchibo-at'
+        AND dtimebegin < (973206000 - 31449600)
+        AND dtimeend > (973206000 + 15724800);
+    
+2024-10-11 14:26:45,650 - INFO - Retailer tchibo-at: No affected products found.
+2024-10-11 14:26:45,652 - INFO - Processing retailer tecedo-de with seal date UNIX 1318888800
+2024-10-11 14:26:45,652 - INFO - Executing query for retailer: tecedo-de
+2024-10-11 14:26:45,652 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'tecedo-de'
+        AND dtimebegin < (1318888800 - 31449600)
+        AND dtimeend > (1318888800 + 15724800);
+    
+2024-10-11 14:26:46,210 - INFO - Retailer tecedo-de: No affected products found.
+2024-10-11 14:26:46,211 - INFO - Processing retailer tectake-de with seal date UNIX 1450306800
+2024-10-11 14:26:46,211 - INFO - Executing query for retailer: tectake-de
+2024-10-11 14:26:46,211 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'tectake-de'
+        AND dtimebegin < (1450306800 - 31449600)
+        AND dtimeend > (1450306800 + 15724800);
+    
+2024-10-11 14:26:46,797 - INFO - Retailer tectake-de: No affected products found.
+2024-10-11 14:26:46,798 - INFO - Processing retailer teddytoys-de with seal date UNIX 1474322400
+2024-10-11 14:26:46,798 - INFO - Executing query for retailer: teddytoys-de
+2024-10-11 14:26:46,798 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'teddytoys-de'
+        AND dtimebegin < (1474322400 - 31449600)
+        AND dtimeend > (1474322400 + 15724800);
+    
+2024-10-11 14:26:48,850 - INFO - Retailer teddytoys-de: No affected products found.
+2024-10-11 14:26:48,852 - INFO - Processing retailer terrashop-de with seal date UNIX 1100646000
+2024-10-11 14:26:48,852 - INFO - Executing query for retailer: terrashop-de
+2024-10-11 14:26:48,852 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'terrashop-de'
+        AND dtimebegin < (1100646000 - 31449600)
+        AND dtimeend > (1100646000 + 15724800);
+    
+2024-10-11 14:26:49,442 - INFO - Retailer terrashop-de: No affected products found.
+2024-10-11 14:26:49,443 - INFO - Processing retailer terrawin-de with seal date UNIX 1652047200
+2024-10-11 14:26:49,443 - INFO - Executing query for retailer: terrawin-de
+2024-10-11 14:26:49,443 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'terrawin-de'
+        AND dtimebegin < (1652047200 - 31449600)
+        AND dtimeend > (1652047200 + 15724800);
+    
+2024-10-11 14:26:58,302 - INFO - Retailer terrawin-de: No affected products found.
+2024-10-11 14:26:58,304 - INFO - Processing retailer timetex-de with seal date UNIX 1379368800
+2024-10-11 14:26:58,304 - INFO - Executing query for retailer: timetex-de
+2024-10-11 14:26:58,305 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'timetex-de'
+        AND dtimebegin < (1379368800 - 31449600)
+        AND dtimeend > (1379368800 + 15724800);
+    
+2024-10-11 14:27:00,492 - INFO - Retailer timetex-de: No affected products found.
+2024-10-11 14:27:00,494 - INFO - Processing retailer tirendo-de with seal date UNIX 1646348400
+2024-10-11 14:27:00,494 - INFO - Executing query for retailer: tirendo-de
+2024-10-11 14:27:00,495 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'tirendo-de'
+        AND dtimebegin < (1646348400 - 31449600)
+        AND dtimeend > (1646348400 + 15724800);
+    
+2024-10-11 14:27:10,506 - INFO - Retailer tirendo-de: No affected products found.
+2024-10-11 14:27:10,508 - INFO - Processing retailer tiroled-at with seal date UNIX 1459288800
+2024-10-11 14:27:10,508 - INFO - Executing query for retailer: tiroled-at
+2024-10-11 14:27:10,508 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'tiroled-at'
+        AND dtimebegin < (1459288800 - 31449600)
+        AND dtimeend > (1459288800 + 15724800);
+    
+2024-10-11 14:27:11,034 - INFO - Retailer tiroled-at: No affected products found.
+2024-10-11 14:27:11,035 - INFO - Processing retailer tonermacher-de with seal date UNIX 1331766000
+2024-10-11 14:27:11,035 - INFO - Executing query for retailer: tonermacher-de
+2024-10-11 14:27:11,035 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'tonermacher-de'
+        AND dtimebegin < (1331766000 - 31449600)
+        AND dtimeend > (1331766000 + 15724800);
+    
+2024-10-11 14:27:11,600 - INFO - Retailer tonermacher-de: No affected products found.
+2024-10-11 14:27:11,602 - INFO - Processing retailer tonersupermarkt-de with seal date UNIX 1362006000
+2024-10-11 14:27:11,602 - INFO - Executing query for retailer: tonersupermarkt-de
+2024-10-11 14:27:11,602 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'tonersupermarkt-de'
+        AND dtimebegin < (1362006000 - 31449600)
+        AND dtimeend > (1362006000 + 15724800);
+    
+2024-10-11 14:27:13,197 - INFO - Retailer tonersupermarkt-de: No affected products found.
+2024-10-11 14:27:13,199 - INFO - Processing retailer toolineo-de with seal date UNIX 1466028000
+2024-10-11 14:27:13,199 - INFO - Executing query for retailer: toolineo-de
+2024-10-11 14:27:13,199 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'toolineo-de'
+        AND dtimebegin < (1466028000 - 31449600)
+        AND dtimeend > (1466028000 + 15724800);
+    
+2024-10-11 14:27:14,460 - INFO - Retailer toolineo-de: No affected products found.
+2024-10-11 14:27:14,462 - INFO - Processing retailer torroshop-de with seal date UNIX 1375653600
+2024-10-11 14:27:14,462 - INFO - Executing query for retailer: torroshop-de
+2024-10-11 14:27:14,462 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'torroshop-de'
+        AND dtimebegin < (1375653600 - 31449600)
+        AND dtimeend > (1375653600 + 15724800);
+    
+2024-10-11 14:27:16,301 - INFO - Retailer torroshop-de: No affected products found.
+2024-10-11 14:27:16,302 - INFO - Processing retailer trigema-de with seal date UNIX 1269298800
+2024-10-11 14:27:16,303 - INFO - Executing query for retailer: trigema-de
+2024-10-11 14:27:16,303 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'trigema-de'
+        AND dtimebegin < (1269298800 - 31449600)
+        AND dtimeend > (1269298800 + 15724800);
+    
+2024-10-11 14:27:17,175 - INFO - Retailer trigema-de: No affected products found.
+2024-10-11 14:27:17,177 - INFO - Processing retailer uhrcenter-de with seal date UNIX 1200783600
+2024-10-11 14:27:17,177 - INFO - Executing query for retailer: uhrcenter-de
+2024-10-11 14:27:17,177 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'uhrcenter-de'
+        AND dtimebegin < (1200783600 - 31449600)
+        AND dtimeend > (1200783600 + 15724800);
+    
+2024-10-11 14:27:17,807 - INFO - Retailer uhrcenter-de: No affected products found.
+2024-10-11 14:27:17,809 - INFO - Processing retailer uhrendirect-de with seal date UNIX 1004482800
+2024-10-11 14:27:17,809 - INFO - Executing query for retailer: uhrendirect-de
+2024-10-11 14:27:17,809 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'uhrendirect-de'
+        AND dtimebegin < (1004482800 - 31449600)
+        AND dtimeend > (1004482800 + 15724800);
+    
+2024-10-11 14:27:18,396 - INFO - Retailer uhrendirect-de: No affected products found.
+2024-10-11 14:27:18,397 - INFO - Processing retailer uhrenhandel-de with seal date UNIX 1078786800
+2024-10-11 14:27:18,397 - INFO - Executing query for retailer: uhrenhandel-de
+2024-10-11 14:27:18,397 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'uhrenhandel-de'
+        AND dtimebegin < (1078786800 - 31449600)
+        AND dtimeend > (1078786800 + 15724800);
+    
+2024-10-11 14:27:18,975 - INFO - Retailer uhrenhandel-de: No affected products found.
+2024-10-11 14:27:18,976 - INFO - Processing retailer vamosschuhe-de with seal date UNIX 1301007600
+2024-10-11 14:27:18,976 - INFO - Executing query for retailer: vamosschuhe-de
+2024-10-11 14:27:18,976 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'vamosschuhe-de'
+        AND dtimebegin < (1301007600 - 31449600)
+        AND dtimeend > (1301007600 + 15724800);
+    
+2024-10-11 14:27:19,951 - INFO - Retailer vamosschuhe-de: No affected products found.
+2024-10-11 14:27:19,953 - INFO - Processing retailer vbshobby-at with seal date UNIX 1303768800
+2024-10-11 14:27:19,953 - INFO - Executing query for retailer: vbshobby-at
+2024-10-11 14:27:19,953 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'vbshobby-at'
+        AND dtimebegin < (1303768800 - 31449600)
+        AND dtimeend > (1303768800 + 15724800);
+    
+2024-10-11 14:27:20,965 - INFO - Retailer vbshobby-at: No affected products found.
+2024-10-11 14:27:20,968 - INFO - Processing retailer vertbaudet-de with seal date UNIX 1390258800
+2024-10-11 14:27:20,968 - INFO - Executing query for retailer: vertbaudet-de
+2024-10-11 14:27:20,968 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'vertbaudet-de'
+        AND dtimebegin < (1390258800 - 31449600)
+        AND dtimeend > (1390258800 + 15724800);
+    
+2024-10-11 14:27:23,864 - INFO - Retailer vertbaudet-de: No affected products found.
+2024-10-11 14:27:23,866 - INFO - Processing retailer vivara-de with seal date UNIX 1392850800
+2024-10-11 14:27:23,866 - INFO - Executing query for retailer: vivara-de
+2024-10-11 14:27:23,866 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'vivara-de'
+        AND dtimebegin < (1392850800 - 31449600)
+        AND dtimeend > (1392850800 + 15724800);
+    
+2024-10-11 14:27:26,568 - INFO - Retailer vivara-de: No affected products found.
+2024-10-11 14:27:26,570 - INFO - Processing retailer voelkner-de with seal date UNIX 1218578400
+2024-10-11 14:27:26,570 - INFO - Executing query for retailer: voelkner-de
+2024-10-11 14:27:26,570 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'voelkner-de'
+        AND dtimebegin < (1218578400 - 31449600)
+        AND dtimeend > (1218578400 + 15724800);
+    
+2024-10-11 14:27:27,250 - INFO - Retailer voelkner-de: No affected products found.
+2024-10-11 14:27:27,252 - INFO - Processing retailer walzvital-de with seal date UNIX 1406152800
+2024-10-11 14:27:27,252 - INFO - Executing query for retailer: walzvital-de
+2024-10-11 14:27:27,252 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'walzvital-de'
+        AND dtimebegin < (1406152800 - 31449600)
+        AND dtimeend > (1406152800 + 15724800);
+    
+2024-10-11 14:27:30,435 - INFO - Retailer walzvital-de: No affected products found.
+2024-10-11 14:27:30,437 - INFO - Processing retailer warmwassershop-de with seal date UNIX 1524607200
+2024-10-11 14:27:30,437 - INFO - Executing query for retailer: warmwassershop-de
+2024-10-11 14:27:30,437 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'warmwassershop-de'
+        AND dtimebegin < (1524607200 - 31449600)
+        AND dtimeend > (1524607200 + 15724800);
+    
+2024-10-11 14:27:35,767 - INFO - Retailer warmwassershop-de: No affected products found.
+2024-10-11 14:27:35,769 - INFO - Processing retailer waschbaer-de with seal date UNIX 1492034400
+2024-10-11 14:27:35,769 - INFO - Executing query for retailer: waschbaer-de
+2024-10-11 14:27:35,769 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'waschbaer-de'
+        AND dtimebegin < (1492034400 - 31449600)
+        AND dtimeend > (1492034400 + 15724800);
+    
+2024-10-11 14:27:38,164 - INFO - shape: (1, 4)
+┌────────────┬──────────────┬────────────┬────────────┐
+│ produkt_id ┆ haendler_bez ┆ dtimebegin ┆ dtimeend   │
+│ ---        ┆ ---          ┆ ---        ┆ ---        │
+│ i32        ┆ str          ┆ i32        ┆ i32        │
+╞════════════╪══════════════╪════════════╪════════════╡
+│ 1062822    ┆ waschbaer-de ┆ 1453195315 ┆ 1532316634 │
+└────────────┴──────────────┴────────────┴────────────┘
+2024-10-11 14:27:38,168 - INFO - Retailer waschbaer-de: 1 unique products, 1 rows found.
+2024-10-11 14:27:38,171 - INFO - Processing retailer weinfreunde-de with seal date UNIX 1461708000
+2024-10-11 14:27:38,171 - INFO - Executing query for retailer: weinfreunde-de
+2024-10-11 14:27:38,171 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'weinfreunde-de'
+        AND dtimebegin < (1461708000 - 31449600)
+        AND dtimeend > (1461708000 + 15724800);
+    
+2024-10-11 14:27:38,738 - INFO - Retailer weinfreunde-de: No affected products found.
+2024-10-11 14:27:38,739 - INFO - Processing retailer wellsana-de with seal date UNIX 1303768800
+2024-10-11 14:27:38,739 - INFO - Executing query for retailer: wellsana-de
+2024-10-11 14:27:38,739 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'wellsana-de'
+        AND dtimebegin < (1303768800 - 31449600)
+        AND dtimeend > (1303768800 + 15724800);
+    
+2024-10-11 14:27:39,708 - INFO - Retailer wellsana-de: No affected products found.
+2024-10-11 14:27:39,710 - INFO - Processing retailer wenz-de with seal date UNIX 1118786400
+2024-10-11 14:27:39,710 - INFO - Executing query for retailer: wenz-de
+2024-10-11 14:27:39,710 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'wenz-de'
+        AND dtimebegin < (1118786400 - 31449600)
+        AND dtimeend > (1118786400 + 15724800);
+    
+2024-10-11 14:27:40,294 - INFO - Retailer wenz-de: No affected products found.
+2024-10-11 14:27:40,295 - INFO - Processing retailer wintersportexpress-de with seal date UNIX 1543532400
+2024-10-11 14:27:40,295 - INFO - Executing query for retailer: wintersportexpress-de
+2024-10-11 14:27:40,295 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'wintersportexpress-de'
+        AND dtimebegin < (1543532400 - 31449600)
+        AND dtimeend > (1543532400 + 15724800);
+    
+2024-10-11 14:27:48,642 - INFO - Retailer wintersportexpress-de: No affected products found.
+2024-10-11 14:27:48,644 - INFO - Processing retailer wmf-de with seal date UNIX 1279749600
+2024-10-11 14:27:48,644 - INFO - Executing query for retailer: wmf-de
+2024-10-11 14:27:48,644 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'wmf-de'
+        AND dtimebegin < (1279749600 - 31449600)
+        AND dtimeend > (1279749600 + 15724800);
+    
+2024-10-11 14:27:49,543 - INFO - Retailer wmf-de: No affected products found.
+2024-10-11 14:27:49,545 - INFO - Processing retailer calmwaters-de with seal date UNIX 1469570400
+2024-10-11 14:27:49,545 - INFO - Executing query for retailer: calmwaters-de
+2024-10-11 14:27:49,545 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'calmwaters-de'
+        AND dtimebegin < (1469570400 - 31449600)
+        AND dtimeend > (1469570400 + 15724800);
+    
+2024-10-11 14:27:51,305 - INFO - Retailer calmwaters-de: No affected products found.
+2024-10-11 14:27:51,307 - INFO - Processing retailer frankonia-de with seal date UNIX 1382047200
+2024-10-11 14:27:51,307 - INFO - Executing query for retailer: frankonia-de
+2024-10-11 14:27:51,307 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'frankonia-de'
+        AND dtimebegin < (1382047200 - 31449600)
+        AND dtimeend > (1382047200 + 15724800);
+    
+2024-10-11 14:27:53,406 - INFO - Retailer frankonia-de: No affected products found.
+2024-10-11 14:27:53,408 - INFO - Processing retailer massjalousiencom-at with seal date UNIX 1494367200
+2024-10-11 14:27:53,408 - INFO - Executing query for retailer: massjalousiencom-at
+2024-10-11 14:27:53,408 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'massjalousiencom-at'
+        AND dtimebegin < (1494367200 - 31449600)
+        AND dtimeend > (1494367200 + 15724800);
+    
+2024-10-11 14:27:56,089 - INFO - Retailer massjalousiencom-at: No affected products found.
+2024-10-11 14:27:56,091 - INFO - Processing retailer zooplus-de with seal date UNIX 1119823200
+2024-10-11 14:27:56,091 - INFO - Executing query for retailer: zooplus-de
+2024-10-11 14:27:56,091 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'zooplus-de'
+        AND dtimebegin < (1119823200 - 31449600)
+        AND dtimeend > (1119823200 + 15724800);
+    
+2024-10-11 14:27:56,677 - INFO - Retailer zooplus-de: No affected products found.
+2024-10-11 14:27:56,679 - INFO - Processing retailer letsdoit-at with seal date UNIX 1649628000
+2024-10-11 14:27:56,680 - INFO - Executing query for retailer: letsdoit-at
+2024-10-11 14:27:56,680 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'letsdoit-at'
+        AND dtimebegin < (1649628000 - 31449600)
+        AND dtimeend > (1649628000 + 15724800);
+    
+2024-10-11 14:28:05,280 - INFO - Retailer letsdoit-at: No affected products found.
+2024-10-11 14:28:05,282 - INFO - Processing retailer aboutyou-at with seal date UNIX 1474840800
+2024-10-11 14:28:05,282 - INFO - Executing query for retailer: aboutyou-at
+2024-10-11 14:28:05,282 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'aboutyou-at'
+        AND dtimebegin < (1474840800 - 31449600)
+        AND dtimeend > (1474840800 + 15724800);
+    
+2024-10-11 14:28:06,986 - INFO - Retailer aboutyou-at: No affected products found.
+2024-10-11 14:28:06,988 - INFO - Processing retailer eleonto-at with seal date UNIX 1586815200
+2024-10-11 14:28:06,988 - INFO - Executing query for retailer: eleonto-at
+2024-10-11 14:28:06,988 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'eleonto-at'
+        AND dtimebegin < (1586815200 - 31449600)
+        AND dtimeend > (1586815200 + 15724800);
+    
+2024-10-11 14:28:19,572 - INFO - Retailer eleonto-at: No affected products found.
+2024-10-11 14:28:19,574 - INFO - Processing retailer bauhaus-at with seal date UNIX 1612134000
+2024-10-11 14:28:19,574 - INFO - Executing query for retailer: bauhaus-at
+2024-10-11 14:28:19,574 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'bauhaus-at'
+        AND dtimebegin < (1612134000 - 31449600)
+        AND dtimeend > (1612134000 + 15724800);
+    
+2024-10-11 14:28:29,962 - INFO - Retailer bauhaus-at: No affected products found.
+2024-10-11 14:28:29,964 - INFO - Processing retailer bipa-at with seal date UNIX 1347573600
+2024-10-11 14:28:29,965 - INFO - Executing query for retailer: bipa-at
+2024-10-11 14:28:29,965 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'bipa-at'
+        AND dtimebegin < (1347573600 - 31449600)
+        AND dtimeend > (1347573600 + 15724800);
+    
+2024-10-11 14:28:30,524 - INFO - Retailer bipa-at: No affected products found.
+2024-10-11 14:28:30,526 - INFO - Processing retailer brigittesalzburg-at with seal date UNIX 958428000
+2024-10-11 14:28:30,526 - INFO - Executing query for retailer: brigittesalzburg-at
+2024-10-11 14:28:30,526 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'brigittesalzburg-at'
+        AND dtimebegin < (958428000 - 31449600)
+        AND dtimeend > (958428000 + 15724800);
+    
+2024-10-11 14:28:31,059 - INFO - Retailer brigittesalzburg-at: No affected products found.
+2024-10-11 14:28:31,060 - INFO - Processing retailer bsh-at with seal date UNIX 1622584800
+2024-10-11 14:28:31,060 - INFO - Executing query for retailer: bsh-at
+2024-10-11 14:28:31,060 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'bsh-at'
+        AND dtimebegin < (1622584800 - 31449600)
+        AND dtimeend > (1622584800 + 15724800);
+    
+2024-10-11 14:28:41,482 - INFO - Retailer bsh-at: No affected products found.
+2024-10-11 14:28:41,484 - INFO - Processing retailer siemensbsh-at with seal date UNIX 1649196000
+2024-10-11 14:28:41,484 - INFO - Executing query for retailer: siemensbsh-at
+2024-10-11 14:28:41,484 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'siemensbsh-at'
+        AND dtimebegin < (1649196000 - 31449600)
+        AND dtimeend > (1649196000 + 15724800);
+    
+2024-10-11 14:28:50,450 - INFO - Retailer siemensbsh-at: No affected products found.
+2024-10-11 14:28:50,452 - INFO - Processing retailer christ-at with seal date UNIX 1567029600
+2024-10-11 14:28:50,452 - INFO - Executing query for retailer: christ-at
+2024-10-11 14:28:50,452 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'christ-at'
+        AND dtimebegin < (1567029600 - 31449600)
+        AND dtimeend > (1567029600 + 15724800);
+    
+2024-10-11 14:29:01,356 - INFO - Retailer christ-at: No affected products found.
+2024-10-11 14:29:01,359 - INFO - Processing retailer prokopp-at with seal date UNIX 1398636000
+2024-10-11 14:29:01,359 - INFO - Executing query for retailer: prokopp-at
+2024-10-11 14:29:01,359 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'prokopp-at'
+        AND dtimebegin < (1398636000 - 31449600)
+        AND dtimeend > (1398636000 + 15724800);
+    
+2024-10-11 14:29:04,208 - INFO - Retailer prokopp-at: No affected products found.
+2024-10-11 14:29:04,210 - INFO - Processing retailer conrad-at with seal date UNIX 969400800
+2024-10-11 14:29:04,210 - INFO - Executing query for retailer: conrad-at
+2024-10-11 14:29:04,210 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'conrad-at'
+        AND dtimebegin < (969400800 - 31449600)
+        AND dtimeend > (969400800 + 15724800);
+    
+2024-10-11 14:29:04,750 - INFO - Retailer conrad-at: No affected products found.
+2024-10-11 14:29:04,751 - INFO - Processing retailer cosmeticexpress-at with seal date UNIX 1552431600
+2024-10-11 14:29:04,751 - INFO - Executing query for retailer: cosmeticexpress-at
+2024-10-11 14:29:04,751 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'cosmeticexpress-at'
+        AND dtimebegin < (1552431600 - 31449600)
+        AND dtimeend > (1552431600 + 15724800);
+    
+2024-10-11 14:29:14,069 - INFO - Retailer cosmeticexpress-at: No affected products found.
+2024-10-11 14:29:14,070 - INFO - Processing retailer deichmann-at with seal date UNIX 1317247200
+2024-10-11 14:29:14,070 - INFO - Executing query for retailer: deichmann-at
+2024-10-11 14:29:14,071 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'deichmann-at'
+        AND dtimebegin < (1317247200 - 31449600)
+        AND dtimeend > (1317247200 + 15724800);
+    
+2024-10-11 14:29:14,657 - INFO - Retailer deichmann-at: No affected products found.
+2024-10-11 14:29:14,658 - INFO - Processing retailer eis-at with seal date UNIX 1603404000
+2024-10-11 14:29:14,658 - INFO - Executing query for retailer: eis-at
+2024-10-11 14:29:14,658 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'eis-at'
+        AND dtimebegin < (1603404000 - 31449600)
+        AND dtimeend > (1603404000 + 15724800);
+    
+2024-10-11 14:29:29,270 - INFO - Retailer eis-at: No affected products found.
+2024-10-11 14:29:29,272 - INFO - Processing retailer gigasport-at with seal date UNIX 1428876000
+2024-10-11 14:29:29,272 - INFO - Executing query for retailer: gigasport-at
+2024-10-11 14:29:29,272 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'gigasport-at'
+        AND dtimebegin < (1428876000 - 31449600)
+        AND dtimeend > (1428876000 + 15724800);
+    
+2024-10-11 14:29:29,846 - INFO - Retailer gigasport-at: No affected products found.
+2024-10-11 14:29:29,847 - INFO - Processing retailer hartlauer-at with seal date UNIX 972338400
+2024-10-11 14:29:29,847 - INFO - Executing query for retailer: hartlauer-at
+2024-10-11 14:29:29,847 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'hartlauer-at'
+        AND dtimebegin < (972338400 - 31449600)
+        AND dtimeend > (972338400 + 15724800);
+    
+2024-10-11 14:29:30,390 - INFO - Retailer hartlauer-at: No affected products found.
+2024-10-11 14:29:30,391 - INFO - Processing retailer heimwerkertools-at with seal date UNIX 1601330400
+2024-10-11 14:29:30,391 - INFO - Executing query for retailer: heimwerkertools-at
+2024-10-11 14:29:30,391 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'heimwerkertools-at'
+        AND dtimebegin < (1601330400 - 31449600)
+        AND dtimeend > (1601330400 + 15724800);
+    
+2024-10-11 14:29:44,451 - INFO - Retailer heimwerkertools-at: No affected products found.
+2024-10-11 14:29:44,453 - INFO - Processing retailer heine-de with seal date UNIX 966895200
+2024-10-11 14:29:44,453 - INFO - Executing query for retailer: heine-de
+2024-10-11 14:29:44,453 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'heine-de'
+        AND dtimebegin < (966895200 - 31449600)
+        AND dtimeend > (966895200 + 15724800);
+    
+2024-10-11 14:29:45,003 - INFO - Retailer heine-de: No affected products found.
+2024-10-11 14:29:45,004 - INFO - Processing retailer hse-at with seal date UNIX 948841200
+2024-10-11 14:29:45,004 - INFO - Executing query for retailer: hse-at
+2024-10-11 14:29:45,004 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'hse-at'
+        AND dtimebegin < (948841200 - 31449600)
+        AND dtimeend > (948841200 + 15724800);
+    
+2024-10-11 14:29:45,542 - INFO - Retailer hse-at: No affected products found.
+2024-10-11 14:29:45,543 - INFO - Processing retailer hornbachoesterreich-at with seal date UNIX 1417388400
+2024-10-11 14:29:45,543 - INFO - Executing query for retailer: hornbachoesterreich-at
+2024-10-11 14:29:45,543 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'hornbachoesterreich-at'
+        AND dtimebegin < (1417388400 - 31449600)
+        AND dtimeend > (1417388400 + 15724800);
+    
+2024-10-11 14:29:49,535 - INFO - shape: (14, 4)
+┌────────────┬────────────────────────┬────────────┬────────────┐
+│ produkt_id ┆ haendler_bez           ┆ dtimebegin ┆ dtimeend   │
+│ ---        ┆ ---                    ┆ ---        ┆ ---        │
+│ i32        ┆ str                    ┆ i32        ┆ i32        │
+╞════════════╪════════════════════════╪════════════╪════════════╡
+│ 908762     ┆ hornbachoesterreich-at ┆ 1364029507 ┆ 1433769420 │
+│ 856811     ┆ hornbachoesterreich-at ┆ 1369861245 ┆ 1433769420 │
+│ 682506     ┆ hornbachoesterreich-at ┆ 1370610857 ┆ 1433769420 │
+│ 682510     ┆ hornbachoesterreich-at ┆ 1370610857 ┆ 1433769420 │
+│ 682511     ┆ hornbachoesterreich-at ┆ 1370610857 ┆ 1433769420 │
+│ …          ┆ …                      ┆ …          ┆ …          │
+│ 436316     ┆ hornbachoesterreich-at ┆ 1374129606 ┆ 1433769420 │
+│ 533044     ┆ hornbachoesterreich-at ┆ 1380178760 ┆ 1433769420 │
+│ 1010248    ┆ hornbachoesterreich-at ┆ 1380741458 ┆ 1433330928 │
+│ 971239     ┆ hornbachoesterreich-at ┆ 1382783009 ┆ 1433769420 │
+│ 1029620    ┆ hornbachoesterreich-at ┆ 1383932067 ┆ 1433421641 │
+└────────────┴────────────────────────┴────────────┴────────────┘
+2024-10-11 14:29:49,538 - INFO - Retailer hornbachoesterreich-at: 14 unique products, 14 rows found.
+2024-10-11 14:29:49,540 - INFO - Processing retailer ikea-at with seal date UNIX 1308002400
+2024-10-11 14:29:49,540 - INFO - Executing query for retailer: ikea-at
+2024-10-11 14:29:49,540 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'ikea-at'
+        AND dtimebegin < (1308002400 - 31449600)
+        AND dtimeend > (1308002400 + 15724800);
+    
+2024-10-11 14:29:50,158 - INFO - Retailer ikea-at: No affected products found.
+2024-10-11 14:29:50,160 - INFO - Processing retailer digiwelt-at with seal date UNIX 967845600
+2024-10-11 14:29:50,160 - INFO - Executing query for retailer: digiwelt-at
+2024-10-11 14:29:50,160 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'digiwelt-at'
+        AND dtimebegin < (967845600 - 31449600)
+        AND dtimeend > (967845600 + 15724800);
+    
+2024-10-11 14:29:50,710 - INFO - Retailer digiwelt-at: No affected products found.
+2024-10-11 14:29:50,711 - INFO - Processing retailer intersport-at with seal date UNIX 1296514800
+2024-10-11 14:29:50,711 - INFO - Executing query for retailer: intersport-at
+2024-10-11 14:29:50,711 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'intersport-at'
+        AND dtimebegin < (1296514800 - 31449600)
+        AND dtimeend > (1296514800 + 15724800);
+    
+2024-10-11 14:29:51,680 - INFO - Retailer intersport-at: No affected products found.
+2024-10-11 14:29:51,682 - INFO - Processing retailer kastneroehler-at with seal date UNIX 1428876000
+2024-10-11 14:29:51,682 - INFO - Executing query for retailer: kastneroehler-at
+2024-10-11 14:29:51,682 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'kastneroehler-at'
+        AND dtimebegin < (1428876000 - 31449600)
+        AND dtimeend > (1428876000 + 15724800);
+    
+2024-10-11 14:29:52,219 - INFO - Retailer kastneroehler-at: No affected products found.
+2024-10-11 14:29:52,221 - INFO - Processing retailer myshopkelag-at with seal date UNIX 1462658400
+2024-10-11 14:29:52,221 - INFO - Executing query for retailer: myshopkelag-at
+2024-10-11 14:29:52,221 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'myshopkelag-at'
+        AND dtimebegin < (1462658400 - 31449600)
+        AND dtimeend > (1462658400 + 15724800);
+    
+2024-10-11 14:29:52,785 - INFO - Retailer myshopkelag-at: No affected products found.
+2024-10-11 14:29:52,788 - INFO - Processing retailer lampenwelt-at with seal date UNIX 1378764000
+2024-10-11 14:29:52,788 - INFO - Executing query for retailer: lampenwelt-at
+2024-10-11 14:29:52,788 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'lampenwelt-at'
+        AND dtimebegin < (1378764000 - 31449600)
+        AND dtimeend > (1378764000 + 15724800);
+    
+2024-10-11 14:29:54,893 - INFO - Retailer lampenwelt-at: No affected products found.
+2024-10-11 14:29:54,895 - INFO - Processing retailer gomibo-at with seal date UNIX 1625781600
+2024-10-11 14:29:54,895 - INFO - Executing query for retailer: gomibo-at
+2024-10-11 14:29:54,895 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'gomibo-at'
+        AND dtimebegin < (1625781600 - 31449600)
+        AND dtimeend > (1625781600 + 15724800);
+    
+2024-10-11 14:30:06,296 - INFO - Retailer gomibo-at: No affected products found.
+2024-10-11 14:30:06,298 - INFO - Processing retailer moemax-at with seal date UNIX 1251928800
+2024-10-11 14:30:06,298 - INFO - Executing query for retailer: moemax-at
+2024-10-11 14:30:06,298 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'moemax-at'
+        AND dtimebegin < (1251928800 - 31449600)
+        AND dtimeend > (1251928800 + 15724800);
+    
+2024-10-11 14:30:07,038 - INFO - Retailer moemax-at: No affected products found.
+2024-10-11 14:30:07,040 - INFO - Processing retailer nackermann-at with seal date UNIX 968623200
+2024-10-11 14:30:07,040 - INFO - Executing query for retailer: nackermann-at
+2024-10-11 14:30:07,041 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'nackermann-at'
+        AND dtimebegin < (968623200 - 31449600)
+        AND dtimeend > (968623200 + 15724800);
+    
+2024-10-11 14:30:07,591 - INFO - Retailer nackermann-at: No affected products found.
+2024-10-11 14:30:07,593 - INFO - Processing retailer officediscount-at with seal date UNIX 1427752800
+2024-10-11 14:30:07,593 - INFO - Executing query for retailer: officediscount-at
+2024-10-11 14:30:07,593 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'officediscount-at'
+        AND dtimebegin < (1427752800 - 31449600)
+        AND dtimeend > (1427752800 + 15724800);
+    
+2024-10-11 14:30:08,129 - INFO - Retailer officediscount-at: No affected products found.
+2024-10-11 14:30:08,130 - INFO - Processing retailer ottoversand-at with seal date UNIX 966895200
+2024-10-11 14:30:08,130 - INFO - Executing query for retailer: ottoversand-at
+2024-10-11 14:30:08,130 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'ottoversand-at'
+        AND dtimebegin < (966895200 - 31449600)
+        AND dtimeend > (966895200 + 15724800);
+    
+2024-10-11 14:30:08,723 - INFO - Retailer ottoversand-at: No affected products found.
+2024-10-11 14:30:08,724 - INFO - Processing retailer shoepping-at with seal date UNIX 1585004400
+2024-10-11 14:30:08,724 - INFO - Executing query for retailer: shoepping-at
+2024-10-11 14:30:08,724 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'shoepping-at'
+        AND dtimebegin < (1585004400 - 31449600)
+        AND dtimeend > (1585004400 + 15724800);
+    
+2024-10-11 14:30:21,871 - INFO - Retailer shoepping-at: No affected products found.
+2024-10-11 14:30:21,873 - INFO - Processing retailer quelle-at with seal date UNIX 1318456800
+2024-10-11 14:30:21,873 - INFO - Executing query for retailer: quelle-at
+2024-10-11 14:30:21,873 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'quelle-at'
+        AND dtimebegin < (1318456800 - 31449600)
+        AND dtimeend > (1318456800 + 15724800);
+    
+2024-10-11 14:30:22,416 - INFO - Retailer quelle-at: No affected products found.
+2024-10-11 14:30:22,419 - INFO - Processing retailer bikepalast-at with seal date UNIX 973292400
+2024-10-11 14:30:22,419 - INFO - Executing query for retailer: bikepalast-at
+2024-10-11 14:30:22,419 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'bikepalast-at'
+        AND dtimebegin < (973292400 - 31449600)
+        AND dtimeend > (973292400 + 15724800);
+    
+2024-10-11 14:30:22,994 - INFO - Retailer bikepalast-at: No affected products found.
+2024-10-11 14:30:22,995 - INFO - Processing retailer sportthieme-at with seal date UNIX 1191967200
+2024-10-11 14:30:22,995 - INFO - Executing query for retailer: sportthieme-at
+2024-10-11 14:30:22,995 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'sportthieme-at'
+        AND dtimebegin < (1191967200 - 31449600)
+        AND dtimeend > (1191967200 + 15724800);
+    
+2024-10-11 14:30:23,617 - INFO - Retailer sportthieme-at: No affected products found.
+2024-10-11 14:30:23,619 - INFO - Processing retailer sportstech-de with seal date UNIX 1608505200
+2024-10-11 14:30:23,619 - INFO - Executing query for retailer: sportstech-de
+2024-10-11 14:30:23,619 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'sportstech-de'
+        AND dtimebegin < (1608505200 - 31449600)
+        AND dtimeend > (1608505200 + 15724800);
+    
+2024-10-11 14:30:34,178 - INFO - Retailer sportstech-de: No affected products found.
+2024-10-11 14:30:34,180 - INFO - Processing retailer schaefershop-at with seal date UNIX 972165600
+2024-10-11 14:30:34,180 - INFO - Executing query for retailer: schaefershop-at
+2024-10-11 14:30:34,180 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'schaefershop-at'
+        AND dtimebegin < (972165600 - 31449600)
+        AND dtimeend > (972165600 + 15724800);
+    
+2024-10-11 14:30:34,761 - INFO - Retailer schaefershop-at: No affected products found.
+2024-10-11 14:30:34,762 - INFO - Processing retailer unimarkt-at with seal date UNIX 1459634400
+2024-10-11 14:30:34,762 - INFO - Executing query for retailer: unimarkt-at
+2024-10-11 14:30:34,762 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'unimarkt-at'
+        AND dtimebegin < (1459634400 - 31449600)
+        AND dtimeend > (1459634400 + 15724800);
+    
+2024-10-11 14:30:35,333 - INFO - Retailer unimarkt-at: No affected products found.
+2024-10-11 14:30:35,335 - INFO - Processing retailer universal-at with seal date UNIX 965080800
+2024-10-11 14:30:35,335 - INFO - Executing query for retailer: universal-at
+2024-10-11 14:30:35,335 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'universal-at'
+        AND dtimebegin < (965080800 - 31449600)
+        AND dtimeend > (965080800 + 15724800);
+    
+2024-10-11 14:30:35,861 - INFO - Retailer universal-at: No affected products found.
+2024-10-11 14:30:35,862 - INFO - Processing retailer aum with seal date UNIX 966895200
+2024-10-11 14:30:35,862 - INFO - Executing query for retailer: aum
+2024-10-11 14:30:35,862 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'aum'
+        AND dtimebegin < (966895200 - 31449600)
+        AND dtimeend > (966895200 + 15724800);
+    
+2024-10-11 14:30:36,441 - INFO - Retailer aum: No affected products found.
+2024-10-11 14:30:36,441 - INFO - Processing retailer yvesrocher-de with seal date UNIX 966895200
+2024-10-11 14:30:36,442 - INFO - Executing query for retailer: yvesrocher-de
+2024-10-11 14:30:36,442 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'yvesrocher-de'
+        AND dtimebegin < (966895200 - 31449600)
+        AND dtimeend > (966895200 + 15724800);
+    
+2024-10-11 14:30:37,002 - INFO - Retailer yvesrocher-de: No affected products found.
+2024-10-11 14:30:37,003 - INFO - Processing retailer zalando-at with seal date UNIX 1420671600
+2024-10-11 14:30:37,003 - INFO - Executing query for retailer: zalando-at
+2024-10-11 14:30:37,003 - INFO - Executing query: 
+    SELECT produkt_id, haendler_bez, dtimebegin, dtimeend
+    FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
+        WHERE haendler_bez = 'zalando-at'
+        AND dtimebegin < (1420671600 - 31449600)
+        AND dtimeend > (1420671600 + 15724800);
+    
+2024-10-11 14:30:37,558 - INFO - Retailer zalando-at: No affected products found.
+2024-10-11 14:30:37,560 - INFO - Results written to affected.csv.

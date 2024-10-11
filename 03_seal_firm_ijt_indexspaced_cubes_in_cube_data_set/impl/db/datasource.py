@@ -17,7 +17,8 @@ class DuckDBDataSource(Singleton):
     def __init__(self,
                  db_path: str = CONFIG.DUCKDB_PATH,
                  threads: int = CONFIG.MAX_DUCKDB_THREADS,
-                 bypass_singleton=False):
+                 bypass_singleton=False,
+                 bypass_application_thread_config=False):
         """
         Initialize the DuckDB connection and configure threads.
 
@@ -31,8 +32,9 @@ class DuckDBDataSource(Singleton):
             logger.info(f"Establishing new DuckDB connection with db_path={db_path}")
             self.conn = duckdb.connect(db_path, config={'threads': threads})
 
-            # Apply thread configuration
-            ApplicationThreadConfig.apply_thread_config(self)
+            if not bypass_application_thread_config:
+                # Apply thread configuration
+                ApplicationThreadConfig.apply_thread_config(self)
 
             # Log DuckDB config for debugging
             self.log_duckdb_config()
