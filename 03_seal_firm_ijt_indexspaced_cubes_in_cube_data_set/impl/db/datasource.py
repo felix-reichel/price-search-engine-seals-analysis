@@ -42,6 +42,9 @@ class DuckDBDataSource(Singleton):
             # Initialize file log table
             self.initialize_file_log_table()
 
+            # Set allocator_background_threads
+            self.conn.execute("SET allocator_background_threads=true;")
+
     # https://duckdb.org/docs/configuration/overview.html
     def log_duckdb_config(self):
         """
@@ -194,6 +197,31 @@ class DuckDBDataSource(Singleton):
             f"CREATE OR REPLACE TABLE {table_name} AS SELECT * FROM read_csv_auto(?, delim=?)",
             (csv_path, separator)
         )
+
+    def free_up_table_and_manipulate_file_logs(self, table_name: str):
+        """
+        Frees up memory by deleting and dropping the specified table, and removes any related file logs.
+
+        Parameters:
+        table_name (str): The name of the table to be deleted and dropped.
+        """
+        self.conn.execute("BEGIN;")
+        try:
+            self.conn.execute(f"DELETE FROM file_log WHERE file_name LIKE '{table_name}%'")
+            logger.info(f"File log entries for '{table_name}' have been deleted.")
+
+            self.conn.execute(f"DELETE FROM {table_name}")
+            logger.info(f"Data from table '{table_name}' has been deleted.")
+
+            self.conn.execute(f"DROP TABLE IF EXISTS {table_name};")
+            logger.info(f"Table '{table_name}' dropped to free memory.")
+
+            self.conn.execute("COMMIT;")
+            logger.info("Transaction committed successfully.")
+
+        except duckdb.CatalogException as e:
+            self.conn.execute("ROLLBACK;")
+            logger.error(f"Error occurred, rolling back transaction: {e}")
 
     def queryAsPl(self, query_str: str) -> pl.DataFrame:
         """

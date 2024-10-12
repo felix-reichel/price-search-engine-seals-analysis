@@ -3,6 +3,7 @@ import logging
 import os
 from functools import lru_cache
 
+import psutil
 from dateutil.relativedelta import relativedelta
 
 from CONFIG import UNIX_TIME_ORIGIN, UNIX_WEEK, PARQUET_FILES_DIR, ANGEBOTE_SCHEME, CLICKS_SCHEME, \
@@ -10,6 +11,12 @@ from CONFIG import UNIX_TIME_ORIGIN, UNIX_WEEK, PARQUET_FILES_DIR, ANGEBOTE_SCHE
     OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_POST_SEAL_CONSIDERED
 
 logger = logging.getLogger(__name__)
+
+
+def print_process_mem_usage():
+    process = psutil.Process()
+    mem_info = process.memory_info()
+    print(f"Memory Usage: {mem_info.rss / (1024 * 1024):.2f} MB")
 
 
 @lru_cache(maxsize=None)

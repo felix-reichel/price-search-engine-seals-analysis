@@ -24,8 +24,8 @@ slice_by_product_retailer <- function(data, time_period) {
     filter(week_running_var == time_period)
   
   plot <- ggplot(slice, aes(x = haendler_bez, y = produkt_id, fill = count)) +
-    geom_tile(color = "white") +
-    scale_fill_gradient(low = "white", high = "red") +
+    geom_tile(color = "blue") +
+    scale_fill_gradient(low = "blue", high = "red") +
     labs(x = "Retailer", y = "Product") +
     theme_minimal() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
@@ -39,8 +39,8 @@ slice_by_retailer_time <- function(data, product) {
     filter(produkt_id == product)
   
   plot <- ggplot(slice, aes(x = week_running_var, y = haendler_bez, fill = count)) +
-    geom_tile(color = "white") +
-    scale_fill_gradient(low = "white", high = "red") +
+    geom_tile(color = "blue") +
+    scale_fill_gradient(low = "blue", high = "red") +
     labs(x = "Time Period", y = "Retailer") +
     theme_minimal() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
@@ -57,7 +57,7 @@ cube_visualization <- function(data) {
     z = ~week_running_var,
     marker = list(size = 3),
     color = ~count,
-    colors = colorRamp(c("white", "red")),
+    colors = colorRamp(c("blue", "red")),
     type = "scatter3d",
     mode = "markers"
   ) %>%

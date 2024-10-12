@@ -250,10 +250,7 @@ SELECT COUNT(*), produkt_id
 FROM read_parquet(['/scratch0/zieg/MeJ_Tests.d/angebot_*_*.pq/angebot_20*w*.parquet'])
 WHERE haendler_bez = 'moebel-plus-de'
 GROUP BY produkt_id
--- 0 rows
+-- yields full retailer offer history count by prod_id descriptive stats.
 
--- 'a1shop' (cont.)
 
--- 0 rows
-
---- Cont. - Q. Is the possible bias in our sample uniformly distributed???
+--- Cont. - Q. Is the possible bias in our offer inflow strategy sample uniformly distributed???

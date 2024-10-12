@@ -24,5 +24,5 @@ This is an interactive 3D visualization using `plotly` of the entire `(i, j, t)`
 
 [Click here](cube_visualization.html)
 
-![plot1.png](plot1.png)
-![plot2.png](plot2.png)
+![plot1.jpg](plot1.jpg)
+![plot2.jpg](plot2.jpg)

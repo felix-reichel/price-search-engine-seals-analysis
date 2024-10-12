@@ -3,8 +3,6 @@ import time
 from functools import lru_cache
 from multiprocessing import Manager, Pool, Value
 
-import duckdb
-import psutil
 from tqdm import tqdm
 
 import CONFIG
@@ -13,34 +11,22 @@ from impl.db.loaders.init_db import DatabaseInitializer
 from impl.db.loaders.load_temp_clicks_data import initialize_clicks_table, load_click_data
 from impl.db.loaders.load_temp_offers_data import initialize_offer_table, load_angebot_data
 from impl.factories.service_factory import ServiceFactory
-from impl.helpers import calculate_running_var_t_from_u
+from impl.helpers import calculate_running_var_t_from_u, print_process_mem_usage
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s',
                     filename='01_calculate_index_space.log', filemode='w')
 logger = logging.getLogger(__name__)
 
 
-def print_memory_usage():
-    process = psutil.Process()
-    mem_info = process.memory_info()
-    print(f"Memory Usage: {mem_info.rss / (1024 * 1024):.2f} MB")
+def free_up_prev_inflow_tables(db: DuckDBDataSource, table_name):
+    print_process_mem_usage()
 
+    db.free_up_table_and_manipulate_file_logs(table_name)
 
-def db_free_up_table(db, table_name):
-    print_memory_usage()
-
-    db.conn.execute("SET allocator_background_threads=true;")
-
-    try:
-        db.conn.execute(f"DELETE FROM {table_name}")
-    except duckdb.CatalogException:
-        print(f"No prev. Table '{table_name}' does exist, skipping DELETE operation.")
-
-    db.conn.execute(f"DROP TABLE IF EXISTS {table_name};")
     print(f"Table '{table_name}' dropped to free memory. Going to sleep now...zzZ")
-    time.sleep(60)
 
-    print_memory_usage()
+    time.sleep(60)
+    print_process_mem_usage()
 
 
 @lru_cache(maxsize=None)
@@ -74,7 +60,7 @@ def process_task(args):
     return process_single_product(product, firm, seal_date_str, product_service, int(is_main_firm))
 
 
-def process_seal_firm(seal_firm_data, result_counter, db):
+def process_seal_firm(seal_firm_data, result_counter, db: DuckDBDataSource):
     (
         haendler_bez, geizhals_id, seal_date, seal_firms,
         allowed_firms, processed_firms, lock, product_service, clicks_service
@@ -92,8 +78,8 @@ def process_seal_firm(seal_firm_data, result_counter, db):
 
     logger.info(f"Processing seal firm {firm_count}: {haendler_bez} for seal date: {seal_date_str}")
 
-    db_free_up_table(db, 'angebot')
-    db_free_up_table(db, 'clicks')
+    free_up_prev_inflow_tables(db, 'angebot')
+    free_up_prev_inflow_tables(db, 'clicks')
 
     initialize_clicks_table(db)
     initialize_offer_table(db)
