@@ -3,9 +3,11 @@
 **Author**: FR  
 **Date**: June 2024 - ?2024
 
-## Data Set Description & Requirements
+## Data Set Specifications & Requirements
+For detailed data set specifications, refer to:  
+`Spezifikation_DS_guetesiegel_{VERSION}.doc`
 
-### Observational Unit:
+## Observational Unit:
 The observational unit $\text{obs}(i, j, t)$ is defined as:
 - **$i$**: product (`product_id`)
 - **$j$**: company (`geizhals_firm_id`)
@@ -103,10 +105,6 @@ Where:
 ### Dataset Dimensions:
 The dataset size is based on the firms $J_G + J_C$ (seal and counterfactual firms), products ($I_{g+c}$), and **truncated**, **symmetric** time periods (up to $T_{maxLength}=26*2$ weeks).
 
-## Data Set Specifications & Requirements
-For detailed data set specifications, refer to:  
-`Spezifikation_DS_guetesiegel_{VERSION}.doc`
-
 ## Pre-Checks of Retailer Data
 
 ### Check 1: Availability of `liefert_at` and `liefert_de` Variables
@@ -117,52 +115,76 @@ Check if the information (`liefert_at/liefert_de`) is available before 2007.
 Check if `vfb_at` was available before 2007 in the "Verfügbarkeit" data.  
 **Result**: Parquet files are available starting from 2015. Imputation strategies are outlined in the documentation.
 
-## Data Set Implementation
+## Data Set Implementation / Explaination of Scripts 
 
-### Step 0: Initialize Database
-- Initialize `DuckDBDataSource` and verify required tables: `seal_change_firms`, `filtered_haendler_bez`, `products`, `retailers`. Log row counts for each table.
+### Script 0: Initialize an In-Memory DuckDB Database (C++) using its Python Client API
+- Initialize `DuckDBDataSource` and verify the presence of required tables: `seal_change_firms`, `filtered_haendler_bez`, `products`, `retailers`. Log the row counts for each table.
 
-### Step 1: Initialize Global Seal Parameters
+### Script 1: Initialize Global Data Set / Quality Seal Retailers Parameters using Results from Previous Projects `Fr-01` and `Fr-02`
 - Fetch `allowed_firms` from `filtered_retailer_names_repo` and `seal_firms` from `seal_change_firms_repo`.
 
-### Step 2: Calculate Index Space
-- Run `calculate_index_space(parallel=False)` to compute $(i, j, t)$.
+### Script 2: Calculate Observational Unit Selection Criteria $(i,j,t)$-Index Space
+- Run `calculate_index_space(parallel=False)` to compute the $(i, j, t)$ index space.
 
-### Step 3: Load Index Space
-- Load the calculated index space table into the database. *(from results.csv)*
+### *Script 2b: Calculate Affected Products Never Considered Due to the Offer Inflow Loading Strategy
+- Check whether this bias is uniform across products.
 
-### Step 4: Validate Index Space
+### Script 3: Load Observational Unit Selection Criteria $(i,j,t)$-Index Space into a Table
+- Load the calculated index space table into the database (from `results.csv`).
+
+### Script 4: Validate Index Space and Produce Descriptive Stats.
 - Generate descriptive statistics:
   - Distribution of products selected per seal firm.
   - Average number of counterfactual firms per product.
   - Total number of products in the dataset.
   - Average observation period length (2 * 26 weeks).
-- Ensure it aligns with the *estimated dataset size* below and further plausibility checks.
+- Ensure the statistics align with the *estimated dataset size* and pass further plausibility checks.
 
-### Step 5: Insert New Columns
+### *Project 4: Graphical Representation of $(i,j,t)$-Index Space
+
+### *Project X: Formal Observational Unit Selection Criteria Bias
+
+### Script 5: Insert New Columns from Existing Repositories
 - Insert columns for seal dummies, award dates, and other relevant data from repositories.
 
-### Step 6: Calculate Vars and IVs
-- Calculate variables and instrumental variables.
+### Script 6: Calculate Variables (using BatchVariableRenderer)
+- Calculate necessary variables for the data set.
 
-### Step 7: Output New Preliminary Data Set
-- Save the preliminary dataset to a file and copy it to a secondary table for further processing.
+### *Project 5: Graphical PTA Check for DD After Processing of the First Outcome Variable
 
-### Step 8: Imputation of Variables
-- Use the imputation service to handle missing values through stepwise imputation (see ImputationStrategy) as per dataset requirements.
+### Script 6b: Calculate IVs Based on Specific Strategies (using BatchVariableRenderer)
+- Calculate instrumental variables (IVs) based on specific strategies.
 
-### Step 9: Output Final Data Set
-- Output the final dataset to a CSV-file.
+### Script 7: Output New Preliminary Data Set as `'_preliminary'`-CSV
+- Save the preliminary dataset to a CSV file and copy it to a secondary table for further processing.
 
-## Estimated Dataset Size
-The maximum number of observations is estimated based on combinations of firms, products, and weeks:
+### Script 8: Imputation of Variables (using ImputationService)
+- Use the imputation service to handle missing values through stepwise imputation (refer to `ImputationStrategy`) as per dataset requirements.
+
+### Script 9: Output Final Data Set as `'_imputed'`-CSV
+- Output the final dataset to a CSV file.
+
+## Max. Estimated Dataset Size
+The **maximum** number of observations is estimated based on combinations of firms, products, and weeks:
 
 $$
 296 \ (\text{seals matrix})
-\times 52 \ (\text{max. window from "offer inflow"}) 
-\times 50 \ (\text{products}) 
-\times (10 + 1) \ (\text{counterfactuals + seal change firm}) 
-\approx 8.45 \ \text{million observations}
+$$
+
+$$
+\times 52 \ (\text{max. window from "offer inflow"; bias check script 2b}) 
+$$
+
+$$
+\times 200 \ (\text{Top N=200 products by clicks; project X bias from selction strategy}) 
+$$
+
+$$
+\times (10 + 1) \ (\text{counterfactuals + seal change firm; random sampling; distributional check script 4}) 
+$$
+
+$$
+\approx 33.86 \ \text{million observations}
 $$
 
 Where:
@@ -274,3 +296,11 @@ The following tests are implemented:
 
 
 ...
+
+## Further Configuration Details
+- `ApplicationThreadConfig.py`
+- `SCHEMA_CONFIG.py`
+- `TABLES_CONFIG.py`
+- ...
+
+
