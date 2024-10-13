@@ -5,6 +5,7 @@ from impl.db.querybuilder import QueryBuilder
 
 
 class ImputationStrategy(Enum):
+    NONE = "No imputation strategy, Missings allowed. (Will be denoted as EMPTY.)"
     FIRM_LEVEL = "firm_level"
     PRODUCT_LEVEL = "product_level"
     FIRM_AND_TIME_LEVEL = "firm_and_time_level"
@@ -32,7 +33,11 @@ class ImputationService:
         column_to_impute (str): The column where imputation will be applied.
         target_column (str): The column to calculate the average value for imputation.
         """
-        if strategy == ImputationStrategy.FIRM_LEVEL:
+        if strategy == ImputationStrategy.NONE:
+            # Nothing to do
+            pass
+
+        elif strategy == ImputationStrategy.FIRM_LEVEL:
             self.impute_firm_level(table_name, column_to_impute, target_column)
 
         elif strategy == ImputationStrategy.PRODUCT_LEVEL:
@@ -95,6 +100,7 @@ class ImputationService:
         """
         self.db_source.conn.execute(imputation_query)
 
+    @NotImplementedError
     def impute_firm_and_unixtimestamp_level(self, table_name: str, column_to_impute: str, target_column: str):
         """
         Impute missing values at the firm and timestamp level by averaging values of the target column.
@@ -143,6 +149,7 @@ class ImputationService:
         """
         self.db_source.conn.execute(imputation_query)
 
+    @NotImplementedError
     def impute_product_unixtimestamp_level(self, table_name: str, column_to_impute: str, target_column: str):
         """
         Impute missing values at the product and timestamp level by averaging values of the target column.

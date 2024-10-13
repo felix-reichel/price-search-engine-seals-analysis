@@ -27,6 +27,18 @@ def calculate_running_var_t_from_u(unix_time, unix_origin=UNIX_TIME_ORIGIN, unix
 
 
 @lru_cache(maxsize=None)
+def calculate_unix_time_from_running_var(week_running_var, unix_origin=UNIX_TIME_ORIGIN, unix_week=UNIX_WEEK):
+    """
+    Calculate the unix timestamp from a given week_running_var (reverse of calculate_running_var_t_from_u).
+    """
+    if isinstance(week_running_var, int):
+        return unix_origin + (week_running_var * unix_week)
+    else:
+        raise NotImplementedError("week_running_var supplied in helpers#calculate_unix_time_from_running_var has be "
+                                  "of type Int.")
+
+
+@lru_cache(maxsize=None)
 def date_to_unix_time(date_str, date_format='%d.%m.%Y'):
     try:
         date_obj = dt.datetime.strptime(date_str, date_format)
