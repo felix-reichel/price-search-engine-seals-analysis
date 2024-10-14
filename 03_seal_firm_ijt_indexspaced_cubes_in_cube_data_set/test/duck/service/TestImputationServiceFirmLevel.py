@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-from ..base.DuckDbBaseTest import DuckDbBaseTest
 from impl.db.datasource import DuckDBDataSource
-from impl.business.imputation_service import ImputationService, ImputationStrategy
+from impl.service.imputation_service import ImputationService, ImputationStrategy
+from ..base.DuckDbBaseTest import DuckDbBaseTest
 
 
 class TestImputationServiceFirmLevel(DuckDbBaseTest):

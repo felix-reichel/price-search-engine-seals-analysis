@@ -10,13 +10,13 @@ import CONFIG
 from CONFIG import (
     PARQUET_FILES_DIR, CLICKS_FOLDER, ANGEBOTE_FOLDER, SPAWN_MAX_MAIN_PROCESSES_AMOUNT
 )
-from impl.helpers import get_week_year_from_seal_date, generate_weeks_around_seal, file_exists_in_folders, \
-    get_year_month_from_seal_date, generate_months_around_seal
 from static import (
     get_rand_max_N_counterfactual_firms, calculate_running_var_t_from_u,
     filter_continuously_offered_products,
     select_seal_change_firms, load_data, get_offered_weeks, get_random_n_products_deterministic
 )
+from impl.helpers import get_week_year_from_seal_date, generate_weeks_around_seal, file_exists_in_folders, \
+    get_year_month_from_seal_date, generate_months_around_seal
 
 # Setup logging
 logging.basicConfig(

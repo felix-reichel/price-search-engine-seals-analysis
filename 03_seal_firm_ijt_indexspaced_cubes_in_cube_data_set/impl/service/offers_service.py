@@ -2,9 +2,7 @@ import random
 
 import CONFIG
 from impl.helpers import *
-from impl.repository.offers_repository import OffersRepository
 from impl.service.base.base_service import BaseService
-from impl.singleton import Singleton
 
 logger = logging.getLogger(__name__)
 

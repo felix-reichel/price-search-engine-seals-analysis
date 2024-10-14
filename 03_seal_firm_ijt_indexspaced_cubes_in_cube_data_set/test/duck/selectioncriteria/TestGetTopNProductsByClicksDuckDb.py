@@ -1,9 +1,9 @@
 import datetime as dt
 import unittest
 
-from ..base.DuckDbBaseTest import DuckDbBaseTest
 from impl.repository.clicks_repository import ClicksRepository
 from impl.service.clicks_service import ClicksService
+from ..base.DuckDbBaseTest import DuckDbBaseTest
 
 
 class TestGetTopNProductsByClicksDuckDb(DuckDbBaseTest):

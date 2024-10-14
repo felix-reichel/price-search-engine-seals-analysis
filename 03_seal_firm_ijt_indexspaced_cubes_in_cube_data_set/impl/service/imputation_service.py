@@ -1,16 +1,6 @@
-from enum import Enum
-
 from impl.db.datasource import DuckDBDataSource
 from impl.db.querybuilder import QueryBuilder
-
-
-class ImputationStrategy(Enum):
-    NONE = "No imputation strategy, Missings allowed. (Will be denoted as EMPTY.)"
-    FIRM_LEVEL = "firm_level"
-    PRODUCT_LEVEL = "product_level"
-    FIRM_AND_TIME_LEVEL = "firm_and_time_level"
-    FIRM_AND_PRODUCT_LEVEL = "firm_and_product_level"
-    PRODUCT_AND_TIME_LEVEL = "product_and_time_level"
+from impl.service.enum.imputation_strategy import ImputationStrategy
 
 
 class ImputationService:

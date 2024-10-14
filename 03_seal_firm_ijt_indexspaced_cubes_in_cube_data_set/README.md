@@ -9,9 +9,19 @@ For detailed data set specifications, refer to:
 
 ## Observational Unit:
 The observational unit $\text{obs}(i, j, t)$ is defined as:
-- **$i$**: product (`product_id`)
-- **$j$**: company (`geizhals_firm_id`)
-- **$t$**: week (calculated running variable from UNIX time, starting from the defined UNIX TIME ORIGIN).
+- **$i$**: product (`product_id`) where $i \in \mathbb{Z}^+$ (is at least a positive integer number).
+- **$j$**: company (`geizhals_firm_id`) where $j \in \Sigma^*$ (is is at least any valid combination of characters).
+- **$t$**: week (calculated running variable from UNIX time, starting from the defined UNIX TIME ORIGIN or formally given as:
+
+$$
+t =
+\begin{cases}
+\left\lfloor \dfrac{u - u_0}{604800} \right\rfloor, & \text{if } -26 \leq \left\lfloor \dfrac{u - u_0}{604800} \right\rfloor \leq 832 \\
+\text{undefined}, & \text{otherwise}
+\end{cases}
+$$
+
+ where $\lfloor \rfloor$ denotes the floor function.
 
 ### $t \in$ Period $T$ ($t \in T_{\text{max length truncated symmetric (i,j)}} \subseteq T_{\text{inflow}}$):
 The observation period covers a **truncated**, **symmetric** window of 26 weeks before and 26 weeks after ($t \leq 52$ weeks) the quality seal award date. Only products with a new offer spell from 52 weeks before the seal date and/or 26 weeks after the seal date are considered ($t \leq 78$ weeks, "Offer Spells Inflow").

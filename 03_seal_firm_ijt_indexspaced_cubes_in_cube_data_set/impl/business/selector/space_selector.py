@@ -1,16 +1,10 @@
-from enum import Enum
 from functools import lru_cache
-from typing import Union, List, Optional
+from typing import List, Optional, Union
 
 import polars as pl
 
+from impl.business.enum.variable_render_strategy import VariableRenderStrategy
 from impl.helpers import calculate_u_from_running_var_t
-
-
-class VariableRenderStrategy(Enum):
-    OUTER_SPACE = "Target variable is rendered within outer cube target space."
-    INNER_SPACE = "Target variable is rendered within inner cube target space."
-    POSITIONAL_COORDINATES = "Target variable is rendered using positional coordinates."
 
 
 @lru_cache(maxsize=None)
@@ -130,33 +124,3 @@ def validate_selection_space(render_strategies: List[VariableRenderStrategy],
             if len(axis_factors) != 1 or axis_factors[0] < 0:
                 return False
     return True
-
-
-class VariableSpaceRenderer:
-    def __init__(self, data_source):
-        self.data_source = data_source
-
-    def render_variable(self,
-                        target_column: str,
-                        source_column: str,
-                        target_table: str,
-                        source_table: str,
-                        target_column_label: str,
-                        target_column_label_desc: str,
-                        selection_criteria: SpaceSelector,
-                        imputation_strategy=None):
-        """
-        Render the variable according to the selection criteria and render strategy on each axis.
-        The selection criteria can be a list of values or full outer space (None).
-        """
-        # Determine the strategies for each axis based on the selection criteria
-        render_strategies = selection_criteria.determine_strategies()
-
-        # Validate that each axis conforms to its respective render strategy
-        if not validate_selection_space(render_strategies, selection_criteria):
-            raise ValueError("Selection criteria do not conform to the derived render strategies.")
-
-        # Logic for rendering based on the factors for each axis
-        # Implement the actual join and filter logic here.
-        # Determine required joins in repositories.
-        raise NotImplementedError

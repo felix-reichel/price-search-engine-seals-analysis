@@ -1,10 +1,10 @@
 import datetime as dt
 import unittest
 
-from ..base.DuckDbBaseTest import DuckDbBaseTest
 from impl.helpers import calculate_running_var_t_from_u
 from impl.repository.offers_repository import OffersRepository
 from impl.service.offers_service import OffersService
+from ..base.DuckDbBaseTest import DuckDbBaseTest
 
 
 class TestGetOfferedWeeksDuckDb(DuckDbBaseTest):

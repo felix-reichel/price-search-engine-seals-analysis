@@ -26,5 +26,5 @@
 ---
 
 **X:**  
-*Derives the theoretical selection bias of the applied observational unit selection criteria.*
+*Derives the theoretical selection bias of the applied observational unit selection criteria.*[Draft](https://felixreichel.com/gz/bias_decomp_draft_ansatz.pdf)
 

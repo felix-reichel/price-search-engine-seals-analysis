@@ -1,9 +1,9 @@
 import datetime as dt
 import unittest
 
-from ..base.DuckDbBaseTest import DuckDbBaseTest
 from impl.repository.offers_repository import OffersRepository
 from impl.service.offers_service import OffersService
+from ..base.DuckDbBaseTest import DuckDbBaseTest
 
 
 class TestIsProductContinuouslyOfferedDuckDb(DuckDbBaseTest):
