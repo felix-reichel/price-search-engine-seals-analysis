@@ -3,6 +3,7 @@ import logging
 import polars as pl
 
 from impl.db.datasource import DuckDBDataSource
+from impl.db.querybuilder import QueryBuilder
 from impl.singleton import Singleton
 
 logger = logging.getLogger(__name__)
@@ -51,8 +52,10 @@ class BaseRepository(Singleton):
 
         Returns:
             pl.DataFrame: A Polars DataFrame containing all records in the table.
-
-        Raises:
-            NotImplementedError: If the method is not implemented by a subclass.
         """
-        raise NotImplementedError("This method should be implemented by subclasses.")
+        query = (
+            QueryBuilder(self.table_name)
+            .select('*')
+            .build()
+        )
+        return self.db_source.queryAsPl(query_str=query)

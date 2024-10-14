@@ -2,17 +2,12 @@ import datetime as dt
 import logging
 
 import CONFIG
-from impl.repository.clicks_repository import ClicksRepository
-from impl.singleton import Singleton
+from impl.service.base.base_service import BaseService
 
 logger = logging.getLogger(__name__)
 
 
-class ClicksService(Singleton):
-    def __init__(self, repository: ClicksRepository):
-        if not hasattr(self, 'repository'):
-            self.repository = repository
-
+class ClicksService(BaseService):
     def get_top_n_products_by_clicks(self, haendler_bez: str, seal_date_str: str, top_n: int = CONFIG.TOP_PRODUCTS_OF_SEAL_CHANGE_FIRM_BY_CLICKS_AMOUNT) -> list:
         """
         Retrieve the top N products by clicks for a given retailer and seal date.

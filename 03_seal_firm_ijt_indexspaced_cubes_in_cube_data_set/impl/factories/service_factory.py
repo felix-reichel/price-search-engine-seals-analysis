@@ -7,7 +7,7 @@ from impl.repository.filtered_retailer_names_repository import FilteredRetailerN
 from impl.repository.offers_repository import OffersRepository
 from impl.repository.seal_change_firms_repository import SealChangeFirmsDataRepository
 from impl.service.clicks_service import ClicksService
-from impl.service.imputation_service import ImputationService
+from impl.business.imputation_service import ImputationService
 from impl.service.offers_service import OffersService
 
 

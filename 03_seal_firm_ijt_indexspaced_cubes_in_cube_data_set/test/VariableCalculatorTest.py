@@ -6,7 +6,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import pytest
 
-from impl.calc.VariableCalculator import VariableCalculator, \
+from impl.business.calc.VariableCalculator import VariableCalculator, \
     mean_computation, sum_computation
 
 

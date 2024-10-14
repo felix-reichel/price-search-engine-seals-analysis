@@ -3,15 +3,13 @@ import random
 import CONFIG
 from impl.helpers import *
 from impl.repository.offers_repository import OffersRepository
+from impl.service.base.base_service import BaseService
 from impl.singleton import Singleton
 
 logger = logging.getLogger(__name__)
 
 
-class OffersService(Singleton):
-    def __init__(self, repository: OffersRepository):
-        if not hasattr(self, 'repository'):
-            self.repository = repository
+class OffersService(BaseService):
 
     def get_offered_weeks(self, prod_id: str, firm_id: str, seal_date_str: str) -> set:
         """

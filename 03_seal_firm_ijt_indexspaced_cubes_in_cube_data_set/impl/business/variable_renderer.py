@@ -7,7 +7,7 @@ import polars as pl
 from impl.helpers import calculate_u_from_running_var_t
 
 
-class RenderStrategy(Enum):
+class VariableRenderStrategy(Enum):
     OUTER_SPACE = "Target variable is rendered within outer cube target space."
     INNER_SPACE = "Target variable is rendered within inner cube target space."
     POSITIONAL_COORDINATES = "Target variable is rendered using positional coordinates."
@@ -31,7 +31,7 @@ def calculate_dtime_range_from_running_var(week_running_var: Union[int, List[int
     return dtimebegin, dtimeend
 
 
-class SelectionCriteria:
+class SpaceSelector:
     def __init__(self,
                  haendler_bez: Optional[Union[str, List[str]]],
                  produkt_id: Optional[Union[str, List[str]]],
@@ -83,7 +83,7 @@ class SelectionCriteria:
 
         return [haendler_bez_factors, produkt_id_factors, week_running_var_factors]
 
-    def determine_strategy(self, factors: List[int]) -> RenderStrategy:
+    def determine_strategy(self, factors: List[int]) -> VariableRenderStrategy:
         """
         Determines the render strategy for a given axis based on the number of factors:
         - OUTER_SPACE: Full outer space (None was passed, or entire space is used).
@@ -91,13 +91,13 @@ class SelectionCriteria:
         - POSITIONAL_COORDINATES: A single specific value (single value).
         """
         if len(factors) == len(self.data):
-            return RenderStrategy.OUTER_SPACE  # Full outer space
+            return VariableRenderStrategy.OUTER_SPACE  # Full outer space
         elif len(factors) > 1:
-            return RenderStrategy.INNER_SPACE  # Multiple specific values
+            return VariableRenderStrategy.INNER_SPACE  # Multiple specific values
         else:
-            return RenderStrategy.POSITIONAL_COORDINATES  # Single specific value
+            return VariableRenderStrategy.POSITIONAL_COORDINATES  # Single specific value
 
-    def determine_strategies(self) -> List[RenderStrategy]:
+    def determine_strategies(self) -> List[VariableRenderStrategy]:
         """
         Determine the render strategy for each axis: haendler_bez, produkt_id, and week_running_var.
         """
@@ -108,8 +108,8 @@ class SelectionCriteria:
         return strategies
 
 
-def validate_selection_space(render_strategies: List[RenderStrategy],
-                             selection_criteria: SelectionCriteria) -> bool:
+def validate_selection_space(render_strategies: List[VariableRenderStrategy],
+                             selection_criteria: SpaceSelector) -> bool:
     """
     Validate that the selection criteria conform to the render strategy on each axis.
     """
@@ -117,22 +117,22 @@ def validate_selection_space(render_strategies: List[RenderStrategy],
 
     for i, axis_factors in enumerate(factor_representation):
         render_strategy = render_strategies[i]
-        if render_strategy == RenderStrategy.OUTER_SPACE:
+        if render_strategy == VariableRenderStrategy.OUTER_SPACE:
             # OUTER_SPACE allows the full range of factors, but must be non-negative
             if not all(factor >= 0 for factor in axis_factors):
                 return False
-        elif render_strategy == RenderStrategy.INNER_SPACE:
+        elif render_strategy == VariableRenderStrategy.INNER_SPACE:
             # INNER_SPACE requires multiple factors, must be non-negative
             if len(axis_factors) <= 1 or not all(factor >= 0 for factor in axis_factors):
                 return False
-        elif render_strategy == RenderStrategy.POSITIONAL_COORDINATES:
+        elif render_strategy == VariableRenderStrategy.POSITIONAL_COORDINATES:
             # POSITIONAL_COORDINATES must ensure a single factor and be non-negative
             if len(axis_factors) != 1 or axis_factors[0] < 0:
                 return False
     return True
 
 
-class VariableRenderer:
+class VariableSpaceRenderer:
     def __init__(self, data_source):
         self.data_source = data_source
 
@@ -143,7 +143,7 @@ class VariableRenderer:
                         source_table: str,
                         target_column_label: str,
                         target_column_label_desc: str,
-                        selection_criteria: SelectionCriteria,
+                        selection_criteria: SpaceSelector,
                         imputation_strategy=None):
         """
         Render the variable according to the selection criteria and render strategy on each axis.
