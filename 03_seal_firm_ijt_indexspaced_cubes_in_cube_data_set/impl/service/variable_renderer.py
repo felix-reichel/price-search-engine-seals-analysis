@@ -4,7 +4,7 @@ from typing import Union, List, Optional
 
 import polars as pl
 
-from impl.helpers import calculate_unix_time_from_running_var
+from impl.helpers import calculate_u_from_running_var_t
 
 
 class RenderStrategy(Enum):
@@ -25,8 +25,8 @@ def calculate_dtime_range_from_running_var(week_running_var: Union[int, List[int
     else:
         min_var = max_var = week_running_var
 
-    dtimebegin = calculate_unix_time_from_running_var(min_var)
-    dtimeend = calculate_unix_time_from_running_var(max_var)
+    dtimebegin = calculate_u_from_running_var_t(min_var)
+    dtimeend = calculate_u_from_running_var_t(max_var)
 
     return dtimebegin, dtimeend
 
@@ -141,6 +141,8 @@ class VariableRenderer:
                         source_column: str,
                         target_table: str,
                         source_table: str,
+                        target_column_label: str,
+                        target_column_label_desc: str,
                         selection_criteria: SelectionCriteria,
                         imputation_strategy=None):
         """
