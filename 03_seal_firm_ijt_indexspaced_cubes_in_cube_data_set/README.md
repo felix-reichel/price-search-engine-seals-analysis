@@ -221,14 +221,14 @@ The following tests are implemented:
 
 ## Configuration Details (`CONFIG.py`)
 
-### Processors
-- **[size]_CAPS_CONSTRAINT**: Dynamic (CAPS_THREADS-BUFFER)
-- **MAXIMIN**: Dynamic
-- **MAXIMIN_NCPUSMAX**: Dynamic, based on environment or CPU count
-- **NCPUS**: Minimum of MAXIMIN_NCPUSMAX and [size]_CAPS_CONSTRAINT
-- **MAX_CPU_USAGE_PERCENTAGE**: 70%
-- **MAX_DUCKDB_THREADS**: Dynamic (capped based on NCPUS and CPU usage)
+### Threads Config
+- **MAX_DUCKDB_THREADS**: 32
+- **MAX_DUCKDB_BACKGROUND_THREADS**: 2
+- **POLARS_MAX_THREADS**: 32
 
+### Multiprocessing Config
+- **SPAWN_MAX_MAIN_PROCESSES_AMOUNT:** 8
+ 
 ### Loaders
 - **OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED**: 52 weeks (1 year)
 - **OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_POST_SEAL_CONSIDERED**: 26 weeks (6 months)
@@ -245,7 +245,6 @@ The following tests are implemented:
 
 ### Sampler
 - **RANDOM_SAMPLER_DETERMINISTIC_SEED**: 42
-- **RANDOM_PRODUCTS_AMOUNTS**: 50 products
 - **RANDOM_COUNTERFACTUAL_FIRMS_AMOUNT**: 10 firms (max)
 
 ### Observational Parameters

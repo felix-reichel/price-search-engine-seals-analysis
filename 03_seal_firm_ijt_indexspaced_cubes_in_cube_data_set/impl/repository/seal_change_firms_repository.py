@@ -3,15 +3,15 @@ import logging
 import polars as pl
 
 from impl.db.datasource import DuckDBDataSource
-from impl.db.querybuilder import QueryBuilder
-from impl.repository.base.base_repository import BaseRepository
+from impl.db.simple_sql_base_query_builder import SimpleSQLBaseQueryBuilder
+from impl.repository.base.abc_repository import AbstractBaseRepository
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_SEAL_CHANGE_FIRMS_TABLE = 'seal_change_firms'
 
 
-class SealChangeFirmsDataRepository(BaseRepository):
+class SealChangeFirmsDataRepository(AbstractBaseRepository):
     def __init__(self, db_source: DuckDBDataSource, table_name: str = DEFAULT_SEAL_CHANGE_FIRMS_TABLE):
         super().__init__(db_source, table_name)
 
@@ -26,7 +26,7 @@ class SealChangeFirmsDataRepository(BaseRepository):
         pl.DataFrame: A Polars DataFrame containing the matching seal change firms.
         """
         query = (
-            QueryBuilder(self.table_name)
+            SimpleSQLBaseQueryBuilder(self.table_name)
             .select('*')
             .where(f"matched_haendler_bez = '{retailer_name}'")
             .build()
@@ -41,7 +41,7 @@ class SealChangeFirmsDataRepository(BaseRepository):
         pl.DataFrame: A Polars DataFrame containing all seal change firms.
         """
         query = (
-            QueryBuilder(self.table_name)
+            SimpleSQLBaseQueryBuilder(self.table_name)
             .select('*')
             .build()
         )

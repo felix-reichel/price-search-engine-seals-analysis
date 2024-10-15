@@ -4,7 +4,7 @@ import logging
 from tqdm import tqdm
 
 from impl.db.datasource import DuckDBDataSource
-from impl.db.querybuilder import QueryBuilder
+from impl.db.simple_sql_base_query_builder import SimpleSQLBaseQueryBuilder
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +70,7 @@ def import_angebot_data(
             )
 
             insert_query = (
-                QueryBuilder('angebot_temp')
+                SimpleSQLBaseQueryBuilder('angebot_temp')
                 .select(['produkt_id', 'haendler_bez', 'dtimebegin', 'dtimeend'])
                 .where(
                     f"haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)"
@@ -96,7 +96,7 @@ def import_click_data(
         )
 
         insert_query = (
-            QueryBuilder('clicks_temp')
+            SimpleSQLBaseQueryBuilder('clicks_temp')
             .select(['produkt_id', 'haendler_bez', 'timestamp'])
             .where(
                 f"haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)"
@@ -124,7 +124,7 @@ def check_table_record_count(
         table_name: str
 ):
     logger.info(f"Checking {table_label} table record count.")
-    count_query = QueryBuilder(table_name).select("COUNT(*) AS count").build()
+    count_query = SimpleSQLBaseQueryBuilder(table_name).select("COUNT(*) AS count").build()
     result = db.queryAsPl(count_query)
     logger.info(f"{table_label} table record count: {result.iloc[0]['count']}")
 

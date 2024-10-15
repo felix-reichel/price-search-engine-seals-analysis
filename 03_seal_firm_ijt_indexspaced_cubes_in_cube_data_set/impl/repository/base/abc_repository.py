@@ -1,17 +1,17 @@
 import logging
+from abc import ABC, abstractmethod
 
 import polars as pl
 
 from impl.db.datasource import DuckDBDataSource
-from impl.db.querybuilder import QueryBuilder
 from impl.singleton import Singleton
 
 logger = logging.getLogger(__name__)
 
 
-class BaseRepository(Singleton):
+class AbstractBaseRepository(ABC, Singleton):
     """
-    The BaseRepository class serves as an abstract base class for any repository
+    The AbstractBaseRepository class serves as an abstract base class for any repository
     that interacts with a specific table in the DuckDB database. It is designed
     to be inherited by concrete repository classes that implement specific data
     fetching logic.
@@ -27,7 +27,7 @@ class BaseRepository(Singleton):
 
     def __init__(self, db_source: DuckDBDataSource, table_name: str):
         """
-        Initializes the BaseRepository with a database source and a table name.
+        Initializes the AbstractBaseRepository with a database source and a table name.
         Ensures that both db_source and table_name are only set once, respecting
         the Singleton pattern.
 
@@ -43,6 +43,7 @@ class BaseRepository(Singleton):
         if not hasattr(self, 'table_name'):
             self.table_name = table_name
 
+    @abstractmethod
     def fetch_all(self) -> pl.DataFrame:
         """
         Fetch all records from the repository's table.
@@ -53,9 +54,16 @@ class BaseRepository(Singleton):
         Returns:
             pl.DataFrame: A Polars DataFrame containing all records in the table.
         """
-        query = (
-            QueryBuilder(self.table_name)
-            .select('*')
-            .build()
-        )
+        pass
+
+    def _execute_query(self, query: str) -> pl.DataFrame:
+        """
+        Executes a given SQL query and returns the result as a Polars DataFrame.
+
+        Parameters:
+            query (str): The SQL query to be executed.
+
+        Returns:
+            pl.DataFrame: A Polars DataFrame containing the query result.
+        """
         return self.db_source.queryAsPl(query_str=query)

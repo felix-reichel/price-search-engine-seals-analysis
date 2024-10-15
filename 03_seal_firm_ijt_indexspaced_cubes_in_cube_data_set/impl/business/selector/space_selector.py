@@ -2,8 +2,8 @@ from functools import lru_cache
 from typing import List, Optional, Union
 
 import polars as pl
-
 from impl.business.enum.variable_render_strategy import VariableRenderStrategy
+
 from impl.helpers import calculate_u_from_running_var_t
 
 

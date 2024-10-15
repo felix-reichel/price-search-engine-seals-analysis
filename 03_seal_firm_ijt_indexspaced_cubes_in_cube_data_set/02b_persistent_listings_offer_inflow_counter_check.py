@@ -25,7 +25,7 @@ OUTPUT_CSV = 'affected.csv'
 # Logging setup
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s',
-                    filename='02b_persistent_listing_criterion_selection_criterion_counter_check.log',
+                    filename='02b_persistent_listings_offer_inflow_counter_check.log',
                     filemode='w')
 logger = logging.getLogger(__name__)
 

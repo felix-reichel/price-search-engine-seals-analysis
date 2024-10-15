@@ -1,7 +1,7 @@
-from impl.business.criterion.criterion import Criterion
+from impl.db.query_interceptor.interceptor_criterion import QueryInterceptionCriterion
 
 
-class ExcludeScrapperIpsCriterion(Criterion):  # criterion for clicks f.e.
+class ExcludeScrapperIpsCriterion(QueryInterceptionCriterion):  # query_interceptor for clicks f.e.
     def apply(self, base_query: str) -> str:
         """
         Modify the query to exclude scrapper IPs by joining with the scrapper_ips table

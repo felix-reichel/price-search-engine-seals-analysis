@@ -2,28 +2,19 @@
 import os
 from pathlib import Path
 
-import psutil
-
 # DEFINITION OF GLOBAL CONSTANTS #
 
 # TODO: Set POLARS_MAX_THREADS
 os.environ["POLARS_MAX_THREADS"] = "32"     # test
 
-# THREAD DISTRIBUTION
-L_CAPS_CONSTRAINT = (128-8)
-
-MAXIMIN = min(9, psutil.cpu_count(logical=True))
-
-MAXIMIN_NCPUSMAX = max(int(os.getenv("NCPUS", os.cpu_count())), MAXIMIN)
-
-NCPUS = min(MAXIMIN_NCPUSMAX, L_CAPS_CONSTRAINT)
-
-MAX_CPU_USAGE_PERCENTAGE = 0.7
+NCPUS = os.getenv("NCPUS")  # should be available
+# else CPU_COUNT = os.cpu_count()
+# or psutil.cpu_count(logical=True)
 
 # DUCKDB CONFIG
 DUCKDB_PATH = ':memory:'
 DUCKDB_MEMORY_LIMIT = '400GB'   # TODO: Set based on curr Caps
-MAX_DUCKDB_THREADS = min(20, int(NCPUS * MAX_CPU_USAGE_PERCENTAGE))  # SCap 32 test - 8 py - 4 buffer
+MAX_DUCKDB_THREADS = 32  # test
 
 # PYTHON CONFIG
 # Processors

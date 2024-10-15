@@ -9,10 +9,7 @@ class DuckDbBaseTest(TestCase):
         # Patch thread config
         patcher = patch('impl.db.datasource.ApplicationThreadConfig.calculate_thread_distribution', return_value={
             "duckdb_thread_count": 8,
-            "background_thread_count": 2,
-            "main_process_threads": 5,
-            "buffer_threads": 2,
-            "total_cpus": 16
+            "duckdb_background_thread_count": 2,
         })
         self.mock_thread_config = patcher.start()
         self.addCleanup(patcher.stop)

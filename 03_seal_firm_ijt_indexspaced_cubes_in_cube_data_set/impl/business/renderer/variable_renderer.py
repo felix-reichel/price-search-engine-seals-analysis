@@ -1,8 +1,9 @@
 # Variable Renderer Class
-from impl.business.data_set import DataSet
-
 from impl.business.enum.variable_render_strategy import VariableRenderStrategy
+
+from impl.business.data_set import DataSet
 from impl.business.selector.space_selector import SpaceSelector
+from impl.business.variable import Variable
 
 
 class VariableRenderer:
@@ -24,14 +25,14 @@ class VariableRenderer:
 
         # Handle rendering based on strategy
         if render_strategy == VariableRenderStrategy.OUTER_SPACE:
-            print(f"Rendering variable {variable.name} in OUTER_SPACE")
+            print(f"Rendering variable {variable.label} in OUTER_SPACE")
             # Process data as full outer space (no filtering)
         elif render_strategy == VariableRenderStrategy.INNER_SPACE:
-            print(f"Rendering variable {variable.name} in INNER_SPACE")
+            print(f"Rendering variable {variable.label} in INNER_SPACE")
             # Process data with multiple specific values
         elif render_strategy == VariableRenderStrategy.POSITIONAL_COORDINATES:
-            print(f"Rendering variable {variable.name} in POSITIONAL_COORDINATES")
+            print(f"Rendering variable {variable.label} in POSITIONAL_COORDINATES")
             # Process data for single specific value
 
         # Append results back to the dataset
-        self.dataset.append_results(variable_data)
+        self.dataset.append_data(variable_data)

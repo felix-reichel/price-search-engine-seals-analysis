@@ -1,7 +1,7 @@
 import unittest
 
 from CONFIG import UNIX_TIME_ORIGIN, UNIX_WEEK
-from impl.static import calculate_running_var_t_from_u
+from impl.helpers import calculate_running_var_t_from_u
 
 
 class TestCalculateRunningVarT(unittest.TestCase):

@@ -10,11 +10,11 @@ from impl.db.datasource import DuckDBDataSource
 from impl.db.loaders.init_db import DatabaseInitializer
 from impl.db.loaders.load_temp_clicks_data import initialize_clicks_table, load_click_data
 from impl.db.loaders.load_temp_offers_data import initialize_offer_table, load_angebot_data
-from impl.factories.service_factory import ServiceFactory
+from impl.factory import Factory
 from impl.helpers import calculate_running_var_t_from_u, print_process_mem_usage
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s',
-                    filename='01_calculate_index_space.log', filemode='w')
+                    filename='02_calculate_index_space.log', filemode='w')
 logger = logging.getLogger(__name__)
 
 
@@ -136,8 +136,8 @@ def calculate_index_space(parallel=False):
                 allowed_firms,
                 processed_firms,
                 lock,
-                ServiceFactory.create_offers_service(),
-                ServiceFactory.create_clicks_service()
+                Factory.create_offers_service(),
+                Factory.create_clicks_service()
             )
             for i, haendler_bez in enumerate(seal_change_firms['RESULTING MATCH'])
         ]
@@ -173,17 +173,17 @@ if __name__ == '__main__':
         result = db.queryAsPl(f"SELECT COUNT(*) FROM {table}")
         logger.info(f"Table {table} exists with {result[0][0]} rows.")
 
-    # Step 02 - init global seal params
+    # Step 1 - init global seal params
     # Using repositories directly, as they don't have corresponding services
 
-    filtered_retailer_names_repo = ServiceFactory.create_filtered_retailer_names_repository()
-    seal_change_firms_repo = ServiceFactory.create_seal_change_firms_repository()
+    filtered_retailer_names_repo = Factory.create_filtered_retailer_names_repository()
+    seal_change_firms_repo = Factory.create_seal_change_firms_repository()
 
     allowed_firms = filtered_retailer_names_repo.fetch_all_filtered_retailers()
     seal_change_firms = seal_change_firms_repo.fetch_all()
 
     seal_firms = seal_change_firms
 
-    # Step 03 - calculate index space i,j,t
+    # Step 2 - calculate index space i,j,t
 
     calculate_index_space(parallel=False)

@@ -3,8 +3,8 @@ import logging
 import polars as pl
 
 from impl.db.datasource import DuckDBDataSource
-from impl.db.querybuilder import QueryBuilder
-from impl.repository.base.base_repository import BaseRepository
+from impl.db.simple_sql_base_query_builder import SimpleSQLBaseQueryBuilder
+from impl.repository.base.abc_repository import AbstractBaseRepository
 from impl.repository.offers_repository import DEFAULT_OFFERS_TABLE
 
 logger = logging.getLogger(__name__)
@@ -12,7 +12,10 @@ logger = logging.getLogger(__name__)
 DEFAULT_PRODUCTS_TABLE = 'products'
 
 
-class ProductRepository(BaseRepository):
+class ProductRepository(AbstractBaseRepository):
+    def fetch_all(self) -> pl.DataFrame:
+        pass
+
     def __init__(self, db_source: DuckDBDataSource, table_name: str = DEFAULT_OFFERS_TABLE):
         super().__init__(db_source, table_name)
 
@@ -27,7 +30,7 @@ class ProductRepository(BaseRepository):
         pl.DataFrame: A Polars DataFrame containing the product details.
         """
         query = (
-            QueryBuilder(self.table_name)
+            SimpleSQLBaseQueryBuilder(self.table_name)
             .select('*')
             .where(f"produkt_id = '{product_id}'")
             .build()

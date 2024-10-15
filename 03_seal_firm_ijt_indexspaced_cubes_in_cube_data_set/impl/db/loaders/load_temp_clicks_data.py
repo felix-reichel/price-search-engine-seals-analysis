@@ -5,7 +5,7 @@ from tqdm import tqdm
 
 from CONFIG import CLICKS_SCHEME, PARQUET_FILES_DIR, CLICKS_FOLDER
 from impl.db.datasource import DuckDBDataSource
-from impl.db.querybuilder import QueryBuilder
+from impl.db.simple_sql_base_query_builder import SimpleSQLBaseQueryBuilder
 from impl.helpers import get_year_month_from_seal_date, generate_months_around_seal, file_exists_in_folders
 
 logger = logging.getLogger(__name__)
@@ -56,7 +56,7 @@ def load_click_data(
 
     if table_created:
         count_query = (
-            QueryBuilder('clicks')
+            SimpleSQLBaseQueryBuilder('clicks')
             .select('COUNT(*) AS total_rows')
             .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
             .build()

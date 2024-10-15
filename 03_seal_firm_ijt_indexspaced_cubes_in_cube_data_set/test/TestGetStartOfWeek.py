@@ -2,7 +2,7 @@ import datetime as dt
 import unittest
 
 from CONFIG import UNIX_DAY, UNIX_WEDNESDAY_MIDDAY_INTERCEPT
-from impl.static import get_start_of_week
+from impl.helpers import get_start_of_week
 
 
 class TestGetStartOfWeek(unittest.TestCase):

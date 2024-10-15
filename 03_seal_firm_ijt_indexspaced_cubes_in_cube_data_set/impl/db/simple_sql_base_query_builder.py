@@ -1,4 +1,4 @@
-class QueryBuilder:
+class SimpleSQLBaseQueryBuilder:
     def __init__(
             self,
             table_name: str,

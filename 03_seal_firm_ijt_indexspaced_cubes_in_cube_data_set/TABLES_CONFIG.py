@@ -1,5 +1,7 @@
 # TABLES_CONFIG.py
 
+# Describes Main db memory handling behaviour...
+
 TABLES_CONFIG = {
     "ANGEBOTE_FOLDER_1": {
         "folder_name": "angebot_06_10",

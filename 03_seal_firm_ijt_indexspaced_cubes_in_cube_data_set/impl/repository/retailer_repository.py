@@ -3,27 +3,20 @@ import logging
 import polars as pl
 
 from impl.db.datasource import DuckDBDataSource
-from impl.db.querybuilder import QueryBuilder
-from impl.repository.base.base_repository import BaseRepository
+from impl.db.simple_sql_base_query_builder import SimpleSQLBaseQueryBuilder
+from impl.repository.base.abc_repository import AbstractBaseRepository
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_RETAILER_TABLE = 'retailer'
 
 
-class RetailerRepository(BaseRepository):
+class RetailerRepository(AbstractBaseRepository):
+    def fetch_all(self) -> pl.DataFrame:
+        pass
+
     def __init__(self, db_source: DuckDBDataSource, table_name: str = DEFAULT_RETAILER_TABLE):
         super().__init__(db_source, table_name)
-
-    def add_data(self, data: pl.DataFrame):
-        """
-        Add data to the retailers table.
-
-        Parameters:
-        data (pl.DataFrame): A Polars DataFrame containing the data to insert into the table.
-        """
-        logger.info(f"Adding data to {self.table_name}")
-        self.db_source.insert_df(self.table_name, data)
 
     def fetch_all_retailers(self) -> pl.DataFrame:
         """
@@ -33,7 +26,7 @@ class RetailerRepository(BaseRepository):
         pl.DataFrame: A Polars DataFrame containing all the retailers.
         """
         query = (
-            QueryBuilder(self.table_name)
+            SimpleSQLBaseQueryBuilder(self.table_name)
             .select('*')
             .build()
         )
@@ -50,7 +43,7 @@ class RetailerRepository(BaseRepository):
         pl.DataFrame: A Polars DataFrame containing the retailer's details.
         """
         query = (
-            QueryBuilder(self.table_name)
+            SimpleSQLBaseQueryBuilder(self.table_name)
             .select('*')
             .where(f"haendler_bez = '{retailer_id}'")
             .build()

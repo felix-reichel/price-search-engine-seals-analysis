@@ -2,12 +2,12 @@ import random
 
 import CONFIG
 from impl.helpers import *
-from impl.service.base.base_service import BaseService
+from impl.service.base.abc_service import AbstractBaseService
 
 logger = logging.getLogger(__name__)
 
 
-class OffersService(BaseService):
+class OffersService(AbstractBaseService):
 
     def get_offered_weeks(self, prod_id: str, firm_id: str, seal_date_str: str) -> set:
         """

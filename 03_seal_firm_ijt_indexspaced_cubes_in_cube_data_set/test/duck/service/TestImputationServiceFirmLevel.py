@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 from impl.db.datasource import DuckDBDataSource
-from impl.service.imputation_service import ImputationService, ImputationStrategy
+from impl.service.mean_imputation_service import MeanImputationService, MeanImputationStrategy
 from ..base.DuckDbBaseTest import DuckDbBaseTest
 
 
@@ -14,7 +14,7 @@ class TestImputationServiceFirmLevel(DuckDbBaseTest):
         self.connection_mock = MagicMock()
         self.db_source_mock.conn = self.connection_mock
 
-        self.imputation_service = ImputationService(db_source=self.db_source_mock)
+        self.imputation_service = MeanImputationService(db_source=self.db_source_mock)
 
         self.mock_table_name = "test_table"
         self.mock_column_to_impute = "missing_column"
@@ -34,7 +34,7 @@ class TestImputationServiceFirmLevel(DuckDbBaseTest):
             {"firm_id": 4, "some_column": 90, "missing_column": None}
         ]
 
-    @patch('impl.db.querybuilder.QueryBuilder')
+    @patch('impl.db.simple_sql_base_query_builder.SimpleSQLBaseQueryBuilder')
     def test_firm_level_imputation(self, query_builder_mock):
         query_builder_instance = MagicMock()
         query_builder_mock.return_value = query_builder_instance
@@ -53,7 +53,7 @@ class TestImputationServiceFirmLevel(DuckDbBaseTest):
         ]
 
         self.imputation_service.impute(
-            strategy=ImputationStrategy.FIRM_LEVEL,
+            strategy=MeanImputationStrategy.FIRM_LEVEL,
             table_name=self.mock_table_name,
             column_to_impute=self.mock_column_to_impute,
             target_column=self.mock_target_column

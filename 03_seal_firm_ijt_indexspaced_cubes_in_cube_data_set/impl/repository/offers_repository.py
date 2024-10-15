@@ -3,15 +3,18 @@ import logging
 import polars as pl
 
 from impl.db.datasource import DuckDBDataSource
-from impl.db.querybuilder import QueryBuilder
-from impl.repository.base.base_repository import BaseRepository
+from impl.db.simple_sql_base_query_builder import SimpleSQLBaseQueryBuilder
+from impl.repository.base.abc_repository import AbstractBaseRepository
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_OFFERS_TABLE = 'angebot'
 
 
-class OffersRepository(BaseRepository):
+class OffersRepository(AbstractBaseRepository):
+    def fetch_all(self) -> pl.DataFrame:
+        pass
+
     def __init__(self, db_source: DuckDBDataSource, table_name: str = DEFAULT_OFFERS_TABLE):
         super().__init__(db_source, table_name)
 
@@ -29,7 +32,7 @@ class OffersRepository(BaseRepository):
         pl.DataFrame: A Polars DataFrame containing the offered weeks.
         """
         query = (
-            QueryBuilder(self.table_name)
+            SimpleSQLBaseQueryBuilder(self.table_name)
             .select(['produkt_id', 'haendler_bez', 'dtimebegin', 'dtimeend'])
             .build_ijt_where_clause(product_id, firm_id, time_range_start, time_range_end)
             .build()
@@ -48,7 +51,7 @@ class OffersRepository(BaseRepository):
         pl.DataFrame: A Polars DataFrame containing the distinct firms.
         """
         query = (
-            QueryBuilder(self.table_name)
+            SimpleSQLBaseQueryBuilder(self.table_name)
             .select('haendler_bez')
             .distinct()
             .where(f"produkt_id = '{product_id}'")
@@ -71,7 +74,7 @@ class OffersRepository(BaseRepository):
         pl.DataFrame: A Polars DataFrame containing the offer data.
         """
         query = (
-            QueryBuilder(self.table_name)
+            SimpleSQLBaseQueryBuilder(self.table_name)
             .select(['dtimebegin', 'dtimeend'])
             .where(f"produkt_id = '{product_id}'")
             .where(f"haendler_bez = '{retailer}'")
@@ -93,7 +96,7 @@ class OffersRepository(BaseRepository):
         pl.DataFrame: A Polars DataFrame containing the distinct product IDs.
         """
         query = (
-            QueryBuilder(self.table_name)
+            SimpleSQLBaseQueryBuilder(self.table_name)
             .select('produkt_id')
             .distinct()
             .where(f"haendler_bez = '{retailer}'")

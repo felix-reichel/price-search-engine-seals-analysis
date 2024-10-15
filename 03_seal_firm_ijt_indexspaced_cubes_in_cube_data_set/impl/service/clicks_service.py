@@ -2,12 +2,12 @@ import datetime as dt
 import logging
 
 import CONFIG
-from impl.service.base.base_service import BaseService
+from impl.service.base.abc_service import AbstractBaseService
 
 logger = logging.getLogger(__name__)
 
 
-class ClicksService(BaseService):
+class ClicksService(AbstractBaseService):
     def get_top_n_products_by_clicks(self, haendler_bez: str, seal_date_str: str, top_n: int = CONFIG.TOP_PRODUCTS_OF_SEAL_CHANGE_FIRM_BY_CLICKS_AMOUNT) -> list:
         """
         Retrieve the top N products by clicks for a given retailer and seal date.

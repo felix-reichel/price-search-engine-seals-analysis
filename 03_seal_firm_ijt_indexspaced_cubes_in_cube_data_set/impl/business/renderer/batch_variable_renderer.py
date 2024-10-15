@@ -24,7 +24,7 @@ class BatchVariableRenderer(VariableRenderer):
         Batch process multiple variables and render them.
         """
         for variable in variables:
-            print(f"Rendering variable: {variable.name}")
+            print(f"Rendering variable: {variable.label}")
             self.render_variable(variable, space_selector)
 
         # Check if all variables are rendered, then export the dataset

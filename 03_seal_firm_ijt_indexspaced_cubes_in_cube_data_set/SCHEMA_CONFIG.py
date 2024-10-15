@@ -61,3 +61,7 @@ INITIAL_TABLE_SCHEMAS = {
         )
     """
 }
+
+# Shadow db table schemas with same DDL for shooting Queries at.
+SHADOW_DB_TABLE_SCHEMAS = {}
+

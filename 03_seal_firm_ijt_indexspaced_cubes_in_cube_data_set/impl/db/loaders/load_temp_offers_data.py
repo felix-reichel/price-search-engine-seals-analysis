@@ -6,7 +6,7 @@ from tqdm import tqdm
 import CONFIG
 from CONFIG import ANGEBOTE_FOLDER
 from impl.db.datasource import DuckDBDataSource
-from impl.db.querybuilder import QueryBuilder
+from impl.db.simple_sql_base_query_builder import SimpleSQLBaseQueryBuilder
 from impl.helpers import get_week_year_from_seal_date, generate_weeks_around_seal, file_exists_in_folders
 
 logger = logging.getLogger(__name__)
@@ -68,7 +68,7 @@ def load_angebot_data(
 
     if table_initialized:
         count_query = (
-            QueryBuilder('angebot')
+            SimpleSQLBaseQueryBuilder('angebot')
             .select('COUNT(*) AS total_rows')
             .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
             .build()
@@ -124,7 +124,7 @@ def load_angebot_data_v2(
             db.load_parquet_to_table(file_path, table_name)
 
             insert_query = (
-                QueryBuilder(table_name)
+                SimpleSQLBaseQueryBuilder(table_name)
                 .select('*')
                 .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
                 .insert_into('angebot')
