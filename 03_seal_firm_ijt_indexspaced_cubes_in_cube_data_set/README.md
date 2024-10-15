@@ -4,8 +4,19 @@
 **Date**: June 2024 - ?2024
 
 ## Data Set Specifications & Requirements
-For detailed data set specifications, refer to:  
+
+Approximate variables amount (columns) is: 90 Vars. + 4 IVs.
+
+For original data set specifications (requirements), refer to:  
 `Spezifikation_DS_guetesiegel_{VERSION}.doc`
+
+### Requirements Engineering: Data Set Columns Overview
+
+For a detailed overview of the calculated variables refer to:
+
+[spec > REQUIREMENTS_ENGINEERING > DATASET](spec/REQUIREMENTS_ENGINEERING/DATASET.md)
+
+
 
 ## Observational Unit:
 The observational unit $\text{obs}(i, j, t)$ is defined as:
