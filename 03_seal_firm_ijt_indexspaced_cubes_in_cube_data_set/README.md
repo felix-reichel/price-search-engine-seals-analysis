@@ -5,7 +5,7 @@
 
 ## Data Set Specifications & Requirements
 
-Approximate variables amount (columns) is: 90 Vars. + 4 IVs.
+Approximate variables amount (columns) is: 80 Vars. + 4 IVs.
 
 For original data set specifications (requirements), refer to:  
 `Spezifikation_DS_guetesiegel_{VERSION}.doc`

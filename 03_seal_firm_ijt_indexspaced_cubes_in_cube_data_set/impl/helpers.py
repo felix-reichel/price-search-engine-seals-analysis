@@ -6,6 +6,7 @@ from functools import lru_cache
 import psutil
 from dateutil.relativedelta import relativedelta
 
+import CONFIG
 from CONFIG import UNIX_TIME_ORIGIN, UNIX_WEEK, PARQUET_FILES_DIR, ANGEBOTE_SCHEME, CLICKS_SCHEME, \
     OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_PRE_SEAL_CONSIDERED, \
     OFFER_TIME_SPELLS_PREPROCESSING_WEEKS_POST_SEAL_CONSIDERED
@@ -17,6 +18,52 @@ def print_process_mem_usage():
     process = psutil.Process()
     mem_info = process.memory_info()
     print(f"Memory Usage: {mem_info.rss / (1024 * 1024):.2f} MB")
+
+
+class StandardizedTError(Exception):
+    pass
+
+
+# method which returns a standardized t within [-26;+26]
+# Used for DiD graph for validation of the PTA
+@lru_cache(maxsize=None)
+def calculate_standardized_t_around_seal_date_change_cached(
+        t: int,
+        seal_date: str,
+        seal_date_format: str = CONFIG.SEAL_CHANGE_DATE_PATTERN) -> int:
+    """
+    Calculates a standardized t value within the range [-26, +26] relative to the seal date.
+
+    Parameters:
+    t (int): The current time variable.
+    seal_date (str): The seal date in string format.
+    seal_date_format (str): The format of the seal date (optional, default from config).
+
+    Returns:
+    int: Standardized t value.
+
+    Raises:
+    StandardizedTError: If the relative difference between t and t_seal is not within [-26, +26].
+    """
+
+    if not isinstance(t, int):
+        raise ValueError(f"Expected 't' to be an integer, got {type(t).__name__}")
+
+    try:
+        dt.datetime.strptime(seal_date, seal_date_format)
+    except ValueError as e:
+        raise ValueError(f"Invalid seal_date '{seal_date}' for format '{seal_date_format}': {e}")
+
+    t_seal: int = calculate_running_var_t_from_u(
+        date_to_unix_time(seal_date, seal_date_format)
+    )
+
+    relative_diff = t - t_seal
+
+    if not -26 <= relative_diff <= 26:
+        raise StandardizedTError(f"Relative difference {relative_diff} is out of bounds [-26, +26]")
+
+    return 0 if relative_diff == 0 else relative_diff
 
 
 @lru_cache(maxsize=None)
@@ -39,7 +86,7 @@ def calculate_u_from_running_var_t(week_running_var, unix_origin=UNIX_TIME_ORIGI
 
 
 @lru_cache(maxsize=None)
-def date_to_unix_time(date_str, date_format='%d.%m.%Y'):
+def date_to_unix_time(date_str, date_format: str = CONFIG.SEAL_CHANGE_DATE_PATTERN):
     try:
         date_obj = dt.datetime.strptime(date_str, date_format)
         return int(date_obj.timestamp())
