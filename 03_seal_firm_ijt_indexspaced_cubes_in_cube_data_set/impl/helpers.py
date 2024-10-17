@@ -27,7 +27,7 @@ class StandardizedTError(Exception):
 # method which returns a standardized t within [-26;+26]
 # Used for DiD graph for validation of the PTA
 @lru_cache(maxsize=None)
-def calculate_standardized_t_around_seal_date_change_cached(
+def calculate_standardized_t_around_seal_change_date_cached(
         t: int,
         seal_date: str,
         seal_date_format: str = CONFIG.SEAL_CHANGE_DATE_PATTERN) -> int:
@@ -63,7 +63,7 @@ def calculate_standardized_t_around_seal_date_change_cached(
     if not -26 <= relative_diff <= 26:
         raise StandardizedTError(f"Relative difference {relative_diff} is out of bounds [-26, +26]")
 
-    return 0 if relative_diff == 0 else relative_diff
+    return relative_diff
 
 
 @lru_cache(maxsize=None)
