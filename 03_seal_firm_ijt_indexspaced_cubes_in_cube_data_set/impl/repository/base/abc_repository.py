@@ -1,5 +1,5 @@
 import logging
-from abc import ABC, abstractmethod
+from abc import ABC
 
 import polars as pl
 
@@ -42,19 +42,6 @@ class AbstractBaseRepository(ABC, Singleton):
         # Ensure table_name is only set once (Singleton behavior)
         if not hasattr(self, 'table_name'):
             self.table_name = table_name
-
-    @abstractmethod
-    def fetch_all(self) -> pl.DataFrame:
-        """
-        Fetch all records from the repository's table.
-
-        This method must be implemented by subclasses to define the specific
-        query logic for retrieving data from the table.
-
-        Returns:
-            pl.DataFrame: A Polars DataFrame containing all records in the table.
-        """
-        pass
 
     def _execute_query(self, query: str) -> pl.DataFrame:
         """

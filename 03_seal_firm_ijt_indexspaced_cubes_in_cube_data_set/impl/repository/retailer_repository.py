@@ -12,8 +12,6 @@ DEFAULT_RETAILER_TABLE = 'retailer'
 
 
 class RetailerRepository(AbstractBaseRepository):
-    def fetch_all(self) -> pl.DataFrame:
-        pass
 
     def __init__(self, db_source: DuckDBDataSource, table_name: str = DEFAULT_RETAILER_TABLE):
         super().__init__(db_source, table_name)

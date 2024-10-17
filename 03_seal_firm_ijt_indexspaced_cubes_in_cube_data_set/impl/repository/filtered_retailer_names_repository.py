@@ -12,8 +12,6 @@ DEFAULT_FILTERED_TABLE = 'filtered_haendler_bez'
 
 
 class FilteredRetailerNamesRepository(AbstractBaseRepository):
-    def fetch_all(self) -> pl.DataFrame:
-        return self.fetch_all_filtered_retailers()
 
     def __init__(self, db_source: DuckDBDataSource, table_name: str = DEFAULT_FILTERED_TABLE):
         super().__init__(db_source, table_name)

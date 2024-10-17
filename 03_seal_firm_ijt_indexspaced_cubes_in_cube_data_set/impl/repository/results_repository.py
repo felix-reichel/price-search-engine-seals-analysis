@@ -67,3 +67,12 @@ class ResultsDataRepository(AbstractBaseRepository):
             .build()
         )
         return self.db_source.queryAsPl(query)
+
+    def get_row_count(self) -> int:
+        query = (
+            SimpleSQLBaseQueryBuilder(self.table_name)
+            .select("COUNT(*)")
+            .distinct()
+            .build()
+        )
+        return self.db_source.query(query).type(int)

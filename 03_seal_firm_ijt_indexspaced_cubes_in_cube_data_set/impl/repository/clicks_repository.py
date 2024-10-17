@@ -12,8 +12,6 @@ DEFAULT_CLICKS_TABLE = 'clicks'
 
 
 class ClicksRepository(AbstractBaseRepository):
-    def fetch_all(self) -> pl.DataFrame:
-        pass
 
     def __init__(self, db_source: DuckDBDataSource, table_name: str = DEFAULT_CLICKS_TABLE):
         super().__init__(db_source, table_name)

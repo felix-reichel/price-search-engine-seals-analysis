@@ -1,6 +1,5 @@
 import random
 
-import CONFIG
 from impl.helpers import *
 from impl.service.base.abc_service import AbstractBaseService
 

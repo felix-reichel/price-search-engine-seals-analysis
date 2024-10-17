@@ -1,13 +1,13 @@
 # Variable Renderer Class
 from impl.business.enum.variable_render_strategy import VariableRenderStrategy
 
-from impl.business.data_set import DataSet
+from impl.business.data_set import GZDataSet
 from impl.business.selector.space_selector import SpaceSelector
 from impl.business.variable import Variable
 
 
 class VariableRenderer:
-    def __init__(self, dataset: DataSet):
+    def __init__(self, dataset: GZDataSet):
         self.dataset = dataset
 
     def render_variable(self, variable: Variable, space_selector: SpaceSelector):
@@ -35,4 +35,4 @@ class VariableRenderer:
             # Process data for single specific value
 
         # Append results back to the dataset
-        self.dataset.append_data(variable_data)
+        self.dataset.append_new_variable(variable_data)

@@ -2,7 +2,7 @@ from typing import Optional, List
 
 import polars as pl
 
-from impl.business.data_set import DataSet
+from impl.business.data_set import GZDataSet
 from impl.business.enum.variable import VariableRenderStrategy
 from impl.business.enum.variable import VariableValueAggregationOrCollectionStrategy
 from impl.business.selector.space_selector import SpaceSelector
@@ -45,7 +45,7 @@ class Variable:     # What is a variable?
         self.imputation_strategy = imputation_strategy
         self.render_strategy = render_strategy  # Each variable can have its own render strategy
 
-    def load_variable_data(self, dataset: DataSet, space_selector: SpaceSelector) -> pl.DataFrame:
+    def load_variable_data(self, dataset: GZDataSet, space_selector: SpaceSelector) -> pl.DataFrame:
         """
         Load data for this variable based on the space selection criteria.
         This method also handles joins and filters based on criterions.
@@ -58,7 +58,7 @@ class Variable:     # What is a variable?
 
         return dataset.execute_query(base_query)
 
-    def impute(self, dataset: DataSet, space_selector: SpaceSelector):
+    def impute(self, dataset: GZDataSet, space_selector: SpaceSelector):
         """
         Impute missing data for this variable using the defined imputation strategy.
         """

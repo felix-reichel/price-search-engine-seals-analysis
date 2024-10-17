@@ -1,6 +1,6 @@
 from typing import List
 
-from impl.business.data_set import DataSet
+from impl.business.data_set import GZDataSet
 from impl.business.renderer.variable_renderer import VariableRenderer
 from impl.business.selector.space_selector import SpaceSelector
 from impl.business.variable import Variable
@@ -16,7 +16,7 @@ def is_rendering_complete(variables: List[Variable]) -> bool:
 
 
 class BatchVariableRenderer(VariableRenderer):
-    def __init__(self, dataset: DataSet):
+    def __init__(self, dataset: GZDataSet):
         super().__init__(dataset)
 
     def batch_render(self, variables: List[Variable], space_selector: SpaceSelector):
