@@ -39,6 +39,39 @@ def process_single_product(product, firm_id, seal_date_str, product_service, has
     return [{'produkt_id': product, 'haendler_bez': firm_id, 'week_running_var': week, 'firm_has_seal_j': has_seal}
             for week in offered_weeks]
 
+    # TODO:
+    # TYPE 1 Variables - inferred during the selection criteria process.
+    ################################################
+    # Own helpers (positional info)
+    # 'firm_has_seal_j' == 1 = indicates the MAIN seal change firm
+    # 'seal_change_cluster_zugehoerigkeit_categorical': 0 .. 296
+    # ...
+    # Other helpers:
+    # ...
+    # Specs:
+    # siegel_anbieter1_jt  # binary dummy
+    # siegel_anbieter2_jt  # binary dummy
+    # siegel_anbieter3_jt  # binary dummy
+    # binary seal dummies are 0 for counterfactual firms J not element of J_seal
+
+    # ...
+
+    # Type 1 Variables do not use UniqueTupleExtractor or additional Loader Classes.
+    ################################################
+
+    # TYPE 2 Variables using routine of https://github.com/felix-reichel/price-search-engine-seals-analysis/issues/29
+    # stored to in Step 1 Variable produced Grid / DataFrame / "Results" -Table.
+    # deps.: uses UniqueTupleExtractor (for POSITIONAL (Where) UPDATE-Queries affecting multiple Cells / Variables /
+    # Features / Entries)
+    ################################################
+
+    # TYPE 3 Variables (Augmented Data) - Exogenous Instrumental Variables (IVs)
+    # Can be produced solely with Tuples from UniqueTupleExtractor and PQ data base and some repos / services.
+    # IV_ijt
+    # deps.:
+    # uses UniqueTupleExtractor
+    ################################################
+
 
 def gather_tasks(product, seal_date_str, seal_firms, geizhals_id, allowed_firms, product_service):
     tasks = [(product, geizhals_id, seal_date_str, True, product_service)]
@@ -66,11 +99,13 @@ def process_seal_firm(seal_firm_data, result_counter, db: DuckDBDataSource):
         allowed_firms, processed_firms, lock, product_service, clicks_service
     ) = seal_firm_data
 
+    firm_seal_key = (haendler_bez, seal_date)
+
     with lock:
-        if haendler_bez in processed_firms:
-            logger.info(f"Firm {haendler_bez} has already been processed. Skipping.")
-            return None
-        processed_firms[haendler_bez] = True
+        if firm_seal_key in processed_firms:
+            logger.info(f"Firm {haendler_bez} with seal date {seal_date} has already been processed. Skipping.")
+            return
+        processed_firms[firm_seal_key] = True
         result_counter.value += 1
         firm_count = result_counter.value
 
@@ -129,9 +164,9 @@ def calculate_index_space(parallel=False):
 
         seal_firm_data_list = [
             (
-                haendler_bez,
-                seal_change_firms['RESULTING MATCH'][i],
-                seal_change_firms['Guetesiegel First Date'][i],
+                row['RESULTING MATCH'],
+                row['RESULTING MATCH'],
+                row['Guetesiegel First Date'],
                 seal_firms,
                 allowed_firms,
                 processed_firms,
@@ -139,7 +174,7 @@ def calculate_index_space(parallel=False):
                 Factory.create_offers_service(),
                 Factory.create_clicks_service()
             )
-            for i, haendler_bez in enumerate(seal_change_firms['RESULTING MATCH'])
+            for row in seal_change_firms.iter_rows(named=True)
         ]
 
         logger.info("Processing seal firms...")

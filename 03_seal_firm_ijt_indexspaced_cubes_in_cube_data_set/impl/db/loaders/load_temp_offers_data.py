@@ -69,8 +69,7 @@ def load_angebot_data(
     if table_initialized:
         count_query = (
             SimpleSQLBaseQueryBuilder('angebot')
-            .select('COUNT(*) AS total_rows')
-            .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
+            .select('COUNT(*) AS total_loaded_inflow_rows')    # .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
             .build()
         )
 

@@ -57,8 +57,7 @@ def load_click_data(
     if table_created:
         count_query = (
             SimpleSQLBaseQueryBuilder('clicks')
-            .select('COUNT(*) AS total_rows')
-            .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
+            .select('COUNT(*) AS total_loaded_inflow_rows')     # .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
             .build()
         )
         result = db.queryAsPl(count_query)

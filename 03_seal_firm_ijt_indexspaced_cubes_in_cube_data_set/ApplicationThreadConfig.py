@@ -10,11 +10,11 @@ class ApplicationThreadConfig:
     @lru_cache()
     def calculate_thread_distribution():  # Todo: furthermore To be patched in DuckDbBaseTest
 
-        THREAD_PER_AVAIL_CORE = 1
+        ALLOW_THREAD_PER_AVAIL_CORE = 1
 
         return {
-            "duckdb_thread_count": 32,
-            "duckdb_background_thread_count": 4,
+            "duckdb_thread_count": 200*ALLOW_THREAD_PER_AVAIL_CORE,
+            "duckdb_background_thread_count": 32*ALLOW_THREAD_PER_AVAIL_CORE,
         }
 
     @staticmethod

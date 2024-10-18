@@ -5,7 +5,8 @@ from pathlib import Path
 # DEFINITION OF GLOBAL CONSTANTS #
 
 # TODO: Set POLARS_MAX_THREADS
-os.environ["POLARS_MAX_THREADS"] = "32"     # test
+os.environ["POLARS_MAX_THREADS"] = "200"     # test
+os.environ["NUMEXPR_MAX_THREADS"] = "32"
 
 NCPUS = os.getenv("NCPUS")  # should be available
 # else CPU_COUNT = os.cpu_count()
@@ -13,8 +14,8 @@ NCPUS = os.getenv("NCPUS")  # should be available
 
 # DUCKDB CONFIG
 DUCKDB_PATH = ':memory:'
-DUCKDB_MEMORY_LIMIT = '400GB'   # TODO: Set based on curr Caps
-MAX_DUCKDB_THREADS = 32  # test
+DUCKDB_MEMORY_LIMIT = '800GB'   # TODO: Set based on curr Caps
+MAX_DUCKDB_THREADS = 200  # test
 
 # PYTHON CONFIG
 # Processors
