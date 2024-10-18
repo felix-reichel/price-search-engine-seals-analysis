@@ -63,7 +63,7 @@ def import_angebot_data(
         for file_path in angebot_files:
             logger.info(f"Loading Angebot data from {file_path}")
 
-            db.load_parquet_to_table(
+            db.gz_load_filtered_parquet_to_table(
                 file_path,
                 'angebot_temp',
                 columns=['produkt_id', 'haendler_bez', 'dtimebegin', 'dtimeend']
@@ -89,7 +89,7 @@ def import_click_data(
     for file_path in click_files:
         logger.info(f"Loading Click data from {file_path}")
 
-        db.load_parquet_to_table(
+        db.gz_load_filtered_parquet_to_table(
             file_path,
             'clicks_temp',
             columns=['produkt_id', 'haendler_bez', 'timestamp']

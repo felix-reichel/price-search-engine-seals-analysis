@@ -55,13 +55,32 @@ def load_click_data(
             pbar.update(1)
 
     if table_created:
+
         count_query = (
             SimpleSQLBaseQueryBuilder('clicks')
-            .select('COUNT(*) AS total_loaded_inflow_rows')     # .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
+            .select(
+                'COUNT(*) AS total_loaded_inflow_rows')    # .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
             .build()
         )
         result = db.queryAsPl(count_query)
         logger.info(f"Total rows in Clicks data: {result[0][0]}")
+
+        # DB BULK DELETE (WORK-AROUND Todo: USING did not work somehow with duck may check later https://duckdb.org/docs/sql/statements/delete.html
+        db.conn.execute("""
+            UPDATE clicks c
+            SET haendler_bez = NULL 
+            WHERE EXISTS ( SELECT 1 FROM filtered_haendler_bez WHERE haendler_bez = c.haendler_bez )
+        """)
+
+        db.conn.execute("""
+            DELETE FROM clicks 
+            WHERE haendler_bez IS NULL
+        """)
+
+        # POST DB BULK DELETE
+        result = db.queryAsPl(count_query)
+        logger.info(f"*NEW Total rows in Clicks data: {result[0][0]}")
+
         return result[0][0]
     else:
         logger.warning(f"No relevant Clicks data found for seal date {seal_date}.")
@@ -97,7 +116,7 @@ def load_click_data_v2(
 
         if os.path.isfile(file_path):
             logger.info(f"Loading Clicks data from {file_path}")
-            db.load_parquet_to_table(file_path, table_name)
+            db.gz_load_filtered_parquet_to_table(file_path, table_name)
 
 
 def initialize_clicks_table(
