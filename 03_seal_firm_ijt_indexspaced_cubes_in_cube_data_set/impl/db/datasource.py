@@ -161,6 +161,23 @@ class DuckDBDataSource(Singleton):
             (parquet_path_str,)
         )
 
+    def gz_load_filtered_parquet_to_table(self,
+                                          parquet_path: pathlib.PosixPath,
+                                          table_name: str,
+                                          columns: Optional[List[str]] = None):
+        parquet_path_str = str(parquet_path)
+        if self._skip_load(parquet_path_str):
+            return
+
+        logger.info(f"Loading Parquet from {parquet_path_str} into table {table_name}")
+        column_str = ", ".join(columns) if columns else "*"
+        self._load_data(
+            parquet_path_str,
+            f"CREATE OR REPLACE TABLE {table_name} AS SELECT {column_str} FROM read_parquet(?) pq"
+            f" WHERE EXISTS ( SELECT 1 FROM filtered_haendler_bez WHERE haendler_bez = pq.haendler_bez )",
+            (parquet_path_str,)
+        )
+
     def append_parquet_to_table(self,
                                 parquet_path: str,
                                 table_name: str,
@@ -181,6 +198,22 @@ class DuckDBDataSource(Singleton):
         self._load_data(
             parquet_path,
             f"INSERT INTO {table_name} SELECT {column_str} FROM read_parquet(?)",
+            (parquet_path,)
+        )
+
+    def gz_append_filtered_parquet_to_table(self,
+                                            parquet_path: str,
+                                            table_name: str,
+                                            columns: Optional[List[str]] = None):
+        if self._skip_load(parquet_path):
+            return
+
+        logger.info(f"Appending Filtered Parquet from {parquet_path} into table {table_name}")
+        column_str = ", ".join(columns) if columns else "*"
+        self._load_data(
+            parquet_path,
+            f"INSERT INTO {table_name} SELECT {column_str} FROM read_parquet(?) pq "
+            f"WHERE EXISTS ( SELECT 1 FROM filtered_haendler_bez WHERE haendler_bez = pq.haendler_bez )",
             (parquet_path,)
         )
 

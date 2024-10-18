@@ -11,7 +11,7 @@ from impl.helpers import get_year_month_from_seal_date, generate_months_around_s
 logger = logging.getLogger(__name__)
 
 
-def load_click_data(
+def load_selection_criteria_inflow_click_data(
         db: DuckDBDataSource,
         seal_date,
         columns=None,
@@ -55,13 +55,39 @@ def load_click_data(
             pbar.update(1)
 
     if table_created:
+
+        # POST INIT
         count_query = (
             SimpleSQLBaseQueryBuilder('clicks')
-            .select('COUNT(*) AS total_loaded_inflow_rows')     # .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
+            .select(
+                'COUNT(*) AS total_loaded_inflow_rows')
+            # .where("haendler_bez IN (SELECT haendler_bez FROM filtered_haendler_bez)")
             .build()
         )
         result = db.queryAsPl(count_query)
         logger.info(f"Total rows in Clicks data: {result[0][0]}")
+
+        # DB BULK DELETE (WORK-AROUND) Todo: may check later
+        # db.conn.execute("""
+        #    DELETE FROM clicks cl
+        #    WHERE NOT EXISTS ( SELECT 42 FROM filtered_haendler_bez WHERE haendler_bez = cl.haendler_bez )
+        # """)
+
+        db.conn.execute("""
+            UPDATE clicks cl
+            SET haendler_bez = NULL 
+            WHERE NOT EXISTS ( SELECT 42 FROM filtered_haendler_bez WHERE haendler_bez = cl.haendler_bez )
+        """)
+
+        db.conn.execute("""
+            DELETE FROM clicks 
+            WHERE haendler_bez IS NULL
+        """)
+
+        # POST DB BULK DELETE
+        result = db.queryAsPl(count_query)
+        logger.info(f"*NEW Total rows in Clicks data: {result[0][0]}")
+
         return result[0][0]
     else:
         logger.warning(f"No relevant Clicks data found for seal date {seal_date}.")
@@ -97,7 +123,7 @@ def load_click_data_v2(
 
         if os.path.isfile(file_path):
             logger.info(f"Loading Clicks data from {file_path}")
-            db.load_parquet_to_table(file_path, table_name)
+            db.gz_load_filtered_parquet_to_table(file_path, table_name)
 
 
 def initialize_clicks_table(

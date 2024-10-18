@@ -8,8 +8,8 @@ from tqdm import tqdm
 import CONFIG
 from impl.db.datasource import DuckDBDataSource
 from impl.db.loaders.init_db import DatabaseInitializer
-from impl.db.loaders.load_temp_clicks_data import initialize_clicks_table, load_click_data
-from impl.db.loaders.load_temp_offers_data import initialize_offer_table, load_angebot_data
+from impl.db.loaders.load_temp_clicks_data import initialize_clicks_table, load_selection_criteria_inflow_click_data
+from impl.db.loaders.load_temp_offers_data import initialize_offer_table, load_selection_criteria_inflow_angebot_data
 from impl.factory import Factory
 from impl.helpers import calculate_running_var_t_from_u, print_process_mem_usage
 
@@ -119,8 +119,8 @@ def process_seal_firm(seal_firm_data, result_counter, db: DuckDBDataSource):
     initialize_clicks_table(db)
     initialize_offer_table(db)
 
-    load_angebot_data(db, seal_date_str)
-    load_click_data(db, seal_date_str)
+    load_selection_criteria_inflow_angebot_data(db, seal_date_str)
+    load_selection_criteria_inflow_click_data(db, seal_date_str)
 
     products = clicks_service.get_top_n_products_by_clicks(haendler_bez, seal_date_str)
 
