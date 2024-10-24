@@ -1,5 +1,7 @@
 import random
 
+import polars as pl
+
 from impl.helpers import *
 from impl.service.base.abc_service import AbstractBaseService
 
@@ -41,7 +43,10 @@ class OffersService(AbstractBaseService):
 
         return {week for week in offered_weeks if lower_bound <= week <= upper_bound}
 
-    def get_rand_max_N_counterfactual_firms(self, product_id: str, seal_date_str: str, seal_firms: list, allowed_firms: list) -> list:
+    def get_rand_max_N_counterfactual_firms(self, product_id: str,
+                                            seal_date_str: str,
+                                            seal_firms: pl.Series,
+                                            allowed_firms: pl.Series) -> list:
         """
         Get a random selection of counterfactual firms that offered the product around the seal date.
 
@@ -55,17 +60,27 @@ class OffersService(AbstractBaseService):
         list: A random sample of counterfactual firms.
         """
         seal_date = date_to_unix_time(seal_date_str)
-        angebot_data = self.repository.fetch_counterfactual_firms(product_id, seal_date).to_series(0).to_list()
 
-        counterfactual_firms = [f for f in angebot_data if f not in seal_firms]
+        angebot_data = self.repository.fetch_all_counterfactual_firms_by_product_and_timestamps(
+            product_id,
+            seal_date).to_series(0)
+
+        counterfactual_firms_filtered = angebot_data.filter(
+            (~angebot_data.is_in(seal_firms)) &
+            (angebot_data.is_in(allowed_firms))
+        )
+
+        counterfactual_firms_filtered_list = counterfactual_firms_filtered.to_list()
 
         random.seed(CONFIG.RANDOM_SAMPLER_DETERMINISTIC_SEED)
-        sample = random.sample(counterfactual_firms, min(len(counterfactual_firms),
-                                                         CONFIG.RANDOM_COUNTERFACTUAL_FIRMS_AMOUNT))
+        random.shuffle(counterfactual_firms_filtered_list)
 
-        return sample
+        selected_firms = counterfactual_firms_filtered_list[:CONFIG.RANDOM_COUNTERFACTUAL_FIRMS_AMOUNT]
 
-    def get_random_n_products_deterministic(self, haendler_bez: str, seal_date_str: str, n: int = CONFIG.RANDOM_PRODUCTS_AMOUNTS,
+        return selected_firms
+
+    def get_random_n_products_deterministic(self, haendler_bez: str, seal_date_str: str,
+                                            n: int = CONFIG.RANDOM_PRODUCTS_AMOUNTS,
                                             seed: int = CONFIG.RANDOM_SAMPLER_DETERMINISTIC_SEED,
                                             time_window_around_seal: int = CONFIG.HAS_WEEKS_BEFORE_AND_AFTER_PRODUCT_ANGEBOTEN_AMOUNT) -> list:
         """
@@ -88,7 +103,8 @@ class OffersService(AbstractBaseService):
         observation_start_unix = int(observation_start.timestamp())
         observation_end_unix = int(observation_end.timestamp())
 
-        product_ids = self.repository.fetch_random_products(haendler_bez, observation_start_unix, observation_end_unix).to_series(0).to_list()
+        product_ids = self.repository.fetch_random_products(haendler_bez, observation_start_unix,
+                                                            observation_end_unix).to_series(0).to_list()
 
         if not product_ids:
             return []
@@ -96,7 +112,8 @@ class OffersService(AbstractBaseService):
         random.seed(seed)
         return random.sample(product_ids, min(n, len(product_ids)))
 
-    def is_product_continuously_offered(self, produkt_id: str, haendler_bez: str, seal_date_str: str, weeks: int = CONFIG.HAS_WEEKS_BEFORE_AND_AFTER_PRODUCT_ANGEBOTEN_AMOUNT) -> bool:
+    def is_product_continuously_offered(self, produkt_id: str, haendler_bez: str, seal_date_str: str,
+                                        weeks: int = CONFIG.HAS_WEEKS_BEFORE_AND_AFTER_PRODUCT_ANGEBOTEN_AMOUNT) -> bool:
         """
         Check if a product was continuously offered by a retailer over a given period.
 

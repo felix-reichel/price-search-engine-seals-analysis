@@ -13,8 +13,8 @@ class ApplicationThreadConfig:
         ALLOW_THREAD_PER_AVAIL_CORE = 1
 
         return {
-            "duckdb_thread_count": 200*ALLOW_THREAD_PER_AVAIL_CORE,
-            "duckdb_background_thread_count": 32*ALLOW_THREAD_PER_AVAIL_CORE,
+            "duckdb_thread_count": CONFIG.MAX_DUCKDB_THREADS * ALLOW_THREAD_PER_AVAIL_CORE,
+            "duckdb_background_thread_count": CONFIG.MAX_DUCKDB_BACKGROUND_THREADS * ALLOW_THREAD_PER_AVAIL_CORE,
         }
 
     @staticmethod

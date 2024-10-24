@@ -36,7 +36,10 @@ class OffersRepository(AbstractBaseRepository):
         )
         return self.db_source.queryAsPl(query)
 
-    def fetch_counterfactual_firms(self, product_id: str, seal_date_unix: int) -> pl.DataFrame:
+    def fetch_all_counterfactual_firms_by_product_and_timestamps(
+            self,
+            product_id: str,
+            seal_date_unix: int) -> pl.DataFrame:
         """
         Fetch firms that offered a product around the time of a seal change.
 

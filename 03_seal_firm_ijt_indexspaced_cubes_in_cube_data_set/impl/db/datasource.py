@@ -248,7 +248,7 @@ class DuckDBDataSource(Singleton):
         """
         self.conn.execute("BEGIN;")
         try:
-            self.conn.execute(f"DELETE FROM file_log WHERE file_name LIKE '{table_name}%'")
+            self.conn.execute(f"DELETE FROM file_log WHERE file_name LIKE '%{table_name}%'")
             logger.info(f"File log entries for '{table_name}' have been deleted.")
 
             self.conn.execute(f"DELETE FROM {table_name}")

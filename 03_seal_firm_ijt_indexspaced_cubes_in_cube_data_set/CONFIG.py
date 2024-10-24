@@ -3,10 +3,9 @@ import os
 from pathlib import Path
 
 # DEFINITION OF GLOBAL CONSTANTS #
-
-# TODO: Set POLARS_MAX_THREADS
-os.environ["POLARS_MAX_THREADS"] = "200"     # test
+os.environ["POLARS_MAX_THREADS"] = "64"
 os.environ["NUMEXPR_MAX_THREADS"] = "32"
+os.environ["ARROW_NUM_THREADS"] = "8"
 
 NCPUS = os.getenv("NCPUS")  # should be available
 # else CPU_COUNT = os.cpu_count()
@@ -14,12 +13,13 @@ NCPUS = os.getenv("NCPUS")  # should be available
 
 # DUCKDB CONFIG
 DUCKDB_PATH = ':memory:'
-DUCKDB_MEMORY_LIMIT = '800GB'   # TODO: Set based on curr Caps
-MAX_DUCKDB_THREADS = 200  # test
+DUCKDB_MEMORY_LIMIT = '1200GB'   # TODO: Set based on curr Caps
+MAX_DUCKDB_THREADS = 128  # test
+MAX_DUCKDB_BACKGROUND_THREADS = 32
 
 # PYTHON CONFIG
 # Processors
-SPAWN_MAX_MAIN_PROCESSES_AMOUNT = 8
+SPAWN_MAX_MAIN_PROCESSES_AMOUNT = 8 # todo: test
 
 # UNIX Time Constants
 UNIX_HOUR = 60 * 60

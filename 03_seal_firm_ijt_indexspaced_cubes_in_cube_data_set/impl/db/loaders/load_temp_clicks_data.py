@@ -72,21 +72,21 @@ def load_selection_criteria_inflow_click_data(
         #    DELETE FROM clicks cl
         #    WHERE NOT EXISTS ( SELECT 42 FROM filtered_haendler_bez WHERE haendler_bez = cl.haendler_bez )
         # """)
-
-        db.conn.execute("""
-            UPDATE clicks cl
-            SET haendler_bez = NULL 
-            WHERE NOT EXISTS ( SELECT 42 FROM filtered_haendler_bez WHERE haendler_bez = cl.haendler_bez )
-        """)
-
-        db.conn.execute("""
-            DELETE FROM clicks 
-            WHERE haendler_bez IS NULL
-        """)
-
-        # POST DB BULK DELETE
-        result = db.queryAsPl(count_query)
-        logger.info(f"*NEW Total rows in Clicks data: {result[0][0]}")
+        #
+        # db.conn.execute("""
+        #     UPDATE clicks cl
+        #     SET haendler_bez = NULL
+        #     WHERE NOT EXISTS ( SELECT 42 FROM filtered_haendler_bez WHERE haendler_bez = cl.haendler_bez )
+        # """)
+        #
+        # db.conn.execute("""
+        #     DELETE FROM clicks
+        #     WHERE haendler_bez IS NULL
+        # """)
+        #
+        # # POST DB BULK DELETE
+        # result = db.queryAsPl(count_query)
+        # logger.info(f"*NEW Total rows in Clicks data: {result[0][0]}")
 
         return result[0][0]
     else:

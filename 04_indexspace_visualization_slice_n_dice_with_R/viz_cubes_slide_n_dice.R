@@ -81,3 +81,26 @@ slice_and_dice_visualizer <- function(data) {
 }
 
 slice_and_dice_visualizer(cube_data)
+
+
+
+
+# check which firms appears most in the dataset
+# presumably dominant counterfactual firms likely amazon-<domain>
+
+library(ggplot2)
+library(dplyr)
+
+setwd(dirname(getActiveDocumentContext()$path))
+
+data <- read.csv("results.csv")
+
+most_common_retailer <- data %>%
+  group_by(haendler_bez) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  slice(1:25)
+
+print(n=25,most_common_retailer)
+
+

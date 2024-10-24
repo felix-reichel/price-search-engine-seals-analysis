@@ -84,21 +84,21 @@ def load_selection_criteria_inflow_angebot_data(
         #    DELETE FROM angebot ang
         #    WHERE NOT EXISTS ( SELECT 42 FROM filtered_haendler_bez WHERE haendler_bez = ang.haendler_bez )
         # """)
-
-        db.conn.execute("""
-            UPDATE angebot ang
-            SET haendler_bez = NULL 
-            WHERE NOT EXISTS ( SELECT 42 FROM filtered_haendler_bez WHERE haendler_bez = ang.haendler_bez )
-        """)
-
-        db.conn.execute("""
-            DELETE FROM angebot 
-            WHERE haendler_bez IS NULL
-        """)
-
-        # POST DB BULK DELETE
-        result = db.queryAsPl(count_query)
-        logger.info(f"*NEW Total rows in Offer data: {result[0][0]}")
+        #
+        # db.conn.execute("""
+        #     UPDATE angebot ang
+        #     SET haendler_bez = NULL
+        #     WHERE NOT EXISTS ( SELECT 42 FROM filtered_haendler_bez WHERE haendler_bez = ang.haendler_bez )
+        # """)
+        #
+        # db.conn.execute("""
+        #     DELETE FROM angebot
+        #     WHERE haendler_bez IS NULL
+        # """)
+        #
+        # # POST DB BULK DELETE
+        # result = db.queryAsPl(count_query)
+        # logger.info(f"*NEW Total rows in Offer data: {result[0][0]}")
 
         return result[0][0]
     else:
