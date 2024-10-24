@@ -101,7 +101,7 @@ class TestGetRandMaxNCounterfactualFirmsDuckDb(DuckDbBaseTest):
         result_set = set(result)
         self.assertTrue(result_set.issubset(self.expected_firms), "Result contains firms not in expected firms.")
         self.assertTrue(all(firm not in self.seal_firms for firm in result), "Result contains seal firms.")
-        self.assertTrue(all(firm not in self.allowed_firms for firm in result), "Result contains disallowed firms.")
+        self.assertTrue(all(firm in self.allowed_firms for firm in result), "Result contains disallowed firms.")
 
     def test_counterfactual_firms_within_N(self):
         # Test where the number of counterfactual firms is less than or equal to N (10 in this case)
